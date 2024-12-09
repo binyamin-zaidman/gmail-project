@@ -77,3 +77,7 @@ CREATE TABLE messages (
     timestamp TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     read BOOLEAN DEFAULT FALSE
 );
+
+select * from users
+select * from chats
+select * from messages
