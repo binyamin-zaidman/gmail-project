@@ -20,6 +20,7 @@ io.on("connection", (socket) => {
 
     // משדרים הודעה לכל המשתמשים המחוברים
     io.emit("message", data);
+    socket.broadcast.emit("message", data);
   });
 
   // טיפול בניתוק
