@@ -50,6 +50,7 @@
 -- DROP TABLE mail;
 -- DROP TABLE myContacts;
 -- DROP TABLE users;
+--
 -- יצירת טבלת users
 CREATE TABLE users (
     id SERIAL PRIMARY KEY,
@@ -62,6 +63,7 @@ CREATE TABLE users (
     answer TEXT,
     timestamp TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
+--
 -- יצירת טבלת chats
 CREATE TABLE chats (
     id SERIAL PRIMARY KEY,
@@ -69,6 +71,7 @@ CREATE TABLE chats (
     recipient INT REFERENCES users(id),
     timestamp TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
+--
 -- יצירת טבלת messages
 CREATE TABLE messages (
     id SERIAL PRIMARY KEY,
@@ -77,7 +80,10 @@ CREATE TABLE messages (
     timestamp TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     read BOOLEAN DEFAULT FALSE
 );
-
-select * from users
-select * from chats
-select * from messages
+--
+select *
+from users
+select *
+from chats
+select *
+from messages
