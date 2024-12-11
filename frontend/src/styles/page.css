@@ -1,0 +1,40 @@
+.ContainerPage {
+    /* width: 100%; */
+    display: flex;
+
+}
+
+.ChatBar {
+    margin: 3px;
+    padding: 3px;
+    /* width: 20%; */
+    background-color: antiquewhite;
+}
+.headerChatBar{
+    border: 3px solid black;        
+}
+
+.chats {
+    margin: 3px;
+    padding: 3px;
+    /* width: 30%; */
+    background-color: beige;
+}   
+.headerChats{
+    border: 3px solid black;
+}
+.bodyChats{
+    border: 3px solid black;
+}
+.allMessage {
+    margin: 3px;
+    padding: 3px;
+    /* width: 50%; */
+    background-color: bisque;
+}
+.headerAllMessage{
+    border: 3px solid black;
+}
+.bodyAllMessage{
+    border: 3px solid black;
+}

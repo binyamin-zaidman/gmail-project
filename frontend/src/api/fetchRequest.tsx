@@ -12,6 +12,8 @@ async function fetchRequest<T>(props: RequestProps | string): Promise<T> {
 
     if (typeof props === 'string') {
         url = props;
+        console.log(props);
+
     } else {
         url = props.url;
         method = props.method;
@@ -22,9 +24,8 @@ async function fetchRequest<T>(props: RequestProps | string): Promise<T> {
     const options: RequestInit = {
         method,
         headers: {
-            'Content-Type': 'application/json',
-            ...(token && { Authorization: `Bearer ${token}` })
-        },
+            'Content-Type': 'application/json'
+        }
     };
 
 
@@ -33,6 +34,7 @@ async function fetchRequest<T>(props: RequestProps | string): Promise<T> {
     }
     try {
         const res = await fetch(url, options);
+        console.log(res);
 
         if (!res.ok) {
             const error = await res.text();
