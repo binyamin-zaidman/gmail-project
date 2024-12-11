@@ -87,3 +87,22 @@ select *
 from chats
 select *
 from messages
+
+insert into users (first_name, last_name, email, password, phone, question, answer)
+values ('binyamin', 'zaidman', 'b@gmail.com', '123', 0501234567, 'whts your age', '27');
+
+
+alter TABLE messages
+add column sender INT;
+
+alter TABLE chats
+add column name VARCHAR(255) DEFAULT null;
+alter TABLE chats
+add column description VARCHAR(255) DEFAULT null;
+
+
+CREATE TABLE chat_users (
+    id SERIAL PRIMARY KEY,
+    chat_id INT REFERENCES chats(id),
+    user_id INT REFERENCES users(id)
+);
