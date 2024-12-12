@@ -7,8 +7,10 @@ function App() {
 
   return (
     <>
-      <h2>my watsapp</h2>
-      <Page />
+      <div className='pageBody'>
+        <h2>my watsapp</h2>
+        <Page />
+      </div>
     </>
   )
 }
