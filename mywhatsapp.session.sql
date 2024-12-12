@@ -87,6 +87,8 @@ select *
 from chats
 select *
 from messages
+select *
+from chat_users
 
 insert into users (first_name, last_name, email, password, phone, question, answer)
 values ('binyamin', 'zaidman', 'b@gmail.com', '123', 0501234567, 'whts your age', '27');
@@ -104,5 +106,5 @@ add column description VARCHAR(255) DEFAULT null;
 CREATE TABLE chat_users (
     id SERIAL PRIMARY KEY,
     chat_id INT REFERENCES chats(id),
-    user_id INT REFERENCES users(id)
+    user_id INT REFERENCES chats(user_id)
 );

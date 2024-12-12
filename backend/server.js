@@ -71,22 +71,53 @@ app.post("/users/register", async (req, res) => {
   }
 });
 
-app.get(
-  "/chats",
-  (req,
-  (res) => {
-    const user_id = req.body.user_id;
-    try {
-      pool.query(
-        "select * from chats_users join chats on chats.id = chats_users.chat_id where chats_users.user_id = $1",
-        [user_id]
-      );
-    } catch (error) {
-      console.error(error);
-      res.status(404).json({ error: "error in get chats" });
-    }
-  })
-);
+app.get("/chats/:userId", (req, res) => {
+  const user_id = req.params.userId;
+  try {
+    const result = pool.query(
+      "select * from chat_users join chats on chats.id = chat_users.chat_id where chat_users.user_id = $1",
+      [user_id]
+    );
+    res.json(result.rows);
+  } catch (error) {
+    console.error(error);
+    res.status(404).json({ error: "error in get chats" });
+  }
+});
+
+app.post("/chats", async (req, res) => {
+  const user_id = req.params.userId;
+  const name = req.body.name;
+  const description = req.body.description;
+  // const token = req.headers.token;
+  try {
+    const resultInsertChat = await pool.query(
+      "insert into chats (user_id,description,name) values ($1,$2,$3) RETURNING *",
+      [user_id, description, name]
+    );
+    const insertChatUser = await pool.query(
+      "insert into chat_users (chat_id,user_id) values ($1,$2) RETURNING *",
+      [resultInsertChat.rows[0].id,user_id]
+    );
+    res.json(resultInsertChat.rows, insertChatUser.rows);
+  } catch (error) {
+    console.error(error);
+    res.status(404).json({ error: "error in create chat" });
+  }
+});
+
+
+// app.post("/chat/:userId", async (req, res) => {
+//   const user_id = req.params.userId;
+//   const name = req.body.name;
+//   const description = req.body.description;
+//   const token = req.headers.token;
+
+//   const insertedChat = chatsService.insertNewChat(name, user_id, token, description);
+
+//   res.json(resultInsertChat.rows, insertChatUser.rows);
+// });
+
 
 server.listen(port, () => {
   console.log(`Server is running on http://localhost: "${port}"`);
