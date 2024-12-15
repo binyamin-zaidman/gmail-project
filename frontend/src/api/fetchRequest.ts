@@ -2,23 +2,23 @@ type Method = "GET" | "POST" | "PUT" | "DELETE";
 
 type RequestProps = {
     url: string,
-    method: Method,
+    method: string,
     body?: any
     token?: string;
 };
 
 async function fetchRequest<T>(props: RequestProps | string): Promise<T> {
-    let url: string, method: Method = "GET", body: any = null, token: string | undefined;
+    let url: string, method: string = "GET", body: any = null, token: string | undefined;
 
     if (typeof props === 'string') {
         url = props;
-        console.log(props);
+        method = "GET";
 
     } else {
         url = props.url;
         method = props.method;
-        body = props.body;
-        token = props.token;
+        body = props?.body;
+        token = props?.token;
     }
 
     const options: RequestInit = {
@@ -33,8 +33,7 @@ async function fetchRequest<T>(props: RequestProps | string): Promise<T> {
         options.body = JSON.stringify(body);
     }
     try {
-        const res = await fetch(url, options);
-        console.log(res);
+        const res = await fetch(`http://localhost:3000${url}`, options);
 
         if (!res.ok) {
             const error = await res.text();

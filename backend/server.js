@@ -1,5 +1,8 @@
 const express = require("express");
-const { Pool } = require("pg");
+const { insertNewChat } = require("./services/chatsService");
+const { receiveMessages, insertMessege } = require("./services/messegeService");
+const { pool } = require("./conectDB");
+const cors = require("cors");
 // const multer = require("multer"); ספרייה לעבודה עם קבצים
 
 // ספרייה של soket.io
@@ -13,6 +16,7 @@ const io = new Server(server);
 const port = 3000;
 
 app.use(express.json());
+app.use(cors());
 
 io.on("connection", (socket) => {
   console.log("A user connected:", socket.id);
@@ -30,15 +34,6 @@ io.on("connection", (socket) => {
   socket.on("disconnect", () => {
     console.log("A user disconnected:", socket.id);
   });
-});
-
-const pool = new Pool({
-  //שאילתות לדאטה בייס
-  user: "mywhatsapp1234",
-  host: "localhost",
-  database: "postgres",
-  password: "mywhatsapp1234",
-  port: 5432
 });
 
 app.post("/users/login", async (req, res) => {
@@ -85,39 +80,67 @@ app.get("/chats/:userId", (req, res) => {
   }
 });
 
-app.post("/chats", async (req, res) => {
-  const user_id = req.params.userId;
-  const name = req.body.name;
-  const description = req.body.description;
-  // const token = req.headers.token;
-  try {
-    const resultInsertChat = await pool.query(
-      "insert into chats (user_id,description,name) values ($1,$2,$3) RETURNING *",
-      [user_id, description, name]
-    );
-    const insertChatUser = await pool.query(
-      "insert into chat_users (chat_id,user_id) values ($1,$2) RETURNING *",
-      [resultInsertChat.rows[0].id,user_id]
-    );
-    res.json(resultInsertChat.rows, insertChatUser.rows);
-  } catch (error) {
-    console.error(error);
-    res.status(404).json({ error: "error in create chat" });
-  }
-});
-
-
-// app.post("/chat/:userId", async (req, res) => {
+// app.post("/chats/:userId", async (req, res) => {
 //   const user_id = req.params.userId;
 //   const name = req.body.name;
 //   const description = req.body.description;
-//   const token = req.headers.token;
+//   // const token = req.headers.token;
+//   console.log(req.body);
 
-//   const insertedChat = chatsService.insertNewChat(name, user_id, token, description);
+//   try {
+//     const resultInsertChat = await pool.query(
+//       "insert into chats (user_id,description,name) values ($1,$2,$3) RETURNING *",
+//       [user_id, description, name]
+//     );
 
-//   res.json(resultInsertChat.rows, insertChatUser.rows);
+//     const insertChatUser = await pool.query(
+//       "insert into chat_users (chat_id,user_id) values ($1,$2) RETURNING *",
+//       [resultInsertChat.rows[0].id, user_id]
+//     );
+//     res.json(resultInsertChat.rows, insertChatUser.rows);
+//   } catch (error) {
+//     console.error(error);
+//     res.status(404).json({ error: "error in create chat" });
+//   }
 // });
 
+app.post("/chats/:userId", async (req, res) => {
+  const user_id = req.params.userId;
+  const recipient_id = req.body.recipientid;
+  const name = req.body.name;
+  const description = req.body.description;
+  const token = req.headers.token;
+
+  const insertedChat = await insertNewChat(
+    name,
+    recipient_id,
+    user_id,
+    description
+  );
+
+  res.json(insertedChat);
+});
+
+app.get("/messege/:chat_id", async (req, res) => {
+  const chat_id = req.params.chat_id;
+  const result = await receiveMessages(chat_id);
+
+  res.json(result);
+});
+
+app.post("/message/:chat_id", async (req, res) => {
+
+  const chat_id = req.params.chat_id;
+
+
+  const messege = req.body;
+  // const user_id = req.body.user_id;
+  const token = req.headers.token;
+  const read = messege.read;
+  const sender_id1 = messege.sender_id; //id של המשתמש ששלח הודעה
+  const result = await insertMessege(chat_id, messege, read, sender_id1);
+  res.json(result);
+})
 
 server.listen(port, () => {
   console.log(`Server is running on http://localhost: "${port}"`);
