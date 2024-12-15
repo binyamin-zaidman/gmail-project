@@ -68,9 +68,14 @@ CREATE TABLE users (
 CREATE TABLE chats (
     id SERIAL PRIMARY KEY,
     user_id INT REFERENCES users(id),
-    recipient INT REFERENCES users(id),
-    timestamp TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+    -- recipient INT REFERENCES users(id),
+    timestamp TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    name VARCHAR(255) DEFAULT null,
+    description VARCHAR(255) DEFAULT null;
+
 );
+
+
 --
 -- יצירת טבלת messages
 CREATE TABLE messages (
@@ -108,3 +113,7 @@ CREATE TABLE chat_users (
     chat_id INT REFERENCES chats(id),
     user_id INT REFERENCES chats(user_id)
 );
+
+SELECT column_name, data_type 
+FROM information_schema.columns 
+WHERE table_name = 'messages';

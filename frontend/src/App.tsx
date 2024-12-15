@@ -1,17 +1,19 @@
-import { useState } from 'react'
 import Page from './components/page'
 import './App.css'
+import { BrowserRouter, Routes, Route } from "react-router-dom";
+import Messege from './components/messege'
+
 
 function App() {
-  const [count, setCount] = useState(0)
+
 
   return (
-    <>
-      <div className='pageBody'>
-        <h2>my watsapp</h2>
-        <Page />
-      </div>
-    </>
+    <BrowserRouter>
+      <Routes>
+        < Route path='/' element={<Page />} />
+        < Route path='/messege/:id' element={<Messege />} />
+      </Routes>
+    </BrowserRouter>
   )
 }
 
