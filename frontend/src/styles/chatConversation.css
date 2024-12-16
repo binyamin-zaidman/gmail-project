@@ -1,8 +1,7 @@
-/* Chat Conversations Container */
 .chatConversationsContainer {
     flex: 2;
     max-width: 30%;
-    height: 99%;
+    height: calc(100% - 10px); /* adjust as needed */
     margin: 0 auto;
     border-right: 1px solid #ddd;
     background-color: #f9f9f9;
@@ -39,8 +38,7 @@
 }
 
 .addChatButton {
-    background-color: #007bff;
-    color: white;
+    color: #007bff;
     padding: 0.5rem;
     border-radius: 25%;
     font-size: 1.5rem;
@@ -49,7 +47,7 @@
 }
 
 .addChatButton:hover {
-    background-color: #0056b3;
+    background-color: #9cabbc;
 }
 
 .chats {

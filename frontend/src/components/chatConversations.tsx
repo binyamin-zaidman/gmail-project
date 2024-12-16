@@ -1,4 +1,3 @@
-import React from "react";
 import Chat from "./chat";
 import "../styles/chatConversation.css"
 
@@ -22,9 +21,19 @@ export default function ChatConversations() {
                 <Chat />
                 <Chat />
                 <Chat />
+                <Chat />
+                <Chat />
+<<<<<<< Updated upstream
+                <Chat />
+                <Chat />
+                <Chat />
+                <Chat />
+                <Chat />        
+=======
                
                
                 {/* תוכל להוסיף עוד רכיבי Chat כאן */}
+>>>>>>> Stashed changes
             </div>
         </div>
     );
