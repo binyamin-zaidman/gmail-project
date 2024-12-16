@@ -1,7 +1,7 @@
 .chatConversationsContainer {
     flex: 2;
     max-width: 30%;
-    height: 99%;
+    height: calc(100% - 10px); /* adjust as needed */
     margin: 0 auto;
     border-right: 1px solid #ddd;
     background-color: #f9f9f9;

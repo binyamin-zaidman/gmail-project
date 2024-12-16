@@ -25,9 +25,9 @@
 /* Message from other users */
 .otherUserMessage {
     width: 40%;
-    background-color: #f8d7da;
+    background-color: #f1f0f0;
     align-self: flex-end;
-    text-align: right;
+    text-align: left;
     border-radius: 20px;
 }
 

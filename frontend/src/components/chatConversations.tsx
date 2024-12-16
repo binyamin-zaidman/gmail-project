@@ -23,11 +23,17 @@ export default function ChatConversations() {
                 <Chat />
                 <Chat />
                 <Chat />
+<<<<<<< Updated upstream
                 <Chat />
                 <Chat />
                 <Chat />
                 <Chat />
                 <Chat />        
+=======
+               
+               
+                {/* תוכל להוסיף עוד רכיבי Chat כאן */}
+>>>>>>> Stashed changes
             </div>
         </div>
     );
