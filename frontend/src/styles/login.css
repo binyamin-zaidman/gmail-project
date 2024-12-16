@@ -1,0 +1,52 @@
+.LoginPageContainer {
+    max-width: 400px;
+    margin: auto;
+    padding: 4rem;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    background-color: white;
+}
+
+.LoginPageContainer h2 {
+    text-align: center;
+    margin-bottom: 1.5rem;
+    font-size: 2rem;
+    font-weight: bold;
+}
+
+.LoginPageContainer input {
+    width: 100%;
+    padding: 0.5rem;
+    margin-bottom: 2rem;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    box-sizing: border-box;
+}
+
+.LoginPageContainer button {
+    background-color: #007bff;
+    color: white;
+    padding: 0.5rem;
+    width: 100%;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    font-size: 1rem;
+    transition: background-color 0.3s ease;
+}
+
+.LoginPageContainer button:hover {
+    background-color: #0056b3;
+}
+
+.buttonForLogin {
+    display: flex;
+    justify-content: space-between;
+}
+
+.LoginPageContainer .buttonForLogin button {
+    width: 48%;
+    padding: 0.5rem;
+}

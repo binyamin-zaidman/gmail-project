@@ -1,0 +1,50 @@
+/* Container for messages */
+.messageContainer {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 1rem;
+}
+
+/* Common styles for all messages */
+.messageBody {
+    padding: 1rem;
+    border-radius: 8px;
+    margin-bottom: 0.5rem;
+    max-width: 70%;
+}
+
+/* Message from the current user */
+.currentUserMessage {
+    width: 40%;
+    background-color: #d4edda;
+    align-self: flex-start;
+    text-align: left;
+    border-radius: 20px;
+}
+
+/* Message from other users */
+.otherUserMessage {
+    width: 40%;
+    background-color: #f8d7da;
+    align-self: flex-end;
+    text-align: right;
+    border-radius: 20px;
+}
+
+.messageBody h2 {
+    font-weight: bold;
+    margin: 0;
+    font-size: 1rem;
+}
+
+.messageBody h3 {
+    margin-top: 0.5rem;
+    font-size: 1rem;
+    color: #333;
+}
+
+.messageBody p {
+    margin-top: 0.5rem;
+    font-size: 0.8rem;
+    color: #888;
+}
