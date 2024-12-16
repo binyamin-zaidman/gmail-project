@@ -1,11 +1,11 @@
 import sendRequest from "./fetchRequest";
 
 type messege  = {
-    text: string,
     chat_id: number,
-    // user_id: number,
+    text: string,
     read: boolean,
     sender_id: number
+    // user_id: number,
 }
 
 type getMessege =  {
