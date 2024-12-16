@@ -1,7 +1,7 @@
 import Page from './components/page'
 import './App.css'
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import Messege from './components/messege'
+import Messege from './components/displaysMessages'
 
 
 function App() {

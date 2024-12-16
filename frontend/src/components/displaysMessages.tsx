@@ -7,7 +7,7 @@ export default function Message() {
     const chatId = params.id; // מזהה הצ'אט מתוך ה-URL
     const sender = Number(1); // מזהה השולח כ-מספר
 
-    const [messeges, setMesseges] = useState([]); // רשימת ההודעות
+    const [messages, setMesseges] = useState([]); // רשימת ההודעות
     const [newMessege, setNewMessege] = useState(""); // הודעה חדשה לשליחה
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
@@ -19,6 +19,8 @@ export default function Message() {
             setLoading(true);
             try {
                 const res = await getAllMesseges(Number(chatId));
+                console.log(res);
+
                 setMesseges(res);
             } catch (error: any) {
                 setError(error.message || "שגיאה בטעינת הודעות");
@@ -41,7 +43,7 @@ export default function Message() {
                 sender_id: sender,
             });
 
-            setMesseges([...messeges, res]); // עדכון רשימת ההודעות
+            setMesseges([...messages, res]); // עדכון רשימת ההודעות
             setNewMessege(""); // איפוס שדה ההודעה
         } catch (error: any) {
             setError(error.message || "שגיאה בשליחת ההודעה");
@@ -62,8 +64,8 @@ export default function Message() {
                 <p style={{ color: "red" }}>{error}</p>
             ) : (
                 <div>
-                    {messeges.map((msg: any, index: number) => (
-                        <p key={index}>{msg.text}</p>
+                    {messages.map((msg: any, id: number) => (
+                        <p key={id}>{msg.message}</p>
                     ))}
                 </div>
             )}

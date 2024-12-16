@@ -2,9 +2,9 @@ import React, { useEffect } from "react";
 
 import '../styles/page.css'
 // import { getAllChats } from "../api/chats";
-import ChatBar from "./chatBar";
+import ChatBar from "./chatConversations";
 import Chat from "./chat";
-import Meesege from "./messege";
+import Meesege from "./displaysMessages";
 
 export function Page() {
 
