@@ -2,7 +2,7 @@
     flex: 3;
     display: flex;
     flex-direction: column;
-    height: 100% 
+    height: 100%;
     padding-left: 10px;
     position: relative;
 }
@@ -23,7 +23,7 @@
     width: 50px;
     height: 40px;
     border-radius: 60%;
-    margin: 10px ;
+    margin: 10px;
 }
 
 .allMessages {
@@ -33,8 +33,9 @@
     /* padding: 1rem; */
     margin-top: 10px;
     /* max-height: 60vh; מונע הצפת תוכן */
-    
+
 }
+
 .allMessages::-webkit-scrollbar {
     display: none;
 }
