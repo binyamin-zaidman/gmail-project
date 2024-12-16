@@ -1,9 +1,0 @@
-.ContainerPage{
-   background-color: aqua;
-   display: flex;
-   align-items: center;
-   justify-content: center;
-   flex-direction: row;
-   width: 100vw;
-   height: 100vh;
-}

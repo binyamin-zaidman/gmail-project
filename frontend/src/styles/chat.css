@@ -1,0 +1,36 @@
+/* Chat Container */
+.chatContainer {
+    display: flex;
+    align-items: center;
+    padding: 1rem;
+    border-bottom: 1px solid #ddd;
+    margin-bottom: 1rem;
+}
+
+.profileImage {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    object-fit: cover;
+    margin-right: 1rem;
+}
+
+.showUser {
+    flex-grow: 1;
+}
+
+.userName {
+    font-weight: bold;
+    margin: 0;
+}
+
+.message {
+    color: #555;
+    font-size: 0.9rem;
+    margin-top: 0.3rem;
+}
+
+.time {
+    color: #888;
+    font-size: 0.8rem;
+}
