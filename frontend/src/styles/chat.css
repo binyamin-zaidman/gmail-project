@@ -2,9 +2,17 @@
 .chatContainer {
     display: flex;
     align-items: center;
-    padding: 1rem;
+    padding: 7px;
     border-bottom: 1px solid #ddd;
-    margin-bottom: 1rem;
+    margin-bottom: 10px;
+    transition: background-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+/* אפקט מעבר עכבר */
+.chatContainer:hover {
+    background-color: #f1f1f1; 
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); 
+    cursor: pointer; 
 }
 
 .profileImage {
@@ -13,6 +21,12 @@
     border-radius: 50%;
     object-fit: cover;
     margin-right: 1rem;
+    transition: transform 0.3s ease; 
+}
+
+
+.profileImage:hover {
+    transform: scale(1.1); 
 }
 
 .showUser {
@@ -28,6 +42,11 @@
     color: #555;
     font-size: 0.9rem;
     margin-top: 0.3rem;
+    transition: color 0.3s ease;
+}
+
+.chatContainer:hover .message {
+    color: #000; 
 }
 
 .time {

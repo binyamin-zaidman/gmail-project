@@ -9,6 +9,8 @@ export default function Login() {
             console.log("Please fill in all fields");
             return
         } else {
+            
+
             console.log({ phone, password })
         }
 

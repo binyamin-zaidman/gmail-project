@@ -13,7 +13,7 @@ function App() {
   return (
     <BrowserRouter>
       <Routes>
-        < Route path='/' element={<Page />} />
+        < Route path='/' element={<SignUp />} />
         < Route path='/messege/:id' element={<Messege />} />
       </Routes>
     </BrowserRouter>

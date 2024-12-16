@@ -1,11 +1,14 @@
 .LoginPageContainer {
+    display: grid;
+    grid-template-columns: 1fr;
     max-width: 400px;
     margin: auto;
     padding: 4rem;
-    border: 1px solid #ccc;
+    border: 1px solid #ddd;
     border-radius: 8px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    background-color: white;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    background-color: #f9f9f9;
+    font-family: 'Roboto', sans-serif;
 }
 
 .LoginPageContainer h2 {
@@ -13,40 +16,43 @@
     margin-bottom: 1.5rem;
     font-size: 2rem;
     font-weight: bold;
+    color: #333;
 }
 
 .LoginPageContainer input {
     width: 100%;
-    padding: 0.5rem;
-    margin-bottom: 2rem;
+    padding: 0.75rem;
+    margin-bottom: 1.5rem;
     border: 1px solid #ccc;
     border-radius: 6px;
     box-sizing: border-box;
+    font-size: 1rem;
+    outline: none;
+    transition: border-color 0.3s ease;
+}
+
+.LoginPageContainer input:focus {
+    border-color: #007bff;
 }
 
 .LoginPageContainer button {
     background-color: #007bff;
     color: white;
-    padding: 0.5rem;
-    width: 100%;
+    padding: 0.75rem;
     border: none;
     border-radius: 6px;
     cursor: pointer;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     font-size: 1rem;
-    transition: background-color 0.3s ease;
+    transition: background-color 0.3s ease, box-shadow 0.3s ease;
 }
 
 .LoginPageContainer button:hover {
     background-color: #0056b3;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
 }
 
 .buttonForLogin {
-    display: flex;
-    justify-content: space-between;
-}
-
-.LoginPageContainer .buttonForLogin button {
-    width: 48%;
-    padding: 0.5rem;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
 }
