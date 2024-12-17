@@ -52,8 +52,8 @@ app.post("/users/login", async (req, res) => {
     );
     log(result.rows[0]);
 
-    const token = generateToken(result.rows[0].id,result.rows[0].phone)
-    res.json({...result.rows[0],token});
+    const token = generateToken(result.rows[0].id, result.rows[0].phone);
+    res.json({ ...result.rows[0], token });
   } catch (error) {
     console.error(error);
     res.status(500).json({ error: "Internal server error" });
@@ -68,23 +68,26 @@ app.post("/users/register", async (req, res) => {
       "insert into users (first_name, last_name, email, password,phone, question, answer) values ($1, $2, $3, $4, $5, $6, $7) RETURNING *",
       [firstName, lastName, email, password, phone, question, answer]
     );
-    
-    const token = generateToken(result.rows[0].id,result.rows[0].phone)
-  
-    res.json({...result.rows[0],token});
+
+    const token = generateToken(result.rows[0].id, result.rows[0].phone);
+
+    res.json({ ...result.rows[0], token });
   } catch (error) {
     console.error(error);
     res.status(404).json({ error: "create user error" });
   }
 });
 
-app.get("/chats/:userId",async (req, res) => {
+app.get("/chats/:userId", async (req, res) => {
   const user_id = req.params.userId;
   try {
     const result = await pool.query(
       "select * from chat_users join chats on chats.id = chat_users.chat_id where chat_users.user_id = $1",
       [user_id]
     );
+    if (result.rows.length === 0) {
+      return res.status(200).json({ message: "No chats found for this user." });
+    }
     res.json(result.rows);
   } catch (error) {
     console.error(error);

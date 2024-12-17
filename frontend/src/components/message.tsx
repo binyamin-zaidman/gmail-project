@@ -3,6 +3,8 @@ import "../styles/message.css"
 
 
 export default function MessageComponent({ isCurrentUser, userName, content, time }: { isCurrentUser: boolean, userName: string, content: string, time: string }) {
+    
+    
     return (
         <div id="messageContainer">
             <div id={`${isCurrentUser ? "currentUserMessage" : "otherUserMessage"}`}>

@@ -9,7 +9,7 @@ type createChat = {
     description: string
 }
 
-export async function getAllChats(user_id: number) {
+export async function getAllChats(user_id: getChats) {
     return await sendRequest<getChats>({
         "url": `/chats/${user_id}`,
         method: "GET",

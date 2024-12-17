@@ -40,20 +40,27 @@
     display: none;
 }
 
+
 #sendMessage {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
     position: sticky;
     bottom: 0;
     background-color: #fff;
-    padding: 1rem;
     border-top: 1px solid #ccc;
     border-radius: 7px;
     box-shadow: 0 -2px 4px rgba(0, 0, 0, 0.1);
 }
 
 #sendMessage input {
-    width: 100%;
+    width: 85%;
     padding: 0.5rem;
     border: 1px solid #ccc;
     border-radius: 6px;
     font-size: 1rem;
+}
+#sendMessage img{
+    width: 30px;
+    height: 30px;
 }
