@@ -12,7 +12,9 @@ type getMessege =  {
     messege: string
 }
 
-export async function getAllMesseges(chat_id: number) {
+export async function getAllMessages(chat_id: number) {
+    console.log(chat_id);
+    
     return await sendRequest<messege>({
         url: `/messege/${chat_id}`,
         method : "GET"

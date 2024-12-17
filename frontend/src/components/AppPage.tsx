@@ -15,7 +15,7 @@ export default function AppPage() {
         <div className="ContainerPage">
             <NavBar />
             <ChatConversations />
-            <ShowAllMessages />
+            <ShowAllMessages chat_id={1} />
 
         </div>
     );
