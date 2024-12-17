@@ -50,8 +50,10 @@ app.post("/users/login", async (req, res) => {
       "SELECT id as user_id FROM users WHERE phone = $1 AND password = $2",
       [phone, password]
     );
-    log(result.rows);
-    res.json(result.rows);
+    log(result.rows[0]);
+
+    const token = generateToken(result.rows[0].id,result.rows[0].phone)
+    res.json({...result.rows[0],token});
   } catch (error) {
     console.error(error);
     res.status(500).json({ error: "Internal server error" });

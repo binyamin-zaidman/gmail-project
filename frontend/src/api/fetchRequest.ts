@@ -1,4 +1,4 @@
-import { formDataWithToken } from "./users";
+import { formDataWithToken, sendRequestTypes } from "./users";
 
 type Method = "GET" | "POST" | "PUT" | "DELETE";
 
@@ -9,7 +9,7 @@ type RequestProps = {
     token?: string;
 };
 
-async function fetchRequest<T>(props: RequestProps | string): Promise<formDataWithToken>  {
+async function fetchRequest<T>(props: RequestProps | string): Promise<sendRequestTypes>  {
     let url: string, method: string = "GET", body: any = null, token: string | undefined;
 
     if (typeof props === 'string') {
@@ -45,7 +45,7 @@ async function fetchRequest<T>(props: RequestProps | string): Promise<formDataWi
         }
 
         if (res.status === 204) throw new Error("The content is empty");
-        const data = await res.json() as formDataWithToken;
+        const data = await res.json() as sendRequestTypes;
 
         return data;
     } catch (error) {

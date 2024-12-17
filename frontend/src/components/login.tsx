@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import '../styles/login.css'
-import { getUserExist } from "../api/users";
+import { getUserExist, userExist } from "../api/users";
 
 export default function Login() {
     const [phone, setPhone] = useState("")
@@ -30,12 +30,11 @@ export default function Login() {
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
         try {
-            const result = await getUserExist(phone, password);
-            if (result.token) {
-                // שמירת הטוקן ב-LocalStorage
-                localStorage.setItem("user", result.token);
-                // מעבר לדף האפליקציה
-                navigate("/app", { replace: true });
+            const result = await getUserExist(phone, password) ;
+            console.log(result);
+            if (result) {
+                localStorage.setItem("user", JSON.stringify(result.token));
+                navigate(`/app/${result.user_id}`, { replace: true });
             } else {
                 setErrorMessage("Invalid credentials");
             }
