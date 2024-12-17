@@ -1,8 +1,12 @@
 import React, { useState } from "react";
 import "../styles/signUp.css";
+import { createUser } from "../api/users";
+import { useNavigate } from "react-router-dom";
 
 export default function SignUp() {
+    const navigate = useNavigate();
     const [step, setStep] = useState(1);
+    const [errorMessage, setErrorMessage] = useState("");
     const [formData, setFormData] = useState({
         firstName: "",
         lastName: "",
@@ -11,32 +15,68 @@ export default function SignUp() {
         email: "",
         phone: "",
         password: "",
-        confirmPassword: "",
+        confirmPassword: ""
     });
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const { name, value } = e.target;
         setFormData((prev) => ({ ...prev, [name]: value }));
+        setErrorMessage("")
     };
 
-    const handleNext = () => setStep((prev) => prev + 1);
+    const handleNext = () => {
+        if (step === 1) {
+            if (!formData.firstName || !formData.lastName) {
+                setErrorMessage("First Name and Last Name are required!");
+                return
+            }
+        }
+        if (step === 2) {
+            if (!formData.question || !formData.answer) {
+                setErrorMessage("Security question and answer are required!");
+                return;
+            }
+        }
+        if (step === 3) {
+            const emailRegex = /\S+@\S+\.\S+/;
+            if (!emailRegex.test(formData.email)) {
+                setErrorMessage("Please enter a valid email address!");
+                return;
+            }
+            if (!formData.phone || formData.phone.length > 10 || formData.phone.length < 9) {
+                setErrorMessage("Phone number is required!");
+                return;
+            }
+        }
+        setStep((prev) => prev + 1);
+    };
     const handleBack = () => setStep((prev) => prev - 1);
 
-    const handleSubmit = () => {
+    const handleSubmit = async () => {
         if (formData.password !== formData.confirmPassword) {
-            alert("Passwords do not match");
+            setErrorMessage("password do not match!")
             return;
         }
-        console.log("Form Data:", formData);
+        setErrorMessage("")
+        try {
+            const result = await createUser({ ...formData });
+            localStorage.setItem("user",result.token)
+            navigate("/app", { replace: true });
+            
+        } catch (error) {
+            console.error(error);
+
+        }
     };
 
     return (
-        <div className="signUpContainer">
+        <div id="signUpContainer">
             <h2>SignUp</h2>
             {step === 1 && (
                 <>
                     <label>First Name:</label>
                     <input
+                        required
                         type="text"
                         name="firstName"
                         value={formData.firstName}
@@ -45,12 +85,14 @@ export default function SignUp() {
                     />
                     <label>Last Name:</label>
                     <input
+                        required
                         type="text"
                         name="lastName"
                         value={formData.lastName}
                         onChange={handleChange}
                         placeholder="Enter your last name"
                     />
+                    {errorMessage && <p className="error">{errorMessage}</p>}
                     <button onClick={handleNext}>Next</button>
                 </>
             )}
@@ -59,6 +101,7 @@ export default function SignUp() {
                 <>
                     <label>Security Question:</label>
                     <input
+                        required
                         type="text"
                         name="question"
                         value={formData.question}
@@ -67,12 +110,14 @@ export default function SignUp() {
                     />
                     <label>Answer:</label>
                     <input
+                        required
                         type="text"
                         name="answer"
                         value={formData.answer}
                         onChange={handleChange}
                         placeholder="Enter your answer"
                     />
+                    {errorMessage && <p className="error">{errorMessage}</p>}
                     <button onClick={handleBack}>Back</button>
                     <button onClick={handleNext}>Next</button>
                 </>
@@ -82,6 +127,7 @@ export default function SignUp() {
                 <>
                     <label>Email:</label>
                     <input
+                        required
                         type="email"
                         name="email"
                         value={formData.email}
@@ -90,12 +136,14 @@ export default function SignUp() {
                     />
                     <label>Phone:</label>
                     <input
+                        required
                         type="text"
                         name="phone"
                         value={formData.phone}
                         onChange={handleChange}
                         placeholder="Enter your phone"
                     />
+                    {errorMessage && <p className="error">{errorMessage}</p>}
                     <button onClick={handleBack}>Back</button>
                     <button onClick={handleNext}>Next</button>
                 </>
@@ -105,6 +153,7 @@ export default function SignUp() {
                 <>
                     <label>Password:</label>
                     <input
+                        required
                         type="password"
                         name="password"
                         value={formData.password}
@@ -113,12 +162,14 @@ export default function SignUp() {
                     />
                     <label>Confirm Password:</label>
                     <input
+                        required
                         type="password"
                         name="confirmPassword"
                         value={formData.confirmPassword}
                         onChange={handleChange}
                         placeholder="Confirm your password"
                     />
+                    {errorMessage && <p className="error">{errorMessage}</p>}
                     <button onClick={handleBack}>Back</button>
                     <button onClick={handleSubmit}>Submit</button>
                 </>

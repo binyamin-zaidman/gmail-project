@@ -1,3 +1,5 @@
+import { formDataWithToken } from "./users";
+
 type Method = "GET" | "POST" | "PUT" | "DELETE";
 
 type RequestProps = {
@@ -7,7 +9,7 @@ type RequestProps = {
     token?: string;
 };
 
-async function fetchRequest<T>(props: RequestProps | string): Promise<T> {
+async function fetchRequest<T>(props: RequestProps | string): Promise<formDataWithToken>  {
     let url: string, method: string = "GET", body: any = null, token: string | undefined;
 
     if (typeof props === 'string') {
@@ -32,16 +34,18 @@ async function fetchRequest<T>(props: RequestProps | string): Promise<T> {
     if (body && method !== 'DELETE' && method !== 'GET') {
         options.body = JSON.stringify(body);
     }
+    console.log({body});
     try {
         const res = await fetch(`http://localhost:3000${url}`, options);
-
+        console.log({res});
+        
         if (!res.ok) {
             const error = await res.text();
             throw new Error(`HTTP Error ${res.status}: ${error}`);
         }
 
-        if (res.status === 204) return undefined as T;
-        const data = await res.json() as T;
+        if (res.status === 204) throw new Error("The content is empty");
+        const data = await res.json() as formDataWithToken;
 
         return data;
     } catch (error) {

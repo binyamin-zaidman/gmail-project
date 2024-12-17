@@ -6,16 +6,16 @@ type UserExist = {
     token: string
 }
 
-type createUser = {
-    first_name: string,
-    last_name: string,
-    Email: string,
-    phone: number,
+type formData = {
+    firstName: string,
+    lastName: string,
+    email: string,
+    phone: string,
     password: string,
     question: string,
     answer: string
 }
-
+export type formDataWithToken = formData & {token:string}
 export async function getUserExist(phone: string, password: string) {
     return await sendRequest<UserExist>({
         "url": '/users/login',
@@ -24,11 +24,11 @@ export async function getUserExist(phone: string, password: string) {
     });
 }
 
-export async function createUser({ first_name, last_name, Email, phone, password, question, answer }: createUser) {
-    return await sendRequest<createUser>({
+export async function createUser({ firstName, lastName, email, phone, password, question, answer }: formData):Promise<formDataWithToken> {
+    return await sendRequest<formData>({
         "url": `/users/register`,
         method: "POST",
-        body: { first_name, last_name, Email, phone, password, question, answer },
+        body: { firstName, lastName, email, phone, password, question, answer },
     })
 
 }

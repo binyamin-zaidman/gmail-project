@@ -1,3 +1,6 @@
+const jwt = require("jsonwebtoken");
+const crypto = require("crypto");
+
 const express = require("express");
 const { insertNewChat } = require("./services/chatsService");
 const { receiveMessages, insertMessege } = require("./services/messegeService");
@@ -10,6 +13,10 @@ const http = require("http");
 const { Server } = require("socket.io");
 const { log } = require("console");
 
+const generateToken = (userId, userPhone) => {
+  const secretKey = crypto.randomBytes(64).toString("hex");
+  return jwt.sign({ userId, userPhone }, secretKey, { expiresIn: "1h" });
+};
 const app = express();
 const server = http.createServer(app);
 const io = new Server(server);
@@ -53,13 +60,16 @@ app.post("/users/login", async (req, res) => {
 
 app.post("/users/register", async (req, res) => {
   try {
-    const { first_name, last_name, Email, phone, password, question, answer } =
+    const { firstName, lastName, email, phone, password, question, answer } =
       req.body;
     const result = await pool.query(
       "insert into users (first_name, last_name, email, password,phone, question, answer) values ($1, $2, $3, $4, $5, $6, $7) RETURNING *",
-      [first_name, last_name, Email, password, phone, question, answer]
+      [firstName, lastName, email, password, phone, question, answer]
     );
-    res.json(result.rows);
+    
+    const token = generateToken(result.rows[0].id,result.rows[0].phone)
+  
+    res.json({...result.rows[0],token});
   } catch (error) {
     console.error(error);
     res.status(404).json({ error: "create user error" });
@@ -129,9 +139,7 @@ app.get("/messege/:chat_id", async (req, res) => {
 });
 
 app.post("/message/:chat_id", async (req, res) => {
-
   const chat_id = req.params.chat_id;
-
 
   const messege = req.body;
   // const user_id = req.body.user_id;
@@ -140,7 +148,7 @@ app.post("/message/:chat_id", async (req, res) => {
   const sender_id1 = messege.sender_id; //id של המשתמש ששלח הודעה
   const result = await insertMessege(chat_id, messege, read, sender_id1);
   res.json(result);
-})
+});
 
 server.listen(port, () => {
   console.log(`Server is running on http://localhost: "${port}"`);
