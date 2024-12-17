@@ -2,9 +2,18 @@ const { json } = require("express");
 const { pool } = require("../conectDB");
 
 async function receiveMessages(chat_id) {
-  const result = await pool.query("select * from messages where chat_id = $1", [
-    chat_id
-  ]);
+  const result = await pool.query(`SELECT messages.*,chats.name AS chat_name
+    FROM 
+      messages
+    JOIN 
+      chats 
+    ON 
+      messages.chat_id = chats.id
+    WHERE 
+      messages.chat_id = $1
+  `,
+    [chat_id]
+  );
   return result.rows;
 }
 async function insertMessege(chat_id, message, read = false, sender_id) {
