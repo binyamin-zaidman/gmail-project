@@ -50,8 +50,10 @@ app.post("/users/login", async (req, res) => {
       "SELECT id as user_id FROM users WHERE phone = $1 AND password = $2",
       [phone, password]
     );
-    log(result.rows);
-    res.json(result.rows);
+    log(result.rows[0]);
+
+    const token = generateToken(result.rows[0].id,result.rows[0].phone)
+    res.json({...result.rows[0],token});
   } catch (error) {
     console.error(error);
     res.status(500).json({ error: "Internal server error" });
@@ -76,10 +78,10 @@ app.post("/users/register", async (req, res) => {
   }
 });
 
-app.get("/chats/:userId", (req, res) => {
+app.get("/chats/:userId",async (req, res) => {
   const user_id = req.params.userId;
   try {
-    const result = pool.query(
+    const result = await pool.query(
       "select * from chat_users join chats on chats.id = chat_users.chat_id where chat_users.user_id = $1",
       [user_id]
     );

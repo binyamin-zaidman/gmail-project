@@ -1,4 +1,3 @@
-import Page from './components/AppPage'
 import './App.css'
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Messege from './components/presentsMessages'
@@ -16,7 +15,7 @@ function App() {
       <Routes>
         < Route path='/' element={<Login />} />
         < Route path='/signUp' element={<SignUp />} />
-        < Route path='/app' element={<AppPage />} />
+        < Route path='/app/:userId' element={<AppPage />} />
         < Route path='/messege/:id' element={<Messege />} />
       </Routes>
     </BrowserRouter>
