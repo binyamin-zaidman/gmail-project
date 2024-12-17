@@ -78,10 +78,10 @@ app.post("/users/register", async (req, res) => {
   }
 });
 
-app.get("/chats/:userId", (req, res) => {
+app.get("/chats/:userId",async (req, res) => {
   const user_id = req.params.userId;
   try {
-    const result = pool.query(
+    const result = await pool.query(
       "select * from chat_users join chats on chats.id = chat_users.chat_id where chat_users.user_id = $1",
       [user_id]
     );

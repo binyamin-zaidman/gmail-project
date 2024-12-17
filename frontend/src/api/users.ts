@@ -17,7 +17,7 @@ type formData = {
 }
 export type userExist = {user_id:string, token:string}
 export type sendRequestTypes = formDataWithToken | userExist
-export type formDataWithToken = formData & {token:string}
+export type formDataWithToken = formData & {token:string, id:number}
 export async function getUserExist(phone: string, password: string){
     return await sendRequest<UserExist>({
         "url": '/users/login',
