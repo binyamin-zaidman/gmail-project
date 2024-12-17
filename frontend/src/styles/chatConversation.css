@@ -1,4 +1,4 @@
-.chatConversationsContainer {
+#chatConversationsContainer {
     flex: 2;
     max-width: 30%;
     height: calc(100% - 10px); /* adjust as needed */
@@ -8,10 +8,10 @@
     border-radius: 8px;
     overflow-y: scroll;
 }
-.chatConversationsContainer::-webkit-scrollbar {
+#chatConversationsContainer::-webkit-scrollbar {
     display: none;
 }
-.headerConversations {
+#headerConversations {
     position: sticky;
     top: 0;
     display: flex;
@@ -25,19 +25,19 @@
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
 }
 
-.headerConversations h2 {
+#headerConversations h2 {
     font-size: 1.5rem;
     font-weight: bold;
 }
 
-.headerConversations input {
+#headerConversations input {
     width: 70%;
     padding: 0.5rem;
     border-radius: 6px;
     border: 1px solid #ccc;
 }
 
-.addChatButton {
+#addChatButton {
     color: #007bff;
     padding: 0.5rem;
     border-radius: 25%;
@@ -46,10 +46,10 @@
     cursor: pointer;
 }
 
-.addChatButton:hover {
+#addChatButton:hover {
     background-color: #9cabbc;
 }
 
-.chats {
+#chats {
     margin-top: 1rem;
 }

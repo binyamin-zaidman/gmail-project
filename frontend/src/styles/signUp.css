@@ -1,4 +1,3 @@
-
 .signUpContainer {
   width: 400px;
   margin: 100px auto;
@@ -57,4 +56,10 @@ button:hover {
 button:disabled {
   background-color: #cccccc;
   cursor: not-allowed;
+}
+
+.error {
+  color: red;
+  font-size: 0.9rem;
+  margin-top: 0.5rem;
 }

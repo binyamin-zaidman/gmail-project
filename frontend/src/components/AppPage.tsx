@@ -5,6 +5,7 @@ import '../styles/appPage.css'
 // import Message from "./presentsMessages";
 import ChatConversations from "./chatConversations";
 import ShowAllMessages from "./showMessages";
+import NavBar from "./navBar";
 
 
 export default function AppPage() {
@@ -12,8 +13,8 @@ export default function AppPage() {
 
     return (
         <div className="ContainerPage">
+            <NavBar />
             <ChatConversations />
-            {/* <Message /> */}
             <ShowAllMessages />
 
         </div>

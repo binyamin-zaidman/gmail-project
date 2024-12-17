@@ -14,7 +14,9 @@ function App() {
   return (
     <BrowserRouter>
       <Routes>
-        < Route path='/' element={<AppPage />} />
+        < Route path='/' element={<Login />} />
+        < Route path='/signUp' element={<SignUp />} />
+        < Route path='/app' element={<AppPage />} />
         < Route path='/messege/:id' element={<Messege />} />
       </Routes>
     </BrowserRouter>

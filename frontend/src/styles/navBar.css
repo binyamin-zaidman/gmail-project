@@ -1,0 +1,15 @@
+#navCOntainer {
+    width: 4%;
+    height: 100%;
+    display: flex;
+    flex-direction: column-reverse;
+    justify-content: end;
+    align-items: center;
+
+
+}
+
+
+#seeteing img {
+    width: 25px;
+}
