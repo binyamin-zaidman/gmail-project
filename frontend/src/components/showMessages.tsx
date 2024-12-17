@@ -11,6 +11,8 @@ export default function ShowAllMessages({chat_id}: {chat_id:number}) {
             try {
                 const messages = await getAllMessages(chat_id);
                 setAllMessages(messages);
+                console.log(messages);
+                
             } catch (error) {
                 console.error("Error fetching messages:", error);
                 setError("Failed to fetch messages.");
