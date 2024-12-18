@@ -12,7 +12,7 @@ type RequestProps = {
 async function fetchRequest<T>(props: RequestProps | string): Promise<sendRequestTypes>  {
     let url: string, method: string = "GET", body: any = null, token: string | undefined;
 
-    if (typeof props === 'string') {
+if (typeof props === 'string' ) {
         url = props;
         method = "GET";
 

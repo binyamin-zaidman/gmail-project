@@ -1,17 +1,21 @@
 #chatConversationsContainer {
     flex: 2;
     max-width: 30%;
-    height: calc(100% - 10px); /* adjust as needed */
+    height: calc(100% - 10px);
+    /* adjust as needed */
     margin: 0 auto;
     border-right: 1px solid #ddd;
     background-color: #f9f9f9;
     border-radius: 8px;
     overflow-y: scroll;
 }
+
 #chatConversationsContainer::-webkit-scrollbar {
     display: none;
 }
+
 #headerConversations {
+    height: 60px;
     position: sticky;
     top: 0;
     display: flex;

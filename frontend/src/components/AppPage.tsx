@@ -9,13 +9,14 @@ import NavBar from "./navBar";
 
 
 export default function AppPage() {
-
-
+//id user
+// useContext
+// useState 
     return (
         <div className="ContainerPage">
             <NavBar />
             <ChatConversations />
-            <ShowAllMessages chat_id={1} />
+            <ShowAllMessages />
 
         </div>
     );
