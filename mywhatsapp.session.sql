@@ -72,10 +72,7 @@ CREATE TABLE chats (
     timestamp TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     name VARCHAR(255) DEFAULT null,
     description VARCHAR(255) DEFAULT null;
-
 );
-
-
 --
 -- יצירת טבלת messages
 CREATE TABLE messages (
@@ -95,38 +92,55 @@ from messages
 select *
 from chat_users
 
-insert into users (first_name, last_name, email, password, phone, question, answer)
-values ('binyamin', 'zaidman', 'b@gmail.com', '123', 0501234567, 'whts your age', '27');
-
-
+insert into users (
+        first_name,
+        last_name,
+        email,
+        password,
+        phone,
+        question,
+        answer
+    )
+values (
+        'binyamin',
+        'zaidman',
+        'b@gmail.com',
+        '123',
+        0501234567,
+        'whts your age',
+        '27'
+    );
 alter TABLE messages
 add column sender INT;
-
 alter TABLE chats
 add column name VARCHAR(255) DEFAULT null;
 alter TABLE chats
 add column description VARCHAR(255) DEFAULT null;
-
-
 CREATE TABLE chat_users (
     id SERIAL PRIMARY KEY,
     chat_id INT REFERENCES chats(id),
     user_id INT REFERENCES chats(user_id)
 );
-
-SELECT column_name, data_type 
-FROM information_schema.columns 
-WHERE table_name = 'messages';
-
-
-SELECT 
-    table_name, 
-    column_name, 
+SELECT column_name,
     data_type
-FROM 
-    information_schema.columns
-WHERE 
-    table_schema = 'public'
-ORDER BY 
-    table_name, 
+FROM information_schema.columns
+WHERE table_name = 'messages';
+SELECT table_name,
+    column_name,
+    data_type
+FROM information_schema.columns
+WHERE table_schema = 'public'
+ORDER BY table_name,
     ordinal_position;
+insert into chat_users (chat_id, user_id)
+values (5, 527171044)
+insert into chat_users (chat_id, user_id)
+values (5, 527171044) -- ALTER TABLE chat_users
+    -- ALTER COLUMN user_id TYPE varchar USING user_id::varchar;
+SELECT id
+FROM users
+WHERE phone = '501234567';
+SELECT *
+    FROM messages
+    JOIN chat_users ON messages.chat_id = chat_users.chat_id
+    WHERE messages.chat_id = 2 AND chat_users.user_id = 2

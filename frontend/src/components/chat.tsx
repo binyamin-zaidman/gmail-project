@@ -6,12 +6,12 @@ interface ChatProps {
     message: string;
     time: string;
     profileImage: string;
+    userId:string;
 }
 
-export default function Chat({chatId, chatName, message, time, profileImage }: ChatProps) {
+export default function Chat({chatId, chatName, message, time, profileImage,userId }: ChatProps) {
     const navigate = useNavigate();
-const pathname = useLocation().pathname.split("/");
-    console.log({pathname});
+    const pathname = useLocation().pathname.split("/");
     
     return (
         <div id="chatContainer" onClick={() => {navigate(`/app/${pathname[2]}/chat/${chatId}`, {relative :"path"})}}>

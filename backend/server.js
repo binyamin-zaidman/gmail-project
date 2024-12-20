@@ -34,12 +34,13 @@ const io = new Server(server, {
 io.on("connection", (socket) => {
   console.log("A user connected:", socket.id);
   socket.on("sendMessage", async (data) => {
-    console.log({ data });
+    console.log("Broadcasting message:", data);
 
     // await insertMessege(data.chat_id, data.message, false, 1);
     io.emit("newMessage", data);
     socket.on("disconnect", () => {
-      console.log("A user disconnected1:", socket.id);
+      console.log("A user disconnected:", socket.id);
+      io.emit("newMessage", data);
     });
   });
 });
@@ -130,17 +131,10 @@ app.get("/chats/:userId", async (req, res) => {
 
 app.post("/chats/:userId", async (req, res) => {
   const user_id = req.params.userId;
-  const recipient_id = req.body.recipientid;
-  const name = req.body.name;
-  const description = req.body.description;
+  const userToChat = req.body.userToChat;
   const token = req.headers.token;
 
-  const insertedChat = await insertNewChat(
-    name,
-    recipient_id,
-    user_id,
-    description
-  );
+  const insertedChat = await insertNewChat(userToChat, user_id);
 
   res.json(insertedChat);
 });
@@ -148,10 +142,8 @@ app.post("/chats/:userId", async (req, res) => {
 app.get("/:user_id/messege/:chat_id", async (req, res) => {
   const chat_id = req.params.chat_id;
   const user_id = req.params.user_id;
-  console.log(user_id);
-  
-  const result = await receiveMessages(user_id, chat_id);
-  console.log(result);
+
+  const result = await receiveMessages(chat_id,user_id);
 
   res.json(result);
 });
@@ -162,10 +154,15 @@ app.post("/message/:chat_id", async (req, res) => {
   const messege = req.body;
   // const user_id = req.body.user_id;
   const token = req.headers.token;
-  const read = messege.read;
-  const sender_id1 = messege.sender_id; //id של המשתמש ששלח הודעה
-  const result = await insertMessege(chat_id, messege, read, sender_id1);
-  res.json(result);
+  const message = messege.message; //id של המשתמש ששלח הודעה
+  const sender_id = messege.sender_id; //id של המשתמש ששלח הודעה
+  try {
+    const result = await insertMessege(chat_id, message, sender_id);
+    res.json(result);
+  } catch (error) {
+    console.error("Error saving message:", error);
+    res.status(500).json({ error: "Failed to save message" });
+  }
 });
 
 server.listen(port, () => {
