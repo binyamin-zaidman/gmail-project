@@ -4,7 +4,6 @@
     display: flex;
     flex-direction: column;
     height: 100%;
-    padding-left: 10px;
     position: relative;
 }
 
@@ -17,7 +16,6 @@
     top: 0;
     background-color: #fff;
     z-index: 10;
-    margin-top: 5px;
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
 }
 
@@ -31,10 +29,9 @@
 
 #allMessages {
     flex: 1;
-    width: 100%;
+    width: 99%;
+    padding: 5px;
     overflow-y: auto;
-    /* padding: 1rem; */
-    margin-top: 10px;
     /* max-height: 60vh; מונע הצפת תוכן */
 
 }
@@ -45,6 +42,7 @@
 
 
 #sendMessage {
+    width: 100%;
     display: flex;
     justify-content: space-around;
     align-items: center;
@@ -52,19 +50,44 @@
     bottom: 0;
     background-color: #fff;
     border-top: 1px solid #ccc;
-    border-radius: 7px;
     box-shadow: 0 -2px 4px rgba(0, 0, 0, 0.1);
+    z-index: 10;
 }
 
-#sendMessage input {
-    width: 85%;
-    padding: 0.5rem;
+#inputContainer {
+    width: 90%;
+    height: 50px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+textarea {
+    width: 100%;
+    border-radius: 5px;
+    padding: 10px;
+    margin-left: 10px;
     border: 1px solid #ccc;
-    border-radius: 6px;
+    resize: none;
     font-size: 1rem;
+    font-family: Arial, Helvetica, sans-serif;
+    overflow-y:hidden;
+}
+#sendContainer{
+    width: 8%;
+    height: 40px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
 }
 
-#sendMessage img {
+#sendIcon {
     width: 30px;
-    height: 30px;
+    height: 20px;
+}
+#sendContainer:hover {
+    background-color: #cccccc82;
+    
+    
 }

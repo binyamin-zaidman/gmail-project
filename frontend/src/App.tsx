@@ -4,10 +4,11 @@ import Login from './components/login';
 import SignUp from './components/signUp';
 import AppPage from './components/AppPage';
 import ShowAllMessages from './components/showMessages';
-
+import { useBackground } from "./components/BackgroundContext";
 
 function App() {
 
+  const { backgroundColor } = useBackground();
 
   return (
     <BrowserRouter>

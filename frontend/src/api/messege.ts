@@ -2,10 +2,13 @@ import sendRequest from "./fetchRequest";
 
 export type messege = {
   chat_id: number;
+  chat_name?: string;
   message: string;
-  sender_id: string;
-  read: boolean;
-  timestamp: string;
+  sender_id?: string;
+  sender_name: string;
+  is_read: boolean;
+  message_time: string;
+  message_id?: string;
 };
 
 type getMessege = {
@@ -15,10 +18,10 @@ type getMessege = {
 export async function getAllMessages(chat_id: string, user_id: string) {
   const userId = parseInt(user_id);
   const chatId = parseInt(chat_id);
-  return (await sendRequest<messege>({
+  return await sendRequest<messege>({
     url: `/${userId}/messege/${chatId}`,
     method: "GET"
-  })) as messege[];
+  }) as messege[];
 }
 
 export async function sendMessege(message: messege) {

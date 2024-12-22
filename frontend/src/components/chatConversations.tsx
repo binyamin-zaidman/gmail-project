@@ -74,16 +74,17 @@ export default function ChatConversations() {
                     name="search"
                     value={searchTerm}
                     onChange={(e) => setSearchTerm(e.target.value)}
-
-
-                />
+                    
+                    
+                    />
                 {/* <svg onClick={() => alert("add chat")} id="addChatButton" xmlns="http://www.w3.org/2000/svg" height="10px" viewBox="0 -960 960 960" width="30px" fill="blue"><path d="M450-450H200v-60h250v-250h60v250h250v60H510v250h-60v-250Z" /></svg> */}
                 <svg onClick={() => setShowNewChatForm(true)} id="addChatButton" xmlns="http://www.w3.org/2000/svg" height="20px" viewBox="0 -960 960 960" width="30px" fill="blue"><path d="M450-450H200v-60h250v-250h60v250h250v60H510v250h-60v-250Z" /></svg>
             </div>
             <div id="chats">
-                {filteredChats.map(chat => (
+                {showNewChatForm && (<NewChatForm addChat={addChat} onClose={() => setShowNewChatForm(false)} />)}
+                {filteredChats.map((chat,index) => (
                     <Chat
-                        key={chat.id}
+                        key={index}
                         chatId={chat.id}
                         chatName={chat.chatName}
                         message={chat.lastMessage}
@@ -93,7 +94,6 @@ export default function ChatConversations() {
                     />
                 ))}
             </div>
-            {showNewChatForm && (<NewChatForm addChat={addChat} onClose={() => setShowNewChatForm(false)} />)}
         </div>
     );
 }

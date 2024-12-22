@@ -1,15 +1,49 @@
-#navCOntainer {
+#navContainer {
     width: 4%;
     height: 100%;
     display: flex;
-    flex-direction: column-reverse;
-    justify-content: end;
+    flex-direction: column;
+    justify-content: flex-end; /* שינה ל-flex-end */
     align-items: center;
+    background-color: #f9f9f9;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    position: relative;
+}
 
+#settings img {
+    height: 25px;
+    cursor: pointer;
+}
 
+#navBar {
+    width: 100%; /* width של navBar לעומת 10% */
+}
+
+#settingsMenu div {
+    padding: 10px;
+    cursor: pointer;
+    text-align: left;
+    font-size: 16px;
+    color: #333;
+    border-bottom: 1px solid #f0f0f0;
+}
+#settingsMenu {
+    width: 200px;
+    position: absolute;
+    left: 30px ; /* ממוקם ימינה */
+    bottom:  40px;
+    background-color: white;
+    border: 1px solid #ccc;
+    padding: 10px;
+    z-index: 1000;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* הוספת צל לתפריט */
 }
 
 
-#seeteing img {
-    width: 25px;
+#settingsMenu div:last-child {
+    border-bottom: none;
+}
+
+#settingsMenu div:hover {
+    background-color: #d1d0d0;
 }

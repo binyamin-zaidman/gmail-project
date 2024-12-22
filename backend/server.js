@@ -2,7 +2,7 @@ const jwt = require("jsonwebtoken");
 const crypto = require("crypto");
 
 const { insertNewChat } = require("./services/chatsService");
-const { receiveMessages, insertMessege } = require("./services/messegeService");
+const { receiveMessages, insertMessege, insertMessage } = require("./services/messegeService");
 const { pool } = require("./conectDB");
 const cors = require("cors");
 // const multer = require("multer"); ספרייה לעבודה עם קבצים
@@ -144,6 +144,7 @@ app.get("/:user_id/messege/:chat_id", async (req, res) => {
   const user_id = req.params.user_id;
 
   const result = await receiveMessages(chat_id,user_id);
+  console.log(result);
 
   res.json(result);
 });
@@ -151,13 +152,11 @@ app.get("/:user_id/messege/:chat_id", async (req, res) => {
 app.post("/message/:chat_id", async (req, res) => {
   const chat_id = req.params.chat_id;
 
-  const messege = req.body;
+  const { message, sender_id } = req.body;
   // const user_id = req.body.user_id;
   const token = req.headers.token;
-  const message = messege.message; //id של המשתמש ששלח הודעה
-  const sender_id = messege.sender_id; //id של המשתמש ששלח הודעה
   try {
-    const result = await insertMessege(chat_id, message, sender_id);
+    const result = await insertMessage(chat_id, message, sender_id);
     res.json(result);
   } catch (error) {
     console.error("Error saving message:", error);

@@ -16,7 +16,7 @@ export default function NewChatForm({ addChat, onClose }: NewChatFormProps) {
         <div id="newChatForm">
             <input
                 type="text"
-                placeholder="User to chat"
+                placeholder="To start enter a phone number"
                 value={userToChat}
                 onChange={(e) => setUserToChat(e.target.value)}
             />

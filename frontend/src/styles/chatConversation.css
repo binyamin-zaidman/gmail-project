@@ -15,7 +15,7 @@
 }
 
 #headerConversations {
-    height: 60px;
+    height: 75px;
     position: sticky;
     top: 0;
     display: flex;
@@ -25,7 +25,6 @@
     gap: 1rem;
     background-color: #ffffff;
     z-index: 1;
-    padding: 10px;
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
 }
 
