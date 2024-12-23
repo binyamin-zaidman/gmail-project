@@ -1,0 +1,21 @@
+#newChatForm{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 7px;
+    padding: 0 8px 8px;
+    /* align-items: center; */
+    margin-top: 20px;
+    position: absolute;
+    top: 60px;
+    background-color: rgba(234, 234, 235, 0.829);
+    border-radius: 14px;
+
+}
+#newChatForm input{
+    width: 250px;
+    height: 40px;
+    margin: 10px;
+    border-radius: 5px;
+    border: 1px solid black;
+}

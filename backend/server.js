@@ -1,7 +1,7 @@
 const jwt = require("jsonwebtoken");
 const crypto = require("crypto");
 
-const { insertNewChat } = require("./services/chatsService");
+const { insertNewChat, deleteChat } = require("./services/chatsService");
 const { receiveMessages, insertMessege, insertMessage } = require("./services/messegeService");
 const { pool } = require("./conectDB");
 const cors = require("cors");
@@ -19,7 +19,7 @@ const port = 3000;
 app.use(
   cors({
     origin: "*",
-    methods: ["GET", "POST"],
+    methods: ["GET", "POST", "DELETE"],
     allowedHeaders: ["Content-Type"]
   })
 );
@@ -92,9 +92,10 @@ app.get("/chats/:userId", async (req, res) => {
   const user_id = req.params.userId;
   try {
     const result = await pool.query(
-      "select * from chat_users join chats on chats.id = chat_users.chat_id where chat_users.user_id = $1",
+      "SELECT * FROM chat_users JOIN chats ON chats.id = chat_users.chat_id WHERE chat_users.user_id = $1 AND chats.is_deleted = false",
       [user_id]
     );
+    
     if (result.rows.length === 0) {
       return res.status(200).json({ message: "No chats found for this user." });
     }
@@ -138,6 +139,15 @@ app.post("/chats/:userId", async (req, res) => {
 
   res.json(insertedChat);
 });
+
+app.delete("/chats/:chatId", async (req, res) => {
+  const chatId = req.params.chatId;
+  const result = await deleteChat(chatId);
+  res.json(result);
+});
+
+
+
 
 app.get("/:user_id/messege/:chat_id", async (req, res) => {
   const chat_id = req.params.chat_id;

@@ -1,5 +1,5 @@
-
 // NewChatForm.tsx
+import "../styles/newChatForm.css";
 import { useState } from "react";
 
 interface NewChatFormProps { addChat: (userToChat: string) => void; onClose: () => void; }

@@ -24,7 +24,6 @@ export default function ChatConversations() {
     useEffect(() => {
         const fetchChats = async () => {
             const response = await getAllChats(userId) as any[];
-            console.log({ response });
             
             try {
 
@@ -45,7 +44,7 @@ export default function ChatConversations() {
         };
 
         fetchChats();
-    }, []);
+    }, [chats]);
 
 
     // סינון שיחות לפי חיפוש

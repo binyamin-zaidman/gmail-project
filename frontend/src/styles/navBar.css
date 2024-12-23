@@ -14,20 +14,24 @@
     height: 25px;
     cursor: pointer;
 }
+#settings :hover{
+    transform: scale(1.1);
+   
+}
 
 #settingsMenu {
     position: absolute;
-    left: 0;
+    left: 10px;
     bottom: 50px;
     background-color: white;
     border: 1px solid #ccc;
     padding: 10px;
     z-index: 1000;
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
-    border-radius: 5px;
+    border-radius: 10px;
     display: flex;
     flex-direction: column;
-    gap: 10px;
+    gap: 8px;
 }
 
 #settingsMenu div {

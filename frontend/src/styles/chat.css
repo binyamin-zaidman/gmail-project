@@ -51,6 +51,7 @@
 /* Chat Container */
 #chatContainer {
     display: flex;
+    flex-direction: row;
     align-items: center;
     padding: 3px 10px;
     border-bottom: 1px solid #ddd;
@@ -76,16 +77,17 @@
 
 
 #profileImage:hover {
-    transform: scale(1.1);
+    transform: scale(0.9);
 }
 
 #showUser {
     flex-grow: 1;
 }
 
-#userName {
-    font-weight: bold;
+#chatName {
+    font-weight: lighter;
     margin: 0;
+    color: #0056b3;
 }
 
 #message {
@@ -99,7 +101,6 @@
     color: #000;
 }
 
-#time {
-    color: #888;
-    font-size: 0.8rem;
+#removeChatIcon :hover {
+    border: 2px solid #0056b3;
 }

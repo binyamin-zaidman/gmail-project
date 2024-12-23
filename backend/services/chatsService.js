@@ -15,11 +15,13 @@ async function getUserIdByName(name) {
   }
 }
 
-
 async function insertNewChat(userToChat, user_id) {
-  const userNameToChat = await pool.query("select first_name || ' ' || last_name as chat_name  from users where phone = $1", [userToChat]);
-  console.log(userNameToChat.rows[0].chat_name);
-  
+  const userNameToChat = await pool.query(
+    "select first_name || ' ' || last_name as chat_name  from users where phone = $1",
+    [userToChat]
+  );
+  // console.log(userNameToChat.rows[0].chat_name);
+
   const resultInsertChat = await pool.query(
     "insert into chats (user_id,name) values ($1,$2) RETURNING *",
     [user_id, userNameToChat.rows[0].chat_name]
@@ -29,14 +31,34 @@ async function insertNewChat(userToChat, user_id) {
     [resultInsertChat.rows[0].id, user_id]
   );
   const recipientUserId = await getUserIdByName(userToChat);
-  if(recipientUserId !== null) {
-  await pool.query(
-    "insert into chat_users (chat_id,user_id) values ($1,$2) RETURNING *",
-    [resultInsertChat.rows[0].id, recipientUserId]
-  );
-  return resultInsertChat.rows[0];
-}else {
-  return null;
+  if (recipientUserId !== null) {
+    await pool.query(
+      "insert into chat_users (chat_id,user_id) values ($1,$2) RETURNING *",
+      [resultInsertChat.rows[0].id, recipientUserId]
+    );
+    return resultInsertChat.rows[0];
+  } else {
+    return null;
+  }
 }
+
+async function deleteChat(chatId) {
+  try {
+    const result = await pool.query(
+      "UPDATE chats SET is_deleted = TRUE WHERE id = $1 RETURNING *",
+      [chatId]
+    );
+
+    if (result.rowCount === 0) {
+      return { success: false, message: "Chat not found or already archived." };
+    }
+
+    console.log("Chat archived:", result.rows[0]);
+    return { success: true, chat: result.rows[0] };
+  } catch (error) {
+    console.error("Error archiving chat:", error);
+    return { success: false, message: "Error archiving chat." };
+  }
 }
-module.exports = { insertNewChat };
+
+module.exports = { insertNewChat, deleteChat };

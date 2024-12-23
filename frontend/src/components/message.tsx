@@ -7,7 +7,7 @@ export default function MessageComponent({ isCurrentUser, userName, content, tim
     
     return (
         <div id="messageContainer">
-            <div id={`${isCurrentUser ? "currentUserMessage" : "otherUserMessage"}`}>
+            <div className="message" id={`${isCurrentUser ? "currentUserMessage" : "otherUserMessage"}`}>
                 <div id="myProfile">
                     <img src="/public/simpleProfile.jpg" alt="profile" />
                     <h3>{isCurrentUser ? "You" : userName}</h3>

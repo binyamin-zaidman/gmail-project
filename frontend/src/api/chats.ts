@@ -18,5 +18,12 @@ export async function createChat(props: createChat) {
         method: "POST",
         body: props
     })
+}
+
+export async function RemoveChat(chatId: string) {
+    return await sendRequest<string>({
+        url: `/chats/${chatId}`,
+        method: "DELETE"
+    })
 
 }
