@@ -2,7 +2,7 @@ import Chat from "./chat";
 import { useState, useEffect } from "react";
 import "../styles/chatConversation.css"
 import { createChat, getAllChats } from "../api/chats";
-// import { getChats } from "../api/chats";
+// import { getChats } from "../api/chats"; 
 import { useParams } from "react-router-dom";
 import NewChatForm from "./NewChatForm";
 
@@ -24,6 +24,8 @@ export default function ChatConversations() {
     useEffect(() => {
         const fetchChats = async () => {
             const response = await getAllChats(userId) as any[];
+            console.log({ response });
+            
             try {
 
                 // עיבוד השיחות כדי להוסיף את השדות החסרים
@@ -53,13 +55,28 @@ export default function ChatConversations() {
 
 
     const addChat = async (userToChat: string) => {
-        const response = await createChat({ userId, userToChat });
-        if (response !== null) {
-            setShowNewChatForm(false);
+        // בדיקה האם כבר יש צ'אט עם המשתמש הזה
+        const existingChat = chats.some(chat => chat.chatName === userToChat); // שיפור הבדיקה
+        console.log({ chats });
+
+        if (existingChat) {
+            alert("You already have a chat with this user");
+            return;
         } else {
-            alert("user is not exist");
-        }
-    }
+
+            try {
+                const response = await createChat({ userId, userToChat });
+                if (response !== null) {
+                    setShowNewChatForm(false);
+                } else {
+                    alert("User does not exist");
+                }
+            } catch (error) {
+                console.error("Error creating chat:", error);
+                alert("An error occurred while creating the chat");
+            }
+        };
+    };
 
 
 
@@ -67,22 +84,22 @@ export default function ChatConversations() {
     return (
         <div id="chatConversationsContainer">
             <div id="headerConversations">
-                <h2>Chats</h2>
+                <h2 id="chatsHeader">Chats</h2>
                 <input
                     type="text"
                     placeholder="Search"
                     name="search"
                     value={searchTerm}
                     onChange={(e) => setSearchTerm(e.target.value)}
-                    
-                    
-                    />
-                {/* <svg onClick={() => alert("add chat")} id="addChatButton" xmlns="http://www.w3.org/2000/svg" height="10px" viewBox="0 -960 960 960" width="30px" fill="blue"><path d="M450-450H200v-60h250v-250h60v250h250v60H510v250h-60v-250Z" /></svg> */}
+
+
+                />
+                {/* <svg onClick={() => alert(" ")} id="addChatButton" xmlns="http://www.w3.org/2000/svg" height="10px" viewBox="0 -960 960 960" width="30px" fill="blue"><path d="M450-450H200v-60h250v-250h60v250h250v60H510v250h-60v-250Z" /></svg> */}
                 <svg onClick={() => setShowNewChatForm(true)} id="addChatButton" xmlns="http://www.w3.org/2000/svg" height="20px" viewBox="0 -960 960 960" width="30px" fill="blue"><path d="M450-450H200v-60h250v-250h60v250h250v60H510v250h-60v-250Z" /></svg>
             </div>
             <div id="chats">
                 {showNewChatForm && (<NewChatForm addChat={addChat} onClose={() => setShowNewChatForm(false)} />)}
-                {filteredChats.map((chat,index) => (
+                {filteredChats.map((chat, index) => (
                     <Chat
                         key={index}
                         chatId={chat.id}

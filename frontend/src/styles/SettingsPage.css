@@ -1,0 +1,24 @@
+.settings-container {
+    padding: 20px;
+    font-family: Arial, sans-serif;
+}
+
+.settings-container h1 {
+    margin-bottom: 20px;
+}
+
+.settings-container .color-box {
+    width: 40px;
+    height: 40px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: transform 0.2s, border 0.2s;
+}
+
+.settings-container .color-box:hover {
+    transform: scale(1.1);
+}
+
+.settings-container .color-box.selected {
+    border: 3px solid black;
+}

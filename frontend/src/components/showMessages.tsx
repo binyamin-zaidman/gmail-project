@@ -4,11 +4,13 @@ import "../styles/showMessages.css";
 import MessageComponent from "./message";
 import { io } from "socket.io-client";
 import { useParams } from "react-router-dom";
+import { useBackground } from "./BackgroundContext";
 
 
 const socket = io("http://localhost:3000");
 
 export default function ShowAllMessages() {
+    const { backgroundColor } = useBackground();
     const [allMessages, setAllMessages] = useState<messege[]>([]);
     const [error, setError] = useState<string | null>(null);
     const [newMessage, setNewMessage] = useState("");
@@ -19,6 +21,7 @@ export default function ShowAllMessages() {
         messagesEndRef.current?.scrollIntoView({ behavior: "smooth", block: "end" });
     };
 
+    
 
     useEffect(() => {
         if (!chatId || !userId) {
@@ -105,7 +108,7 @@ export default function ShowAllMessages() {
             console.error("Error sending message:", error);
         }
     };
-    const handleKeyDown = (e) => {
+    const handleKeyDown = (e: React.KeyboardEvent) => {
         if (e.key === "Enter" && !e.shiftKey) {
             e.preventDefault();
             sendMessage(newMessage);
@@ -122,7 +125,7 @@ export default function ShowAllMessages() {
                 />
                 <h3>{allMessages[allMessages.length - 1]?.chat_name}</h3>
             </div>
-            <div id="allMessages">
+            <div id="allMessages" style={{ backgroundColor }}>
                 {error && <div className="error">{error}</div>}
 
                 {allMessages.map((message, index) => (
@@ -146,7 +149,7 @@ export default function ShowAllMessages() {
                         name="sendMessage"
                         value={newMessage}
                         onChange={(e) => setNewMessage(e.target.value)}
-                        onKeyDown={handleKeyDown}
+                        onKeyDown={handleKeyDown} //? לעדכן משתמשים שיוזר מקליד
                         rows={1}
                     />
                 </div>

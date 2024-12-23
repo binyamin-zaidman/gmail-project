@@ -1,6 +1,6 @@
 #messagesContainer {
     flex: 3;
-    max-width: 70%;
+    width: 100%;
     display: flex;
     flex-direction: column;
     height: 100%;
@@ -8,7 +8,8 @@
 }
 
 #details {
-    height: 80px;
+    height: 76px;
+    width: 100%;
     display: flex;
     align-items: center;
     gap: 20px;
@@ -28,8 +29,11 @@
 }
 
 #allMessages {
+    padding: 10px;
+    /* border-radius: 10px; */
+    transition: background-color 0.3s ease;
     flex: 1;
-    width: 99%;
+    width: 98%;
     padding: 5px;
     overflow-y: auto;
     /* max-height: 60vh; מונע הצפת תוכן */

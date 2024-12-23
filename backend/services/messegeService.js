@@ -30,7 +30,6 @@ ORDER BY
       `,
     [chat_id, user_id]
   );
-
   return result.rows;
 }
 

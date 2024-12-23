@@ -8,10 +8,16 @@ type BackgroundContextType = {
 const BackgroundContext = createContext<BackgroundContextType | undefined>(undefined);
 
 export const BackgroundProvider = ({ children }: { children: ReactNode }) => {
-    const [backgroundColor, setBackgroundColor] = useState("#ffffff"); // צבע ברירת מחדל
+    const [backgroundColor, setBackgroundColor] = useState(
+        localStorage.getItem("backgroundColor") || "#ffffff"
+    );
+    const updateBackgroundColor = (color: string) => {
+        setBackgroundColor(color);
+        localStorage.setItem("backgroundColor", color);
+    };
 
     return (
-        <BackgroundContext.Provider value={{ backgroundColor, setBackgroundColor }}>
+        <BackgroundContext.Provider value={{ backgroundColor, setBackgroundColor: updateBackgroundColor }}>
             {children}
         </BackgroundContext.Provider>
     );

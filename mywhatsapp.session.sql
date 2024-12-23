@@ -215,4 +215,4 @@ ORDER BY
     messages.timestamp ASC; 
 
 
-    
+select first_name || ' ' || last_name as chat_name  from users where phone = '501234567'

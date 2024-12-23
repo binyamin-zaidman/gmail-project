@@ -4,11 +4,9 @@ import Login from './components/login';
 import SignUp from './components/signUp';
 import AppPage from './components/AppPage';
 import ShowAllMessages from './components/showMessages';
-import { useBackground } from "./components/BackgroundContext";
+import SettingsPage from './components/settingsPage';
 
 function App() {
-
-  const { backgroundColor } = useBackground();
 
   return (
     <BrowserRouter>
@@ -17,6 +15,7 @@ function App() {
         < Route path='/signUp' element={<SignUp />} />
         < Route path='/app/:userId' element={<AppPage />} />
         < Route path='/app/:userId/chat/:chatId' element={<AppPage />} />
+        <Route path="/settings" element={<SettingsPage />} />
         {/* < Route path='/message/:id' element={<ShowAllMessages />} /> */}
       </Routes>
     </BrowserRouter>

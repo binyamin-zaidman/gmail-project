@@ -35,7 +35,7 @@ io.on("connection", (socket) => {
   console.log("A user connected:", socket.id);
   socket.on("sendMessage", async (data) => {
     console.log("Broadcasting message:", data);
-
+    socket.broadcast.emit("newMessage", data);
     // await insertMessege(data.chat_id, data.message, false, 1);
     io.emit("newMessage", data);
     socket.on("disconnect", () => {
@@ -144,7 +144,7 @@ app.get("/:user_id/messege/:chat_id", async (req, res) => {
   const user_id = req.params.user_id;
 
   const result = await receiveMessages(chat_id,user_id);
-  console.log(result);
+  console.log({result});
 
   res.json(result);
 });

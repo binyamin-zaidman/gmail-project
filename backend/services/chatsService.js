@@ -15,10 +15,14 @@ async function getUserIdByName(name) {
   }
 }
 
+
 async function insertNewChat(userToChat, user_id) {
+  const userNameToChat = await pool.query("select first_name || ' ' || last_name as chat_name  from users where phone = $1", [userToChat]);
+  console.log(userNameToChat.rows[0].chat_name);
+  
   const resultInsertChat = await pool.query(
     "insert into chats (user_id,name) values ($1,$2) RETURNING *",
-    [user_id, userToChat]
+    [user_id, userNameToChat.rows[0].chat_name]
   );
   await pool.query(
     "insert into chat_users (chat_id,user_id) values ($1,$2) RETURNING *",
