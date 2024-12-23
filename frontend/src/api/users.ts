@@ -1,4 +1,5 @@
 import sendRequest from "./fetchRequest";
+import { messege } from "./messege";
 
 type UserExist = {
     phone: string
@@ -16,7 +17,7 @@ type formData = {
     answer: string
 }
 export type userExist = {user_id:string, token:string}
-export type sendRequestTypes = formDataWithToken | userExist
+export type sendRequestTypes = formDataWithToken | userExist | messege[]
 export type formDataWithToken = formData & {token:string, id:number}
 export async function getUserExist(phone: string, password: string){
     return await sendRequest<UserExist>({

@@ -1,27 +1,41 @@
 import Chat from "./chat";
 import { useState, useEffect } from "react";
 import "../styles/chatConversation.css"
-import { getAllChats } from "../api/chats";
-import { getChats } from "../api/chats";
+import { createChat, getAllChats } from "../api/chats";
+// import { getChats } from "../api/chats"; 
+import { useParams } from "react-router-dom";
+import NewChatForm from "./NewChatForm";
 
-
+// type ShowChats = {
+//     chat_id:number
+//     description:string
+//     id:number
+//     name:string
+//     timestamp:string
+//     user_id:number
+// }
 export default function ChatConversations() {
-    const [chats, setChats] = useState([]);
+    const [chats, setChats] = useState<any[]>([]);
     const [searchTerm, setSearchTerm] = useState("");
+    const [showNewChatForm, setShowNewChatForm] = useState(false);
+    const userId = useParams().userId!;
+
 
     useEffect(() => {
         const fetchChats = async () => {
+            const response = await getAllChats(userId) as any[];
+            console.log({ response });
+            
             try {
-                const response = await getAllChats(1);
-                console.log(response);
-                
+
                 // עיבוד השיחות כדי להוסיף את השדות החסרים
                 const processedChats = response.map(chat => ({
                     id: chat.chat_id,
-                    Name: chat.name, // או כל שדה שמתאים לשם המשתמש
-                    description: chat.description, // ניתן להחליף לשדה רלוונטי
+                    lastChat: chat.description, // ניתן להחליף לשדה רלוונטי
+                    chatName: chat.name, // או כל שדה שמתאים לשם המשתמש
                     time: new Date(chat.timestamp).toLocaleTimeString(), // פורמט הזמן
-                    profileImage: "https://imgv3.fotor.com/images/blog-richtext-image/10-profile-picture-ideas-to-make-you-stand-out.jpg" // תמונה ברירת מחדל
+                    profileImage: "https://img.freepik.com/free-icon/user_318-159711.jpg",
+                    userId: chat.user_id
                 }));
 
                 setChats(processedChats);
@@ -36,16 +50,42 @@ export default function ChatConversations() {
 
     // סינון שיחות לפי חיפוש
     const filteredChats = chats.filter(chat =>
-        chat.Name.toLowerCase().includes(searchTerm.toLowerCase())
+        chat.chatName.toLowerCase().includes(searchTerm.toLowerCase())
     );
-    console.log(filteredChats);
-    
+
+
+    const addChat = async (userToChat: string) => {
+        // בדיקה האם כבר יש צ'אט עם המשתמש הזה
+        const existingChat = chats.some(chat => chat.chatName === userToChat); // שיפור הבדיקה
+        console.log({ chats });
+
+        if (existingChat) {
+            alert("You already have a chat with this user");
+            return;
+        } else {
+
+            try {
+                const response = await createChat({ userId, userToChat });
+                if (response !== null) {
+                    setShowNewChatForm(false);
+                } else {
+                    alert("User does not exist");
+                }
+            } catch (error) {
+                console.error("Error creating chat:", error);
+                alert("An error occurred while creating the chat");
+            }
+        };
+    };
+
+
+
 
 
     return (
         <div id="chatConversationsContainer">
             <div id="headerConversations">
-                <h2>Chats</h2>
+                <h2 id="chatsHeader">Chats</h2>
                 <input
                     type="text"
                     placeholder="Search"
@@ -55,20 +95,24 @@ export default function ChatConversations() {
 
 
                 />
-                <svg onClick={() => alert("Clicked")} id="addChatButton" xmlns="http://www.w3.org/2000/svg" height="30px" viewBox="0 -960 960 960" width="30px" fill="blue"><path d="M450-450H200v-60h250v-250h60v250h250v60H510v250h-60v-250Z" /></svg>
+                {/* <svg onClick={() => alert(" ")} id="addChatButton" xmlns="http://www.w3.org/2000/svg" height="10px" viewBox="0 -960 960 960" width="30px" fill="blue"><path d="M450-450H200v-60h250v-250h60v250h250v60H510v250h-60v-250Z" /></svg> */}
+                <svg onClick={() => setShowNewChatForm(true)} id="addChatButton" xmlns="http://www.w3.org/2000/svg" height="20px" viewBox="0 -960 960 960" width="30px" fill="blue"><path d="M450-450H200v-60h250v-250h60v250h250v60H510v250h-60v-250Z" /></svg>
             </div>
-            <div id="chats" >
-                {filteredChats.map(chat => (
+            <div id="chats">
+                {showNewChatForm && (<NewChatForm addChat={addChat} onClose={() => setShowNewChatForm(false)} />)}
+                {filteredChats.map((chat, index) => (
                     <Chat
-                        key={chat.id}
-                        userName={chat.Name}
-                        message={chat.description}
+                        key={index}
+                        chatId={chat.id}
+                        chatName={chat.chatName}
+                        message={chat.lastMessage}
+
                         time={chat.time}
                         profileImage={chat.profileImage}
+                        userId={chat.userId}
                     />
                 ))}
             </div>
-
         </div>
     );
 }

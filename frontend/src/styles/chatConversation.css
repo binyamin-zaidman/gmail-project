@@ -1,27 +1,31 @@
 #chatConversationsContainer {
     flex: 2;
     max-width: 30%;
-    height: calc(100% - 10px); /* adjust as needed */
+    height: 100%;
+    /* adjust as needed */
     margin: 0 auto;
     border-right: 1px solid #ddd;
     background-color: #f9f9f9;
-    border-radius: 8px;
+    border-radius: 1px;
     overflow-y: scroll;
 }
+
 #chatConversationsContainer::-webkit-scrollbar {
     display: none;
 }
+
 #headerConversations {
+    height: 76px;
     position: sticky;
     top: 0;
     display: flex;
     justify-content: space-between;
     align-items: center;
     margin-bottom: 1rem;
+    padding: 0 10px;
     gap: 1rem;
     background-color: #ffffff;
     z-index: 1;
-    padding: 10px;
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
 }
 
@@ -52,4 +56,9 @@
 
 #chats {
     margin-top: 1rem;
+}
+#chatsHeader{
+    font-size: 1rem;
+    color: #1866b9;
+    text-shadow: 1px 2px 2px #000000a5;
 }

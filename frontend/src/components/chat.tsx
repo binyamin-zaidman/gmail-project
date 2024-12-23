@@ -1,19 +1,23 @@
 import "../styles/chat.css"
-
+import { useNavigate, useLocation, replace } from "react-router-dom";
 interface ChatProps {
-    userName: string;
+    chatId:string
+    chatName: string;
     message: string;
     time: string;
     profileImage: string;
+    userId:string;
 }
 
-export default function Chat({ userName, message, time, profileImage }: ChatProps) {
-
+export default function Chat({chatId, chatName, message, time, profileImage,userId }: ChatProps) {
+    const navigate = useNavigate();
+    const pathname = useLocation().pathname.split("/");
+    
     return (
-        <div id="chatContainer">
+        <div id="chatContainer" onClick={() => {navigate(`/app/${pathname[2]}/chat/${chatId}`, {relative :"path"})}}>
             <img src={profileImage} alt="User Profile" id="profileImage" />
             <div id="showUser">
-                <p id="userName">{userName}</p>
+                <p id="chatName">{chatName}</p>
                 <p id="message">{message}</p>
             </div>
             <h4 id="time">{time}</h4>

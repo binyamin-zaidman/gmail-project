@@ -12,7 +12,7 @@ type RequestProps = {
 async function fetchRequest<T>(props: RequestProps | string): Promise<sendRequestTypes>  {
     let url: string, method: string = "GET", body: any = null, token: string | undefined;
 
-    if (typeof props === 'string') {
+if (typeof props === 'string' ) {
         url = props;
         method = "GET";
 
@@ -34,11 +34,9 @@ async function fetchRequest<T>(props: RequestProps | string): Promise<sendReques
     if (body && method !== 'DELETE' && method !== 'GET') {
         options.body = JSON.stringify(body);
     }
-    console.log({body});
     try {
         const res = await fetch(`http://localhost:3000${url}`, options);
-        console.log({res});
-        
+            
         if (!res.ok) {
             const error = await res.text();
             throw new Error(`HTTP Error ${res.status}: ${error}`);

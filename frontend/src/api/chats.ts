@@ -1,17 +1,12 @@
 import sendRequest from "./fetchRequest";
-
-type getChats = {
-    user_id: number
-}
 type createChat = {
-    user_id: number,
-    title: string,
-    description: string
+    userId: string,
+    userToChat: string|number,
 }
 
-export async function getAllChats(user_id: getChats) {
-    return await sendRequest<getChats>({
-        "url": `/chats/${user_id}`,
+export async function getAllChats(userId: string) {
+    return await sendRequest<string>({
+        url: `/chats/${userId}`,
         method: "GET",
 
     })
@@ -19,7 +14,7 @@ export async function getAllChats(user_id: getChats) {
 
 export async function createChat(props: createChat) {
     return await sendRequest<createChat>({
-        "url": `/chats/${props.user_id}`,
+        url: `/chats/${props.userId}`,
         method: "POST",
         body: props
     })

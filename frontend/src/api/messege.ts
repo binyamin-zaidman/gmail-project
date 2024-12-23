@@ -1,33 +1,35 @@
 import sendRequest from "./fetchRequest";
 
-type messege  = {
-    chat_id: number,
-    text: string,
-    read: boolean,
-    sender_id: number
-    // user_id: number,
-}
+export type messege = {
+  chat_id: number;
+  chat_name?: string;
+  message: string;
+  sender_id?: string;
+  sender_name: string;
+  is_read: boolean;
+  message_time: string;
+  message_id?: string;
+};
 
-type getMessege =  {
-    messege: string
-}
+type getMessege = {
+  messege: string;
+};
 
-export async function getAllMessages(chat_id: number) {
-    console.log(chat_id);
-    
-    return await sendRequest<messege>({
-        url: `/messege/${chat_id}`,
-        method : "GET"
-    })
+export async function getAllMessages(chat_id: string, user_id: string) {
+  const userId = parseInt(user_id);
+  const chatId = parseInt(chat_id);
+  return await sendRequest<messege>({
+    url: `/${userId}/messege/${chatId}`,
+    method: "GET"
+  }) as messege[];
 }
-
 
 export async function sendMessege(message: messege) {
-    
-    const chatId = message.chat_id
-    return await sendRequest<messege>({
-        url: `/message/${chatId}`,
-        method: "POST",
-        body: message
-    })
+  const chatId = message.chat_id;
+  
+  return await sendRequest<messege>({
+    url: `/message/${chatId}`,
+    method: "POST",
+    body: message
+  });
 }

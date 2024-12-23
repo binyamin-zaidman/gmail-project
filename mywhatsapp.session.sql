@@ -72,10 +72,7 @@ CREATE TABLE chats (
     timestamp TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     name VARCHAR(255) DEFAULT null,
     description VARCHAR(255) DEFAULT null;
-
 );
-
-
 --
 -- יצירת טבלת messages
 CREATE TABLE messages (
@@ -95,25 +92,127 @@ from messages
 select *
 from chat_users
 
-insert into users (first_name, last_name, email, password, phone, question, answer)
-values ('binyamin', 'zaidman', 'b@gmail.com', '123', 0501234567, 'whts your age', '27');
-
-
+insert into users (
+        first_name,
+        last_name,
+        email,
+        password,
+        phone,
+        question,
+        answer
+    )
+values (
+        'binyamin',
+        'zaidman',
+        'b@gmail.com',
+        '123',
+        0501234567,
+        'whts your age',
+        '27'
+    );
 alter TABLE messages
 add column sender INT;
-
 alter TABLE chats
 add column name VARCHAR(255) DEFAULT null;
 alter TABLE chats
 add column description VARCHAR(255) DEFAULT null;
-
-
 CREATE TABLE chat_users (
     id SERIAL PRIMARY KEY,
     chat_id INT REFERENCES chats(id),
     user_id INT REFERENCES chats(user_id)
 );
-
-SELECT column_name, data_type 
-FROM information_schema.columns 
+SELECT column_name,
+    data_type
+FROM information_schema.columns
 WHERE table_name = 'messages';
+SELECT table_name,
+    column_name,
+    data_type
+FROM information_schema.columns
+WHERE table_schema = 'public'
+ORDER BY table_name,
+    ordinal_position;
+insert into chat_users (chat_id, user_id)
+values (5, 527171044)
+insert into chat_users (chat_id, user_id)
+values (5, 527171044) -- ALTER TABLE chat_users
+    -- ALTER COLUMN user_id TYPE varchar USING user_id::varchar;
+SELECT id
+FROM users
+WHERE phone = '501234567';
+SELECT *
+    FROM messages
+    JOIN chat_users ON messages.chat_id = chat_users.chat_id
+    WHERE messages.chat_id = 2 AND chat_users.user_id = 2
+
+
+SELECT DISTINCT messages.id, messages.chat_id, messages.message, messages.timestamp, messages.read, messages.sender
+FROM messages
+JOIN chat_users ON messages.chat_id = chat_users.chat_id
+WHERE messages.chat_id = 1 AND chat_users.user_id = 1;
+
+SELECT messages.id, messages.chat_id, messages.message, messages.timestamp, messages.read, messages.sender
+FROM messages
+JOIN chat_users ON messages.chat_id = chat_users.chat_id
+WHERE messages.chat_id = 1 AND chat_users.user_id = 1
+GROUP BY messages.id, messages.chat_id, messages.message, messages.timestamp, messages.read, messages.sender;
+
+ SELECT 
+          messages.id, 
+          messages.chat_id, 
+          messages.message, 
+          messages.timestamp, 
+          messages.read, 
+          messages.sender, 
+          users.first_name AS sender_name, 
+          users.last_name AS sender_last_name
+          chats.name AS chat_name
+
+      FROM 
+          messages
+      JOIN 
+          chat_users ON messages.chat_id = chat_users.chat_id
+      JOIN 
+          users ON messages.sender = users.id
+      JOIN 
+          chats ON messages.chat_id = chats.id
+      WHERE 
+          messages.chat_id = 1 
+          AND chat_users.user_id = 1
+      ORDER BY 
+          messages.timestamp ASC
+
+SELECT 
+    table_name, 
+    column_name, 
+    data_type, 
+    is_nullable, 
+    column_default
+FROM 
+    information_schema.columns
+WHERE 
+    table_schema = 'public'
+ORDER BY 
+    table_name, ordinal_position;
+
+SELECT 
+    messages.id AS message_id,
+    messages.chat_id,
+    messages.message,
+    messages.timestamp AS message_time,
+    messages.read AS is_read,
+    users.first_name || ' ' || users.last_name AS sender_name,
+    chats.name AS chat_name
+FROM 
+    messages
+JOIN 
+    chats ON messages.chat_id = chats.id 
+JOIN 
+    users ON messages.sender = users.id 
+WHERE 
+    messages.chat_id = 1 
+ORDER BY 
+    messages.timestamp ASC; 
+
+
+select first_name || ' ' || last_name as chat_name  from users where phone = '501234567'

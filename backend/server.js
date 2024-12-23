@@ -1,47 +1,57 @@
 const jwt = require("jsonwebtoken");
 const crypto = require("crypto");
 
-const express = require("express");
 const { insertNewChat } = require("./services/chatsService");
-const { receiveMessages, insertMessege } = require("./services/messegeService");
+const { receiveMessages, insertMessege, insertMessage } = require("./services/messegeService");
 const { pool } = require("./conectDB");
 const cors = require("cors");
 // const multer = require("multer"); ספרייה לעבודה עם קבצים
 
 // ספרייה של soket.io
+const express = require("express");
 const http = require("http");
 const { Server } = require("socket.io");
 const { log } = require("console");
+const app = express();
+const server = http.createServer(app);
+const port = 3000;
+
+app.use(
+  cors({
+    origin: "*",
+    methods: ["GET", "POST"],
+    allowedHeaders: ["Content-Type"]
+  })
+);
+
+const io = new Server(server, {
+  cors: {
+    origin: "*",
+    methods: ["GET", "POST"],
+    allowedHeaders: ["Content-Type"]
+  }
+});
+io.on("connection", (socket) => {
+  console.log("A user connected:", socket.id);
+  socket.on("sendMessage", async (data) => {
+    console.log("Broadcasting message:", data);
+    socket.broadcast.emit("newMessage", data);
+    // await insertMessege(data.chat_id, data.message, false, 1);
+    io.emit("newMessage", data);
+    socket.on("disconnect", () => {
+      console.log("A user disconnected:", socket.id);
+      io.emit("newMessage", data);
+    });
+  });
+});
+
+//middleware
+app.use(express.json());
 
 const generateToken = (userId, userPhone) => {
   const secretKey = crypto.randomBytes(64).toString("hex");
   return jwt.sign({ userId, userPhone }, secretKey, { expiresIn: "1h" });
 };
-const app = express();
-const server = http.createServer(app);
-const io = new Server(server);
-const port = 3000;
-
-app.use(express.json());
-app.use(cors());
-
-io.on("connection", (socket) => {
-  console.log("A user connected:", socket.id);
-
-  // מאזינים להודעות מהלקוח
-  socket.on("message", (data) => {
-    console.log("Message received:", data);
-
-    // משדרים הודעה לכל המשתמשים המחוברים
-    io.emit("message", data);
-    socket.broadcast.emit("message", data);
-  });
-
-  // טיפול בניתוק
-  socket.on("disconnect", () => {
-    console.log("A user disconnected:", socket.id);
-  });
-});
 
 app.post("/users/login", async (req, res) => {
   try {
@@ -50,7 +60,7 @@ app.post("/users/login", async (req, res) => {
       "SELECT id as user_id FROM users WHERE phone = $1 AND password = $2",
       [phone, password]
     );
-    log(result.rows[0]);
+    console.log(result.rows[0]);
 
     const token = generateToken(result.rows[0].id, result.rows[0].phone);
     res.json({ ...result.rows[0], token });
@@ -121,24 +131,20 @@ app.get("/chats/:userId", async (req, res) => {
 
 app.post("/chats/:userId", async (req, res) => {
   const user_id = req.params.userId;
-  const recipient_id = req.body.recipientid;
-  const name = req.body.name;
-  const description = req.body.description;
+  const userToChat = req.body.userToChat;
   const token = req.headers.token;
 
-  const insertedChat = await insertNewChat(
-    name,
-    recipient_id,
-    user_id,
-    description
-  );
+  const insertedChat = await insertNewChat(userToChat, user_id);
 
   res.json(insertedChat);
 });
 
-app.get("/messege/:chat_id", async (req, res) => {
+app.get("/:user_id/messege/:chat_id", async (req, res) => {
   const chat_id = req.params.chat_id;
-  const result = await receiveMessages(chat_id);
+  const user_id = req.params.user_id;
+
+  const result = await receiveMessages(chat_id,user_id);
+  console.log({result});
 
   res.json(result);
 });
@@ -146,13 +152,16 @@ app.get("/messege/:chat_id", async (req, res) => {
 app.post("/message/:chat_id", async (req, res) => {
   const chat_id = req.params.chat_id;
 
-  const messege = req.body;
+  const { message, sender_id } = req.body;
   // const user_id = req.body.user_id;
   const token = req.headers.token;
-  const read = messege.read;
-  const sender_id1 = messege.sender_id; //id של המשתמש ששלח הודעה
-  const result = await insertMessege(chat_id, messege, read, sender_id1);
-  res.json(result);
+  try {
+    const result = await insertMessage(chat_id, message, sender_id);
+    res.json(result);
+  } catch (error) {
+    console.error("Error saving message:", error);
+    res.status(500).json({ error: "Failed to save message" });
+  }
 });
 
 server.listen(port, () => {

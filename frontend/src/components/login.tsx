@@ -30,7 +30,7 @@ export default function Login() {
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
         try {
-            const result = await getUserExist(phone, password) ;
+            const result = await getUserExist(phone, password);
             console.log(result);
             if (result) {
                 localStorage.setItem("user", JSON.stringify(result.token));
@@ -55,6 +55,8 @@ export default function Login() {
                         required
                         name="phone"
                         type="text"
+                        maxLength={10}
+                        // pattern="[0-9]{2}-[0-9]{2}-[0-9]{3}"
                         placeholder="Enter your phone number"
                         onChange={handleChange}
                     />
@@ -67,9 +69,9 @@ export default function Login() {
                         onChange={handleChange}
                     />
                     <div className="buttonForLogin">
-                        {errorMessage && <div>{errorMessage}</div>}
                         <button onClick={() => console.log("Forgot password clicked")}>forgot password</button>
                         <button type="submit">login</button>
+                        {errorMessage && <div id="errorMessage">{errorMessage}</div>}
                     </div>
                 </form>
             </div>
