@@ -81,6 +81,7 @@ export default function ChatConversations() {
 
 
 
+
     return (
         <div id="chatConversationsContainer">
             <div id="headerConversations">
@@ -105,6 +106,7 @@ export default function ChatConversations() {
                         chatId={chat.id}
                         chatName={chat.chatName}
                         message={chat.lastMessage}
+
                         time={chat.time}
                         profileImage={chat.profileImage}
                         userId={chat.userId}

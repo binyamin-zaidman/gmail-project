@@ -39,6 +39,7 @@ export default function ShowAllMessages() {
         // הבאת כל ההודעות מהשרת
         const fetchMessages = async () => {
             try {
+
                 const messages = await getAllMessages(chatId, userId);
                 setAllMessages((prevMessages) => {
                     const newMessages = messages.filter(
@@ -47,6 +48,7 @@ export default function ShowAllMessages() {
                     return [...prevMessages, ...newMessages];
                 });
                 scrollToBottom();
+
             } catch (error) {
                 console.error("Error fetching messages:", error);
                 setError("Failed to fetch messages.");
