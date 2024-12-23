@@ -21,7 +21,7 @@ export default function ShowAllMessages() {
         messagesEndRef.current?.scrollIntoView({ behavior: "smooth", block: "end" });
     };
 
-    
+
 
     useEffect(() => {
         if (!chatId || !userId) {
@@ -40,8 +40,12 @@ export default function ShowAllMessages() {
         const fetchMessages = async () => {
             try {
                 const messages = await getAllMessages(chatId, userId);
-
-                setAllMessages(messages);
+                setAllMessages((prevMessages) => {
+                    const newMessages = messages.filter(
+                        (msg) => !prevMessages.some((prevMsg) => prevMsg.message_time === msg.message_time)
+                    );
+                    return [...prevMessages, ...newMessages];
+                });
                 scrollToBottom();
             } catch (error) {
                 console.error("Error fetching messages:", error);
