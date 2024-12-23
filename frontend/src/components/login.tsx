@@ -31,7 +31,6 @@ export default function Login() {
         e.preventDefault();
         try {
             const result = await getUserExist(phone, password);
-            console.log(result);
             if (result) {
                 localStorage.setItem("user", JSON.stringify(result.token));
                 navigate(`/app/${result.user_id}`, { replace: true });
@@ -69,7 +68,7 @@ export default function Login() {
                         onChange={handleChange}
                     />
                     <div className="buttonForLogin">
-                        <button onClick={() => console.log("Forgot password clicked")}>forgot password</button>
+                        <button onClick={() => navigate("/signUp")}>SignUp</button>
                         <button type="submit">login</button>
                         {errorMessage && <div id="errorMessage">{errorMessage}</div>}
                     </div>
