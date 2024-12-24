@@ -4,13 +4,13 @@ type Method = "GET" | "POST" | "PUT" | "DELETE";
 
 type RequestProps = {
     url: string,
-    method: string,
+    method: Method,
     body?: any
     token?: string;
 };
 
 async function fetchRequest<T>(props: RequestProps | string): Promise<sendRequestTypes>  {
-    let url: string, method: string = "GET", body: any = null, token: string | undefined;
+    let url: string, method: string = "GET", body: any = null;
 
 if (typeof props === 'string' ) {
         url = props;
@@ -20,7 +20,6 @@ if (typeof props === 'string' ) {
         url = props.url;
         method = props.method;
         body = props?.body;
-        token = props?.token;
     }
 
     const options: RequestInit = {
@@ -34,7 +33,15 @@ if (typeof props === 'string' ) {
     if (body && method !== 'DELETE' && method !== 'GET') {
         options.body = JSON.stringify(body);
     }
+
+    if (url !== "/users/login" && url !== "/users/register") {
+        const  token = JSON.parse(localStorage.getItem("user") as string);
+        options.headers = {...options.headers, Authorization: `Bearer ${token}`};
+    }
+console.log({url, options});
+
     try {
+
         const res = await fetch(`http://localhost:3000${url}`, options);
             
         if (!res.ok) {

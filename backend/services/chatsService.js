@@ -24,7 +24,7 @@ async function insertNewChat(userToChat, user_id) {
 
   const resultInsertChat = await pool.query(
     "insert into chats (user_id,name) values ($1,$2) RETURNING *",
-    [user_id, userNameToChat.rows[0].chat_name]
+    [user_id, userToChat]
   );
   await pool.query(
     "insert into chat_users (chat_id,user_id) values ($1,$2) RETURNING *",

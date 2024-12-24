@@ -2,9 +2,11 @@ const jwt = require("jsonwebtoken");
 const crypto = require("crypto");
 
 const { insertNewChat, deleteChat } = require("./services/chatsService");
-const { receiveMessages, insertMessege, insertMessage } = require("./services/messegeService");
+const { receiveMessages, insertMessage } = require("./services/messegeService");
 const { pool } = require("./conectDB");
 const cors = require("cors");
+const dotenv = require("dotenv");
+dotenv.config();
 // const multer = require("multer"); ספרייה לעבודה עם קבצים
 
 // ספרייה של soket.io
@@ -20,9 +22,11 @@ app.use(
   cors({
     origin: "*",
     methods: ["GET", "POST", "DELETE"],
-    allowedHeaders: ["Content-Type"]
+    allowedHeaders: ["Content-Type","Authorization"]
   })
 );
+
+
 
 const io = new Server(server, {
   cors: {
@@ -48,21 +52,44 @@ io.on("connection", (socket) => {
 //middleware
 app.use(express.json());
 
+const verifyToken = (req, res, next) => {
+  const authHeader  = req.headers["authorization"];
+  console.log({authHeader});
+  
+  if (!authHeader) {
+    return res.status(401).json({ error: "Token is required" });
+  }
+  const token = authHeader.split(" ")[1];
+  jwt.verify(token, process.env.JWT_SECRET, (err, decoded) => {
+    if (err) {
+      console.log(12);
+      
+      return res.status(401).json({ error: "Invalid token" });
+    }
+    console.log({decoded});
+    req.user = decoded.userId; 
+    next();
+  });
+};
+
+
 const generateToken = (userId, userPhone) => {
-  const secretKey = crypto.randomBytes(64).toString("hex");
-  return jwt.sign({ userId, userPhone }, secretKey, { expiresIn: "1h" });
+  
+  // const secretKey = crypto.randomBytes(64).toString("hex");
+  return jwt.sign({ userId, userPhone }, process.env.JWT_SECRET, { expiresIn: "1h" });
 };
 
 app.post("/users/login", async (req, res) => {
+  
+  const { phone, password } = req.body;
   try {
-    const { phone, password } = req.body;
     const result = await pool.query(
       "SELECT id as user_id FROM users WHERE phone = $1 AND password = $2",
       [phone, password]
     );
     console.log(result.rows[0]);
 
-    const token = generateToken(result.rows[0].id, result.rows[0].phone);
+    const token = generateToken(result.rows[0].user_id, result.rows[0].phone);
     res.json({ ...result.rows[0], token });
   } catch (error) {
     console.error(error);
@@ -87,15 +114,25 @@ app.post("/users/register", async (req, res) => {
     res.status(404).json({ error: "create user error" });
   }
 });
-
+app.use(verifyToken);
 app.get("/chats/:userId", async (req, res) => {
+
+  console.log(req.headers.authorization);
   const user_id = req.params.userId;
+  // const token = req.headers["authorization"]?.split(" ")[1];
+
+  
+  if (!user_id) {
+    return res.status(400).json({ error: "User ID is required" });
+  }
+  console.log({ user_id });
   try {
     const result = await pool.query(
-      "SELECT * FROM chat_users JOIN chats ON chats.id = chat_users.chat_id WHERE chat_users.user_id = $1 AND chats.is_deleted = false",
+      "SELECT * FROM chat_users JOIN chats ON chats.id = chat_users.chat_id WHERE chats.is_deleted = false AND chat_users.user_id = $1",
       [user_id]
     );
-    
+    console.log(result.rows);
+
     if (result.rows.length === 0) {
       return res.status(200).json({ message: "No chats found for this user." });
     }
@@ -131,10 +168,11 @@ app.get("/chats/:userId", async (req, res) => {
 // });
 
 app.post("/chats/:userId", async (req, res) => {
-  const user_id = req.params.userId;
+  const user_id = req.body.userId;
   const userToChat = req.body.userToChat;
-  const token = req.headers.token;
+  const token = req.headers["authorization"]?.split(" ")[1];
 
+  
   const insertedChat = await insertNewChat(userToChat, user_id);
 
   res.json(insertedChat);
@@ -142,29 +180,27 @@ app.post("/chats/:userId", async (req, res) => {
 
 app.delete("/chats/:chatId", async (req, res) => {
   const chatId = req.params.chatId;
+
   const result = await deleteChat(chatId);
   res.json(result);
 });
-
-
-
 
 app.get("/:user_id/messege/:chat_id", async (req, res) => {
   const chat_id = req.params.chat_id;
   const user_id = req.params.user_id;
 
-  const result = await receiveMessages(chat_id,user_id);
-  console.log({result});
+  const result = await receiveMessages(chat_id, user_id);
+  console.log({ result });
 
   res.json(result);
 });
 
-app.post("/message/:chat_id", async (req, res) => {
+app.post("/message/:chat_id",verifyToken, async (req, res) => {
   const chat_id = req.params.chat_id;
+
 
   const { message, sender_id } = req.body;
   // const user_id = req.body.user_id;
-  const token = req.headers.token;
   try {
     const result = await insertMessage(chat_id, message, sender_id);
     res.json(result);

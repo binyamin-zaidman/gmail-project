@@ -11,6 +11,7 @@ function App() {
   return (
     <BrowserRouter>
       <Routes>
+      {/* <Route path="/app" element={<ProtectedRoute><AppPage /></ProtectedRoute>} /> */}
         < Route path='/' element={<Login />} />
         < Route path='/signUp' element={<SignUp />} />
         < Route path='/app/:userId' element={<AppPage />} />

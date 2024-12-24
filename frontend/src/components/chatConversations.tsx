@@ -24,9 +24,8 @@ export default function ChatConversations() {
     useEffect(() => {
         const fetchChats = async () => {
             const response = await getAllChats(userId) as any[];
-            
-            try {
 
+            try {
                 // עיבוד השיחות כדי להוסיף את השדות החסרים
                 const processedChats = response.map(chat => ({
                     id: chat.chat_id,
@@ -44,7 +43,7 @@ export default function ChatConversations() {
         };
 
         fetchChats();
-    }, [chats]);
+    }, [userId,]);
 
 
     // סינון שיחות לפי חיפוש
@@ -54,9 +53,12 @@ export default function ChatConversations() {
 
 
     const addChat = async (userToChat: string) => {
+        console.log("userToChat:", userToChat);
+        console.log(chats);
+
+
         // בדיקה האם כבר יש צ'אט עם המשתמש הזה
         const existingChat = chats.some(chat => chat.chatName === userToChat); // שיפור הבדיקה
-        console.log({ chats });
 
         if (existingChat) {
             alert("You already have a chat with this user");
@@ -65,8 +67,10 @@ export default function ChatConversations() {
 
             try {
                 const response = await createChat({ userId, userToChat });
+
                 if (response !== null) {
                     setShowNewChatForm(false);
+                    setChats((prevChats) => [...prevChats, {...response, chatName:response.name, profileImage:'https://img.freepik.com/free-icon/user_318-159711.jpg'}]);
                 } else {
                     alert("User does not exist");
                 }
@@ -105,7 +109,6 @@ export default function ChatConversations() {
                         chatId={chat.id}
                         chatName={chat.chatName}
                         message={chat.lastMessage}
-
                         time={chat.time}
                         profileImage={chat.profileImage}
                         userId={chat.userId}

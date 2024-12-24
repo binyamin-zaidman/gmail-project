@@ -1,7 +1,9 @@
-#signUpContainer {
+ {
+
   display: flex;
   flex-direction: column;
   width: 40%;
+
   margin: 100px auto;
   padding: 2rem;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
