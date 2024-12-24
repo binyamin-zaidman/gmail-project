@@ -1,7 +1,7 @@
 import sendRequest from "./fetchRequest";
 
 export type messege = {
-  chat_id: number;
+  chat_id: string;
   chat_name?: string;
   message: string;
   sender_id?: string;
@@ -16,8 +16,8 @@ type getMessege = {
 };
 
 export async function getAllMessages(chat_id: string, user_id: string) {
-  const userId = parseInt(user_id);
-  const chatId = parseInt(chat_id);
+  const userId = user_id;
+  const chatId = chat_id;
   return await sendRequest<messege>({
     url: `/${userId}/messege/${chatId}`,
     method: "GET"

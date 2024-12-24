@@ -1,6 +1,6 @@
 import { RemoveChat } from "../api/chats";
 import "../styles/chat.css"
-import { useNavigate, useLocation, replace } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 interface ChatProps {
     chatId: string
     chatName: string;
@@ -28,7 +28,7 @@ export default function Chat({ chatId, chatName, message, time, profileImage, us
                 <img src={profileImage} alt="User Profile" id="profileImage" />
             </div>
             <div id="showUser">
-                <p id="chatName">{chatName}</p>
+                <p id="chatName">{chatName === pathname[2] ? "me" : chatName}</p>
                 <p id="message">{message}</p>
             </div>
             <div id="removeChatIcon" onClick={RemoveItem}>

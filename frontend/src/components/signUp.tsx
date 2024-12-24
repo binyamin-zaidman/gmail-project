@@ -48,12 +48,12 @@ export default function SignUp() {
                 return;
             }
         }
-        if(step === 4){
-            if(!formData.password){
+        if (step === 4) {
+            if (!formData.password) {
                 setErrorMessage("Password is required!")
                 return;
             }
-            if(formData.password !== formData.confirmPassword ){
+            if (formData.password !== formData.confirmPassword) {
                 setErrorMessage("Passwords do not match")
                 return
             }
@@ -72,10 +72,10 @@ export default function SignUp() {
         try {
             const result = await createUser({ ...formData });
             console.log(result);
-            
-            localStorage.setItem("user",result.token)
+
+            localStorage.setItem("user", JSON.stringify(result.token))
             navigate(`/app/${result.id}`, { replace: true });
-            
+
         } catch (error) {
             console.error(error);
 

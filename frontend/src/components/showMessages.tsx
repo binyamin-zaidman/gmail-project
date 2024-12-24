@@ -22,6 +22,9 @@ export default function ShowAllMessages() {
     };
 
 
+    console.log({allMessages});
+    
+
 
     useEffect(() => {
         if (!chatId || !userId) {
@@ -45,7 +48,7 @@ export default function ShowAllMessages() {
                     const newMessages = messages.filter(
                         (msg) => !prevMessages.some((prevMsg) => prevMsg.message_time === msg.message_time)
                     );
-                    return [...prevMessages, ...newMessages];
+                    return newMessages;
                 });
                 scrollToBottom();
 
@@ -57,7 +60,7 @@ export default function ShowAllMessages() {
 
         fetchMessages();
         const handleNewMessage = (message: messege) => {
-            if (message.chat_id === parseInt(chatId)) {
+            if (message.chat_id === chatId) {
                 setAllMessages((prevMessages) => {
                     if (prevMessages.some((msg) => msg.message_time === message.message_time)) {
                         return prevMessages;
@@ -86,12 +89,12 @@ export default function ShowAllMessages() {
         if (!messageContent.trim()) return;
 
         if (!chatId || !userId) {
-            setError("Missing chatId or userId");
+            setError("Missing chatId or userId in send message");
             return;
         }
 
         const messageObject: messege = {
-            chat_id: parseInt(chatId), // ממירים את chatId למספר
+            chat_id: chatId,
             message: messageContent,
             sender_id: userId,
             message_time: new Date().toISOString(),
@@ -119,6 +122,7 @@ export default function ShowAllMessages() {
             e.preventDefault();
             sendMessage(newMessage);
         }
+
     };
 
 
