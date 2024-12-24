@@ -44,7 +44,11 @@
     align-self: flex-start;
     text-align: left;
     border-radius: 10px;
-    padding:0 4px;
+    padding:10px;
+    #myProfile img{
+        display: none;
+    }
+
 }
 
 /* Message from other users */

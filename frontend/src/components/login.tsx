@@ -34,7 +34,6 @@ export default function Login() {
         try {
 
             const result = await getUserExist(phone, password);
-            console.log(result);
             if (result) {
                 localStorage.setItem("user", JSON.stringify(result.token));
                 navigate(`/app/${result.user_id}`, { replace: true });
@@ -77,7 +76,9 @@ export default function Login() {
                     />
                     <a href=" "><p>Forgot password?</p></a>
                     <div className="buttonForLogin">
-                        <button onClick={() => console.log("Forgot password clicked")}>signup</button>
+
+                        <button onClick={() => navigate("/signUp")}>SignUp</button>
+
                         <button type="submit">login</button>
                         {errorMessage && <div id="errorMessage">{errorMessage}</div>}
                     </div>
