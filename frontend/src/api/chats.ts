@@ -5,6 +5,7 @@ type createChat = {
 }
 
 export async function getAllChats(userId: string) {
+    
     return await sendRequest<string>({
         url: `/chats/${userId}`,
         method: "GET",
@@ -13,6 +14,8 @@ export async function getAllChats(userId: string) {
 }
 
 export async function createChat(props: createChat) {
+  
+    
     return await sendRequest<createChat>({
         url: `/chats/${props.userId}`,
         method: "POST",

@@ -28,8 +28,8 @@ export default function Chat({ chatId, chatName, message, time, profileImage, us
                 <img src={profileImage} alt="User Profile" id="profileImage" />
             </div>
             <div id="showUser">
-                <p id="chatName">{chatName === pathname[2] ? "me" : chatName}</p>
-                <p id="message">{message}</p>
+                <p id="chatName">{userId === pathname[2] ? chatName : "chatName"}</p>
+                <p id="message">{chatName}</p>
             </div>
             <div id="removeChatIcon" onClick={RemoveItem}>
                 <img src="/public/remove.svg" alt="" />

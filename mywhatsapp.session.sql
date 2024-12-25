@@ -346,3 +346,10 @@ WHERE id = '7c5b0a58-3a02-4d89-a9e3-8fa1dcc8c6db';
 
 SELECT id as user_id FROM users WHERE phone = '0534101201' AND password = '1234';
 
+SELECT id as user_id, first_name || ' ' || last_name as user_name, email, phone, question, answer FROM users WHERE phone = '0534101201' AND password ='1234';
+
+
+select * from chat_users 
+
+SELECT c.* FROM chat_users JOIN chats as c ON c.id = chat_users.chat_id WHERE c.is_deleted = false AND chat_users.user_id =  '1705079e-cb0c-4fc1-b4f1-7e2d055d69f4'
+

@@ -36,14 +36,14 @@ if (typeof props === 'string' ) {
 
     if (url !== "/users/login" && url !== "/users/register") {
         const  token = JSON.parse(localStorage.getItem("user") as string);
+        
         options.headers = {...options.headers, Authorization: `Bearer ${token}`};
     }
-console.log({url, options});
+    console.log({url, options});
 
     try {
-
         const res = await fetch(`http://localhost:3000${url}`, options);
-            
+        
         if (!res.ok) {
             const error = await res.text();
             throw new Error(`HTTP Error ${res.status}: ${error}`);

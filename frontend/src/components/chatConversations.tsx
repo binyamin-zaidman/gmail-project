@@ -23,6 +23,7 @@ export default function ChatConversations() {
 
     useEffect(() => {
         const fetchChats = async () => {
+            
             const response = await getAllChats(userId) as any[];
 
             try {
@@ -43,7 +44,7 @@ export default function ChatConversations() {
         };
 
         fetchChats();
-    }, [userId,]);
+    }, [userId]);
 
 
     // סינון שיחות לפי חיפוש
@@ -52,9 +53,8 @@ export default function ChatConversations() {
     );
 
 
+
     const addChat = async (userToChat: string) => {
-        console.log("userToChat:", userToChat);
-        console.log(chats);
 
 
         // בדיקה האם כבר יש צ'אט עם המשתמש הזה
@@ -70,7 +70,7 @@ export default function ChatConversations() {
 
                 if (response !== null) {
                     setShowNewChatForm(false);
-                    setChats((prevChats) => [...prevChats, {...response, chatName:response.name, profileImage:'https://img.freepik.com/free-icon/user_318-159711.jpg'}]);
+                    setChats((prevChats) => [...prevChats, { ...response, chatName: response.name, profileImage: 'https://img.freepik.com/free-icon/user_318-159711.jpg' }]);
                 } else {
                     alert("User does not exist");
                 }
@@ -84,7 +84,7 @@ export default function ChatConversations() {
 
 
 
-
+    console.log(chats);
     return (
         <div id="chatConversationsContainer">
             <div id="headerConversations">
@@ -108,7 +108,7 @@ export default function ChatConversations() {
                         key={index}
                         chatId={chat.id}
                         chatName={chat.chatName}
-                        message={chat.lastMessage}
+                        message={chat.sender_id}
                         time={chat.time}
                         profileImage={chat.profileImage}
                         userId={chat.userId}

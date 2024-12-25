@@ -22,11 +22,9 @@ app.use(
   cors({
     origin: "*",
     methods: ["GET", "POST", "DELETE"],
-    allowedHeaders: ["Content-Type","Authorization"]
+    allowedHeaders: ["Content-Type", "Authorization"]
   })
 );
-
-
 
 const io = new Server(server, {
   cors: {
@@ -53,42 +51,48 @@ io.on("connection", (socket) => {
 app.use(express.json());
 
 const verifyToken = (req, res, next) => {
-  const authHeader  = req.headers["authorization"];
-  console.log({authHeader});
-  
+  const authHeader = req.headers["authorization"];
   if (!authHeader) {
     return res.status(401).json({ error: "Token is required" });
   }
   const token = authHeader.split(" ")[1];
-  jwt.verify(token, process.env.JWT_SECRET, (err, decoded) => {
+
+  jwt.verify(token, process.env.JWT_SECRET,async (err, decoded) => {
     if (err) {
-      console.log(12);
-      
       return res.status(401).json({ error: "Invalid token" });
     }
-    console.log({decoded});
-    req.user = decoded.userId; 
-    next();
+    const userId = decoded.userId;
+    try {
+      const resultID = await pool.query("SELECT id FROM users WHERE id = $1", [userId]);
+
+      if (!resultID.rows.length || resultID.rows[0].id !== userId) {
+        return res.status(403).json({ error: "Unauthorized: User ID mismatch" });
+      }
+      req.user = userId;
+      next();
+    } catch (error) {
+      console.error("Database query error:", error);
+      res.status(500).json({ error: "Internal server error" });
+    }
   });
 };
 
-
 const generateToken = (userId, userPhone) => {
-  
   // const secretKey = crypto.randomBytes(64).toString("hex");
-  return jwt.sign({ userId, userPhone }, process.env.JWT_SECRET, { expiresIn: "1h" });
+  return jwt.sign({ userId, userPhone }, process.env.JWT_SECRET, {
+    expiresIn: "1h"
+  });
 };
 
 app.post("/users/login", async (req, res) => {
-  
   const { phone, password } = req.body;
+
   try {
     const result = await pool.query(
-      "SELECT id as user_id FROM users WHERE phone = $1 AND password = $2",
+      "SELECT id as user_id, first_name || ' ' || last_name as user_name, email, phone, question, answer FROM users WHERE phone = $1 AND password =$2",
       [phone, password]
     );
-    console.log(result.rows[0]);
-
+  
     const token = generateToken(result.rows[0].user_id, result.rows[0].phone);
     res.json({ ...result.rows[0], token });
   } catch (error) {
@@ -114,24 +118,39 @@ app.post("/users/register", async (req, res) => {
     res.status(404).json({ error: "create user error" });
   }
 });
+
+app.get("/users/:userId", async (req, res) => {
+  const user_id = req.params.userId;
+  try {
+    const result = await pool.query("select * from users where id = $1", [
+      user_id
+    ]);
+    res.json(result.rows[0]);
+  } catch {
+    res.status(404).json({ error: "User not found" });
+  }
+});
+
+
+app.get("/users/isLogged", verifyToken, async (req, res) => {
+  res.json(req.user);
+});
+
 app.use(verifyToken);
 app.get("/chats/:userId", async (req, res) => {
-
-  console.log(req.headers.authorization);
   const user_id = req.params.userId;
-  // const token = req.headers["authorization"]?.split(" ")[1];
-
-  
   if (!user_id) {
     return res.status(400).json({ error: "User ID is required" });
   }
-  console.log({ user_id });
+  
   try {
-    const result = await pool.query(
-      "SELECT * FROM chat_users JOIN chats ON chats.id = chat_users.chat_id WHERE chats.is_deleted = false AND chat_users.user_id = $1",
-      [user_id]
-    );
-    console.log(result.rows);
+  const result = await pool.query(
+    "SELECT * FROM chat_users JOIN chats ON chats.id = chat_users.chat_id WHERE chats.is_deleted = false AND chat_users.user_id = $1",
+    [user_id]
+  );
+  console.log(result.rows);
+  
+  
 
     if (result.rows.length === 0) {
       return res.status(200).json({ message: "No chats found for this user." });
@@ -170,9 +189,9 @@ app.get("/chats/:userId", async (req, res) => {
 app.post("/chats/:userId", async (req, res) => {
   const user_id = req.body.userId;
   const userToChat = req.body.userToChat;
-  const token = req.headers["authorization"]?.split(" ")[1];
 
-  
+  // const token = req.headers["authorization"]?.split(" ")[1];
+
   const insertedChat = await insertNewChat(userToChat, user_id);
 
   res.json(insertedChat);
@@ -190,14 +209,13 @@ app.get("/:user_id/messege/:chat_id", async (req, res) => {
   const user_id = req.params.user_id;
 
   const result = await receiveMessages(chat_id, user_id);
-  console.log({ result });
+
 
   res.json(result);
 });
 
-app.post("/message/:chat_id",verifyToken, async (req, res) => {
+app.post("/message/:chat_id", verifyToken, async (req, res) => {
   const chat_id = req.params.chat_id;
-
 
   const { message, sender_id } = req.body;
   // const user_id = req.body.user_id;

@@ -3,8 +3,13 @@ import { messege } from "./messege";
 
 type UserExist = {
   phone: string;
-  password: string;
   token: string;
+  email: string;
+  password: string;
+  question: string;
+  answer: string;
+  user_name: string;
+  id: number;
 };
 
 type formData = {
@@ -19,8 +24,16 @@ type formData = {
 export type userExist = { user_id: string; token: string };
 export type sendRequestTypes = formDataWithToken | userExist | messege[];
 export type formDataWithToken = formData & { token: string; id: number };
+
+export async function UserLogged() {
+  return await sendRequest<string>({
+    url: `/users/isLogged`,
+    method: "GET"
+  });
+}
+
 export async function getUserExist(phone: string, password: string) {
-    
+
   return (await sendRequest<UserExist>({
     url: "/users/login",
     method: "POST",

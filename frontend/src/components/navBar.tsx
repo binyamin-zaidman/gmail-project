@@ -2,12 +2,14 @@ import { useEffect, useRef, useState } from "react";
 import "../styles/navBar.css";
 import { useNavigate, useParams } from "react-router-dom";
 import { useBackground } from "./BackgroundContext";
+import { useUser  } from '../components/UserContext.tsx'; 
 
 export default function NavBar() {
     const { userId } = useParams<{ userId: string }>();
     const navigate = useNavigate();
     const [showSettings, setShowSettings] = useState(false);
     const { backgroundColor, setBackgroundColor } = useBackground();
+    // const { userDetails, setUserDetails } = useUserDetails();
     const settingsRef = useRef<HTMLDivElement>(null);
 
     const handleLogout = () => {
@@ -44,6 +46,7 @@ export default function NavBar() {
         "#FF748B",
         "#6A669D",
     ];
+    
 
 
     return (

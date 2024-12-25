@@ -22,13 +22,9 @@ export default function ShowAllMessages() {
     };
 
 
-    console.log({allMessages});
-    
-
-
     useEffect(() => {
         if (!chatId || !userId) {
-            setError("Missing chatId or userId");
+            // setError("Missing chatId or userId");
             return;
         }
 
@@ -41,6 +37,7 @@ export default function ShowAllMessages() {
 
         // הבאת כל ההודעות מהשרת
         const fetchMessages = async () => {
+            
             try {
 
                 const messages = await getAllMessages(chatId, userId);

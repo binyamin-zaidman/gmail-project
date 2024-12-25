@@ -1,41 +1,48 @@
-import { useState } from "react";
+import { useState, useEffect, useContext } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import '../styles/login.css'
-import { getUserExist, userExist } from "../api/users";
-import { Navigate } from "react-router-dom";
+import { getUserExist, userExist, UserLogged } from "../api/users";
+// import { PasswordRounded } from "@mui/icons-material";
+import { useUser  } from '../components/UserContext.tsx'; 
+
 
 export default function Login() {
     const [phone, setPhone] = useState("")
     const [password, setPassword] = useState("")
     const [errorMessage, setErrorMessage] = useState("");
     const navigate = useNavigate();
-    const location = useLocation();
+    const { user, setUser } = useUser(); 
 
-    const handleForGet = () => {
-        if (!phone || !password) {
-            console.log("Please fill in all fields");
-            return
-        } else {
-            console.log({ phone, password })
-        }
-    }
+    // useEffect(() => {
+    //     const checkUserLoggedIn = async () => {
+    //         try {
+    //             const result = await UserLogged();
+                
+    //             if (result) {
+    //                 setUser(result);
+    //                 navigate(`/app/${result}`, { replace: true });
+    //             }
+    //         } catch (error) {
+    //             console.error("Error checking login status:", error);
+    //             setErrorMessage("Unable to verify login status.");
+    //         }
+    //         checkUserLoggedIn();
+    //     };
+    // }, [navigate,setUser]);
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const { name, value } = e.target;
-        if (name === "phone") {
-            setPhone(value)
-        } else if (name === "password") {
-            setPassword(value)
-        }
+        if (name === "phone") setPhone(value) 
+        if (name === "password") setPassword(value)
         setErrorMessage("")
     };
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
         try {
-
             const result = await getUserExist(phone, password);
             if (result) {
                 localStorage.setItem("user", JSON.stringify(result.token));
+                // setUser(result);
                 navigate(`/app/${result.user_id}`, { replace: true });
             } else {
                 setErrorMessage("Invalid credentials");
@@ -45,11 +52,7 @@ export default function Login() {
             console.error(error);
         }
     };
-    // const ProtectedRoute = ({ children }: { children: JSX.Element }) => {
-    //     const token = localStorage.getItem("token");
-    //     return token ? children : <Navigate to="/login" />;
-    // };
-
+    ;
     return (
 
         <div className="LoginPageContainer">
@@ -77,7 +80,7 @@ export default function Login() {
                     <a href=" "><p>Forgot password?</p></a>
                     <div className="buttonForLogin">
 
-                        <button onClick={() => navigate("/signUp")}>SignUp</button>
+                        <button type="button" onClick={() => navigate("/signUp")}>SignUp</button>
 
                         <button type="submit">login</button>
                         {errorMessage && <div id="errorMessage">{errorMessage}</div>}
