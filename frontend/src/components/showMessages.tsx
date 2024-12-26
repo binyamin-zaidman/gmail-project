@@ -9,7 +9,7 @@ import { useBackground } from "./BackgroundContext";
 
 const socket = io("http://localhost:3000");
 
-export default function ShowAllMessages() {
+export default function ShowAllMessages({user}) {
     const { backgroundColor } = useBackground();
     const [allMessages, setAllMessages] = useState<messege[]>([]);
     const [error, setError] = useState<string | null>(null);
@@ -96,13 +96,12 @@ export default function ShowAllMessages() {
             sender_id: userId,
             message_time: new Date().toISOString(),
             is_read: false,
-            sender_name: "User", // צריך לשנות לשם משתמש שמחובר
+            sender_name: "User" // צריך לשנות לשם משתמש שמחובר
         };
 
         try {
             // שליחת ההודעה לשרת לשמירה ב-DB
             const { sender_name } = await sendMessege(messageObject);
-
             // שליחת ההודעה לכל המשתמשים המחוברים
             socket.emit("sendMessage", { ...messageObject, sender_name });
 
@@ -121,6 +120,7 @@ export default function ShowAllMessages() {
         }
 
     };
+    
 
 
     return (
@@ -130,7 +130,7 @@ export default function ShowAllMessages() {
                     src="https://imgv3.fotor.com/images/blog-richtext-image/10-profile-picture-ideas-to-make-you-stand-out.jpg"
                     alt="Profile"
                 />
-                <h3>{allMessages[allMessages.length - 1]?.chat_name}</h3>
+                <h3>{allMessages[0]?.chat_name}</h3>
             </div>
             <div id="allMessages" style={{ backgroundColor }}>
                 {error && <div className="error">{error}</div>}
@@ -141,7 +141,7 @@ export default function ShowAllMessages() {
                         key={index}
                         isCurrentUser={message.sender_id == userId}
                         userName={message.sender_name || "Unknown"}
-                        content={message.message}
+                        content={message.message || "No message"}
                         time={new Date(message.message_time).toLocaleString()}
 
                     />

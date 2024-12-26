@@ -4,8 +4,12 @@ import { useNavigate, useParams } from "react-router-dom";
 import { useBackground } from "./BackgroundContext";
 import { useUser  } from '../components/UserContext.tsx'; 
 
-export default function NavBar() {
-    const { userId } = useParams<{ userId: string }>();
+export default function NavBar({user}) {
+    // if(user){
+    //     const userDatiles = user[0].username;
+                
+    // }
+    // const { userId } = useParams<{ userId: string }>();
     const navigate = useNavigate();
     const [showSettings, setShowSettings] = useState(false);
     const { backgroundColor, setBackgroundColor } = useBackground();
@@ -57,8 +61,10 @@ export default function NavBar() {
             </div>
             {showSettings && (
                 <div id="settingsMenu" ref={settingsRef}>
-                    <div onClick={() => { alert(`Viewing profile for user ${userId}`) }}>
-                        View Profile
+                    <div onClick={() => { alert(`Viewing profile for user ${user[0].username}`) }}>
+                        <div>
+                            <p>your profile is: '{user[0].username}'</p>
+                        </div>
                     </div>
                     <div>
                         Change Background:
