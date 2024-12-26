@@ -55,12 +55,13 @@ export default function Chat({ chatId, chatName, message, time, profileImage, us
       }, [chatName, message, userId]);
     
 
-    const RemoveItem = async () => {
-        try {
-            const response = await RemoveChat(chatId);
-
-        } catch (error) {
-            console.error("Error removing chat:", error);
+      const RemoveItem = async () => {
+        if (confirm("Are you sure you want to remove this chat?")) {
+            try {
+                const response = await RemoveChat(chatId);
+            } catch (error) {
+                console.error("Error removing chat:", error);
+            }
         }
     };
     // useEffect(() => {
