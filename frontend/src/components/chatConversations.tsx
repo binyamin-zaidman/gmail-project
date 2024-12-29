@@ -106,7 +106,7 @@ export default function ChatConversations() {
                         message={chat.lastChat}
                         time={chat.time}
                         profileImage={chat.profileImage}
-                        userId={chat.userId}
+                        userId={chat.userId ?? chat.user_id}
                     />
                 ))}
             </div>
