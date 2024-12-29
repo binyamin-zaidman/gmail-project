@@ -118,7 +118,13 @@ export default function ShowAllMessages() {
             e.preventDefault();
             sendMessage(newMessage);
         }
-
+    };
+    const getChatName = () => {
+        if (allMessages.length === 0) {
+            return ""; // שם ברירת מחדל במקרה שאין הודעות
+        }
+        const otherUser = allMessages.find(msg => msg.sender_id !== userId);
+        return otherUser ? otherUser.sender_name : ""; // מחזיר את שם המשתמש שאינו המשתמש המחובר
     };
     
 
@@ -130,7 +136,7 @@ export default function ShowAllMessages() {
                     src="https://imgv3.fotor.com/images/blog-richtext-image/10-profile-picture-ideas-to-make-you-stand-out.jpg"
                     alt="Profile"
                 />
-                <h3>{allMessages[0]?.sender_name}</h3>
+                <h3>{getChatName()}</h3>
             </div>
             <div id="allMessages" style={{ backgroundColor }}>
                 {error && <div className="error">{error}</div>}

@@ -15,7 +15,7 @@
 }
 
 #headerConversations {
-    height: 50px;
+    height: 60px;
     position: sticky;
     top: 0;
     display: flex;

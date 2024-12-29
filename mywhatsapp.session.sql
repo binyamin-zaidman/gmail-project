@@ -363,4 +363,4 @@ select first_name || ' ' ||last_name  as userName from users where phone = '0583
 
 select phone, password from users where phone = '0586646399' and password = '1234'
 
-DELETE from users where id  = 'a350e759-ac9a-4c7d-80d8-c1f0602c868e'
+DELETE from chats

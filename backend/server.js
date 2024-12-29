@@ -241,10 +241,9 @@ app.post("/users/getByPhone", async (req, res) => {
 // });
 
 app.post("/chats/:userId", async (req, res) => {
-  const user_id = req.body.userId;
-  const userToChat = req.body.userToChat;
+  const { userId, userToChat } = req.body;
 
-  const insertedChat = await insertNewChat(userToChat, user_id);
+  const insertedChat = await insertNewChat(userToChat, userId);
 
   res.json(insertedChat);
 });
