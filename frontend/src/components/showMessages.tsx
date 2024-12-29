@@ -9,7 +9,7 @@ import { useBackground } from "./BackgroundContext";
 
 const socket = io("http://localhost:3000");
 
-export default function ShowAllMessages({user}) {
+export default function ShowAllMessages() {
     const { backgroundColor } = useBackground();
     const [allMessages, setAllMessages] = useState<messege[]>([]);
     const [error, setError] = useState<string | null>(null);
@@ -120,6 +120,7 @@ export default function ShowAllMessages({user}) {
         }
 
     };
+    console.log(allMessages);
     
 
 
@@ -130,7 +131,7 @@ export default function ShowAllMessages({user}) {
                     src="https://imgv3.fotor.com/images/blog-richtext-image/10-profile-picture-ideas-to-make-you-stand-out.jpg"
                     alt="Profile"
                 />
-                <h3>{allMessages[0]?.chat_name}</h3>
+                <h3>{allMessages[0]?.sender_name}</h3>
             </div>
             <div id="allMessages" style={{ backgroundColor }}>
                 {error && <div className="error">{error}</div>}

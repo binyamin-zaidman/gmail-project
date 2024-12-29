@@ -34,7 +34,7 @@ export default function AppPage() {
         <div className="ContainerPage" style={{ backgroundColor, height: "100vh" }}>
             <NavBar user={user}/>
             <ChatConversations />
-            <ShowAllMessages user={user }/>
+            <ShowAllMessages/>
 
         </div>
     );

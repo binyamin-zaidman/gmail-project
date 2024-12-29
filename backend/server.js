@@ -196,21 +196,20 @@ app.get("/chats/:userId", async (req, res) => {
 });
 
 app.post("/users/getByPhone", async (req, res) => {
-  const user = req.body.namByPHone;
+  const user = req.body.phone;
 console.log("user from body", user);
-
   try {
     if (user.length == 10) {
       const queryByPHone = await pool.query(
-        "select first_name || ' ' ||last_name as userName from users where phone = $1",
+        "select first_name || ' ' ||last_name as userName, phone from users where phone = $1",
         [user]
       );
-      console.log("result by user phone",queryByUserId);
+      console.log("result by user phone",queryByPHone);
 
       res.json(queryByPHone.rows);
     } else {
       const queryByUserId = await pool.query(
-        "select first_name || ' ' ||last_name as userName from users where id = $1",
+        "select first_name || ' ' ||last_name as userName,phone from users where id = $1",
         [user]
       );
       console.log("result by user id",queryByUserId);
