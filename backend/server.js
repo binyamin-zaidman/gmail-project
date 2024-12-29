@@ -109,11 +109,12 @@ app.post("/users/register", async (req, res) => {
   try {
     const { firstName, lastName, email, phone, password, question, answer } =
       req.body;
-    const isUserXsist = await pool.query(
-      "select phone, password from users where phone = $1 and password = $2",
-      [phone, password]
-    );
-    if (!isUserXsist) {
+      
+      const isUserExist = await pool.query(
+        "SELECT EXISTS (SELECT 1 FROM users WHERE phone = $1 AND password = $2)",
+        [phone, password]
+      );
+    if (!isUserExist.rows[0].exists) {
       const result = await pool.query(
         "insert into users (first_name, last_name, email, password,phone, question, answer) values ($1, $2, $3, $4, $5, $6, $7) RETURNING *",
         [firstName, lastName, email, password, phone, question, answer]

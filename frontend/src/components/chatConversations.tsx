@@ -27,6 +27,9 @@ export default function ChatConversations() {
             const response = await getAllChats(userId) as any[];
 
             try {
+                if(!Array.isArray(response)) {
+                    return
+                }
                 // עיבוד השיחות כדי להוסיף את השדות החסרים
                 const processedChats = response.map(chat => ({
                     id: chat.chat_id,
