@@ -19,7 +19,7 @@ export default function Message() {
             setLoading(true);
             try {
                 const res = await getAllMesseges(Number(chatId));
-                console.log(res);
+              
 
                 setMesseges(res);
             } catch (error: any) {

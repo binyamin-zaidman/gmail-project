@@ -32,7 +32,6 @@ export default function Chat({ chatId, chatName, message, time, profileImage, us
           if (myId == userId) {
               try {
                   const user = await getUserByPhone(chatName);
-                    console.log("i want to call with",user);
 
                 //   setResolvedChatName(user[0]);
                   setUserToChat(user);
@@ -42,7 +41,6 @@ export default function Chat({ chatId, chatName, message, time, profileImage, us
         } else {
             try {
                 const user = await getUserByPhone(userId);
-                console.log("it want call with",user);
                 // setResolvedChatName(user.username || chatName);
                 setUserToChat(user);
             } catch (error) {
@@ -68,7 +66,6 @@ export default function Chat({ chatId, chatName, message, time, profileImage, us
     // userByPhone();
     // });
 
-    console.log(userToChat);
     
     return (
         <div id="chatContainer" onClick={() => { navigate(`/app/${pathname[2]}/chat/${chatId}`, { relative: "path" }) }}>

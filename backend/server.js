@@ -150,7 +150,6 @@ app.use(verifyToken);
 
 app.get("/app/:user", async (req, res) => {
   const userId = req.params.user;
-  console.log({ userId });
 
   if (!userId) {
     return res.status(400).json({ error: "User ID is required" });
@@ -160,7 +159,6 @@ app.get("/app/:user", async (req, res) => {
       "select id, first_name || ' ' ||last_name as userName,email,phone from users where id= $1",
       [userId]
     );
-    console.log(result.rows);
 
     if (result.rows) {
       res.json(result.rows);
@@ -183,7 +181,6 @@ app.get("/chats/:userId", async (req, res) => {
       "SELECT * FROM chat_users JOIN chats ON chats.id = chat_users.chat_id WHERE chats.is_deleted = false AND chat_users.user_id = $1",
       [user_id]
     );
-    console.log(result.rows);
 
     if (result.rows.length === 0) {
       return res.status(200).json({ message: "No chats found for this user." });
@@ -197,14 +194,12 @@ app.get("/chats/:userId", async (req, res) => {
 
 app.post("/users/getByPhone", async (req, res) => {
   const user = req.body.phone;
-console.log("user from body", user);
   try {
     if (user.length == 10) {
       const queryByPHone = await pool.query(
         "select first_name || ' ' ||last_name as userName, phone from users where phone = $1",
         [user]
       );
-      console.log("result by user phone",queryByPHone);
 
       res.json(queryByPHone.rows);
     } else {
@@ -212,7 +207,6 @@ console.log("user from body", user);
         "select first_name || ' ' ||last_name as userName,phone from users where id = $1",
         [user]
       );
-      console.log("result by user id",queryByUserId);
       
       res.json(queryByUserId.rows);
     }

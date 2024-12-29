@@ -39,7 +39,6 @@ if (typeof props === 'string' ) {
         
         options.headers = {...options.headers, Authorization: `Bearer ${token}`};
     }
-    console.log({url, options});
 
     try {
         const res = await fetch(`http://localhost:3000${url}`, options);

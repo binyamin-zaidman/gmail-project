@@ -120,7 +120,6 @@ export default function ShowAllMessages() {
         }
 
     };
-    console.log(allMessages);
     
 
 
