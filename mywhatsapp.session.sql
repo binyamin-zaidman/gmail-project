@@ -357,5 +357,6 @@ select id, first_name,last_name,email,phone from users where id = '1705079e-cb0c
 
 SELECT * FROM chat_users JOIN chats ON chats.id = chat_users.chat_id WHERE chats.is_deleted = false AND chat_users.user_id = '1705079e-cb0c-4fc1-b4f1-7e2d055d69f4'
 
-
 SELECT * FROM chat_users JOIN chats ON chats.id = chat_users.chat_id WHERE chats.is_deleted = false AND chat_users.user_id = '1705079e-cb0c-4fc1-b4f1-7e2d055d69f4'
+
+select first_name || ' ' ||last_name  as userName from users where phone = '0583276841'

@@ -70,6 +70,6 @@ export async function getUserByPhone(namByPHone:string){
   return (await sendRequest<string>({
     url:`/users/getByPhone`,
     method: "POST",
-    body:{namByPHone}
+    body:{phone:namByPHone}
   }))
 } 

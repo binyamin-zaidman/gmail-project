@@ -17,7 +17,7 @@ export default function Chat({ chatId, chatName, message, time, profileImage, us
     const pathname = useLocation().pathname.split("/");
     const [userToChat, setUserToChat] = useState<string | null>(null);
     const [resolvedChatName, setResolvedChatName] = useState<string>(chatName);
-    const { myId } = useParams()  
+    const  myId  = useParams().userId;  
     // const userByPhone = async () => {
     //     try {
     //         const user = await getUserByPhone(message);
@@ -34,17 +34,17 @@ export default function Chat({ chatId, chatName, message, time, profileImage, us
                   const user = await getUserByPhone(chatName);
                     console.log("i want to call with",user);
 
-                  setResolvedChatName(user.username || chatName);
-                  setUserToChat(user[0].username);
+                //   setResolvedChatName(user[0]);
+                  setUserToChat(user);
             } catch (error) {
                 console.error("Error fetching user by phone:", error);
             }
         } else {
             try {
                 const user = await getUserByPhone(userId);
-                console.log("it want to call with",user);
-                setResolvedChatName(user.username || chatName);
-                setUserToChat(user[0].username);
+                console.log("it want call with",user);
+                // setResolvedChatName(user.username || chatName);
+                setUserToChat(user);
             } catch (error) {
               console.error("Error fetching user by ID:", error);
             }
@@ -67,14 +67,17 @@ export default function Chat({ chatId, chatName, message, time, profileImage, us
     // useEffect(() => {
     // userByPhone();
     // });
+
+    console.log(userToChat);
+    
     return (
         <div id="chatContainer" onClick={() => { navigate(`/app/${pathname[2]}/chat/${chatId}`, { relative: "path" }) }}>
             <div id="profileImage">
                 <img src={profileImage} alt="User Profile" id="profileImage" />
             </div>
             <div id="showUser">
-                <p id="chatName">{userToChat}</p>
-                <p id="message">{resolvedChatName}</p>
+                <p id="chatName">{userToChat && userToChat[0].username}</p>
+                <p id="message">{userToChat && userToChat[0].phone}</p>
             </div>
             <div
                 id="removeChatIcon"

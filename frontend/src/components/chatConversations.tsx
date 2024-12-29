@@ -23,7 +23,7 @@ export default function ChatConversations() {
 
     useEffect(() => {
         const fetchChats = async () => {
-            
+
             const response = await getAllChats(userId) as any[];
 
             try {
@@ -42,22 +42,22 @@ export default function ChatConversations() {
                 console.error("Error fetching chats:", error);
             }
         };
-        
+
         fetchChats();
     }, [userId]);
-    
-    
+
+
     // סינון שיחות לפי חיפוש
     const filteredChats = chats.filter(chat =>
         chat.chatName.toLowerCase().includes(searchTerm.toLowerCase())
     );
-       
+
     const addChat = async (userToChat: string) => {
-        
-        
+
+
         // בדיקה האם כבר יש צ'אט עם המשתמש הזה
         const existingChat = chats.some(chat => chat.chatName === userToChat); // שיפור הבדיקה
-        
+
         if (existingChat) {
             alert("You already have a chat with this user");
             return;
@@ -79,10 +79,6 @@ export default function ChatConversations() {
         };
     };
 
-
-
-
-console.log(chats);
 
     return (
         <div id="chatConversationsContainer">
