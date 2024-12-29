@@ -360,3 +360,7 @@ SELECT * FROM chat_users JOIN chats ON chats.id = chat_users.chat_id WHERE chats
 SELECT * FROM chat_users JOIN chats ON chats.id = chat_users.chat_id WHERE chats.is_deleted = false AND chat_users.user_id = '1705079e-cb0c-4fc1-b4f1-7e2d055d69f4'
 
 select first_name || ' ' ||last_name  as userName from users where phone = '0583276841'
+
+select phone, password from users where phone = '0586646399' and password = '1234'
+
+DELETE from users where id  = 'a350e759-ac9a-4c7d-80d8-c1f0602c868e'
