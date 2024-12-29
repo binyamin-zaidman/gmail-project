@@ -71,8 +71,6 @@ export default function SignUp() {
         setErrorMessage("")
         try {
             const result = await createUser({ ...formData });
-            console.log(result);
-
             localStorage.setItem("user", JSON.stringify(result.token))
             navigate(`/app/${result.id}`, { replace: true });
 
@@ -107,6 +105,7 @@ export default function SignUp() {
                     />
                     {errorMessage && <p className="error">{errorMessage}</p>}
                     <button onClick={handleNext}>Next</button>
+                    <button onClick={()=>navigate("/")}>Back</button>
                 </>
             )}
 

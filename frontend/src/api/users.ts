@@ -20,6 +20,7 @@ type formData = {
   password: string;
   question: string;
   answer: string;
+  user_name?: string;
 };
 export type userExist = { user_id: string; token: string };
 export type sendRequestTypes = formDataWithToken | userExist | messege[];
@@ -56,3 +57,19 @@ export async function createUser({
     body: { firstName, lastName, email, phone, password, question, answer }
   })) as formDataWithToken;
 }
+
+export async function getUserDetails(userId:string){
+  return (await sendRequest<object>({
+    url: `/app/${userId}`,
+    method:"GET"
+  }))
+}
+
+export async function getUserByPhone(namByPHone:string){
+  
+  return (await sendRequest<string>({
+    url:`/users/getByPhone`,
+    method: "POST",
+    body:{namByPHone}
+  }))
+} 

@@ -13,8 +13,8 @@ export default function MessageComponent({ isCurrentUser, userName, content, tim
                     <h3>{isCurrentUser ? "You" : userName}</h3>
                 </div>
                 <div id="messageBody">
-                    <h4>{content}</h4>
-                    <p>{time}</p>
+                    <h4 className="content">{content}</h4>
+                    <p className="time">{time}</p>
                 </div>
             </div>
         </div>

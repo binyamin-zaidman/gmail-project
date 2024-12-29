@@ -15,7 +15,7 @@
 }
 
 #headerConversations {
-    height: 76px;
+    height: 50px;
     position: sticky;
     top: 0;
     display: flex;
@@ -24,9 +24,9 @@
     margin-bottom: 1rem;
     padding: 0 10px;
     gap: 1rem;
-    background-color: #ffffff;
     z-index: 1;
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    background: linear-gradient(235deg, #6fb0f1, #3982f7);
 }
 
 #headerConversations h2 {
@@ -35,14 +35,13 @@
 }
 
 #headerConversations input {
-    width: 70%;
+    width: 100%;
     padding: 0.5rem;
     border-radius: 6px;
     border: 1px solid #ccc;
 }
 
 #addChatButton {
-    color: #007bff;
     padding: 0.5rem;
     border-radius: 25%;
     font-size: 1.5rem;
@@ -59,6 +58,6 @@
 }
 #chatsHeader{
     font-size: 1rem;
-    color: #1866b9;
+    color: hsl(0, 0%, 95%);
     text-shadow: 1px 2px 2px #000000a5;
 }

@@ -57,16 +57,20 @@ const verifyToken = (req, res, next) => {
   }
   const token = authHeader.split(" ")[1];
 
-  jwt.verify(token, process.env.JWT_SECRET,async (err, decoded) => {
+  jwt.verify(token, process.env.JWT_SECRET, async (err, decoded) => {
     if (err) {
       return res.status(401).json({ error: "Invalid token" });
     }
     const userId = decoded.userId;
     try {
-      const resultID = await pool.query("SELECT id FROM users WHERE id = $1", [userId]);
+      const resultID = await pool.query("SELECT id FROM users WHERE id = $1", [
+        userId
+      ]);
 
       if (!resultID.rows.length || resultID.rows[0].id !== userId) {
-        return res.status(403).json({ error: "Unauthorized: User ID mismatch" });
+        return res
+          .status(403)
+          .json({ error: "Unauthorized: User ID mismatch" });
       }
       req.user = userId;
       next();
@@ -92,7 +96,7 @@ app.post("/users/login", async (req, res) => {
       "SELECT id as user_id, first_name || ' ' || last_name as user_name, email, phone, question, answer FROM users WHERE phone = $1 AND password =$2",
       [phone, password]
     );
-  
+
     const token = generateToken(result.rows[0].user_id, result.rows[0].phone);
     res.json({ ...result.rows[0], token });
   } catch (error) {
@@ -105,14 +109,21 @@ app.post("/users/register", async (req, res) => {
   try {
     const { firstName, lastName, email, phone, password, question, answer } =
       req.body;
-    const result = await pool.query(
-      "insert into users (first_name, last_name, email, password,phone, question, answer) values ($1, $2, $3, $4, $5, $6, $7) RETURNING *",
-      [firstName, lastName, email, password, phone, question, answer]
+    const isUserXsist = await pool.query(
+      "select phone, password from users where phone = $1 and password = $2",
+      [phone, password]
     );
+    if (!isUserXsist) {
+      const result = await pool.query(
+        "insert into users (first_name, last_name, email, password,phone, question, answer) values ($1, $2, $3, $4, $5, $6, $7) RETURNING *",
+        [firstName, lastName, email, password, phone, question, answer]
+      );
+      const token = generateToken(result.rows[0].id, result.rows[0].phone);
 
-    const token = generateToken(result.rows[0].id, result.rows[0].phone);
-
-    res.json({ ...result.rows[0], token });
+      res.json({ ...result.rows[0], token });
+    } else {
+      res.status(404).json({ error: "user is exist" });
+    }
   } catch (error) {
     console.error(error);
     res.status(404).json({ error: "create user error" });
@@ -131,26 +142,48 @@ app.get("/users/:userId", async (req, res) => {
   }
 });
 
-
 app.get("/users/isLogged", verifyToken, async (req, res) => {
   res.json(req.user);
 });
 
 app.use(verifyToken);
+
+app.get("/app/:user", async (req, res) => {
+  const userId = req.params.user;
+  console.log({ userId });
+
+  if (!userId) {
+    return res.status(400).json({ error: "User ID is required" });
+  }
+  try {
+    const result = await pool.query(
+      "select id, first_name || ' ' ||last_name as userName,email,phone from users where id= $1",
+      [userId]
+    );
+    console.log(result.rows);
+
+    if (result.rows) {
+      res.json(result.rows);
+    } else {
+      res.send("user not found");
+    }
+  } catch (error) {
+    console.error(error);
+    res.status(404).json({ error: "error in get chats" });
+  }
+});
+
 app.get("/chats/:userId", async (req, res) => {
   const user_id = req.params.userId;
   if (!user_id) {
     return res.status(400).json({ error: "User ID is required" });
   }
-  
   try {
-  const result = await pool.query(
-    "SELECT * FROM chat_users JOIN chats ON chats.id = chat_users.chat_id WHERE chats.is_deleted = false AND chat_users.user_id = $1",
-    [user_id]
-  );
-  console.log(result.rows);
-  
-  
+    const result = await pool.query(
+      "SELECT * FROM chat_users JOIN chats ON chats.id = chat_users.chat_id WHERE chats.is_deleted = false AND chat_users.user_id = $1",
+      [user_id]
+    );
+    console.log(result.rows);
 
     if (result.rows.length === 0) {
       return res.status(200).json({ message: "No chats found for this user." });
@@ -159,6 +192,33 @@ app.get("/chats/:userId", async (req, res) => {
   } catch (error) {
     console.error(error);
     res.status(404).json({ error: "error in get chats" });
+  }
+});
+
+app.post("/users/getByPhone", async (req, res) => {
+  const user = req.body.namByPHone;
+console.log("user from body", user);
+
+  try {
+    if (user.length == 10) {
+      const queryByPHone = await pool.query(
+        "select first_name || ' ' ||last_name as userName from users where phone = $1",
+        [user]
+      );
+      console.log("result by user phone",queryByUserId);
+
+      res.json(queryByPHone.rows);
+    } else {
+      const queryByUserId = await pool.query(
+        "select first_name || ' ' ||last_name as userName from users where id = $1",
+        [user]
+      );
+      console.log("result by user id",queryByUserId);
+      
+      res.json(queryByUserId.rows);
+    }
+  } catch {
+    res.status("404").send(error, "user not exist by phone");
   }
 });
 
@@ -190,8 +250,6 @@ app.post("/chats/:userId", async (req, res) => {
   const user_id = req.body.userId;
   const userToChat = req.body.userToChat;
 
-  // const token = req.headers["authorization"]?.split(" ")[1];
-
   const insertedChat = await insertNewChat(userToChat, user_id);
 
   res.json(insertedChat);
@@ -209,7 +267,6 @@ app.get("/:user_id/messege/:chat_id", async (req, res) => {
   const user_id = req.params.user_id;
 
   const result = await receiveMessages(chat_id, user_id);
-
 
   res.json(result);
 });

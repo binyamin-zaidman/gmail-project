@@ -1,7 +1,5 @@
 .LoginPageContainer {
-    display: grid;
-    grid-template-columns: 1fr;
-    max-width: 400px;
+    width: 400px;
     margin: auto;
     padding: 4rem;
     border: 1px solid #ddd;

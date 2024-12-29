@@ -42,24 +42,22 @@ export default function ChatConversations() {
                 console.error("Error fetching chats:", error);
             }
         };
-
+        
         fetchChats();
     }, [userId]);
-
-
+    
+    
     // סינון שיחות לפי חיפוש
     const filteredChats = chats.filter(chat =>
         chat.chatName.toLowerCase().includes(searchTerm.toLowerCase())
     );
-
-
-
+       
     const addChat = async (userToChat: string) => {
-
-
+        
+        
         // בדיקה האם כבר יש צ'אט עם המשתמש הזה
         const existingChat = chats.some(chat => chat.chatName === userToChat); // שיפור הבדיקה
-
+        
         if (existingChat) {
             alert("You already have a chat with this user");
             return;
@@ -84,7 +82,8 @@ export default function ChatConversations() {
 
 
 
-    console.log(chats);
+console.log(chats);
+
     return (
         <div id="chatConversationsContainer">
             <div id="headerConversations">
@@ -99,7 +98,7 @@ export default function ChatConversations() {
 
                 />
                 {/* <svg onClick={() => alert(" ")} id="addChatButton" xmlns="http://www.w3.org/2000/svg" height="10px" viewBox="0 -960 960 960" width="30px" fill="blue"><path d="M450-450H200v-60h250v-250h60v250h250v60H510v250h-60v-250Z" /></svg> */}
-                <svg onClick={() => setShowNewChatForm(true)} id="addChatButton" xmlns="http://www.w3.org/2000/svg" height="20px" viewBox="0 -960 960 960" width="30px" fill="blue"><path d="M450-450H200v-60h250v-250h60v250h250v60H510v250h-60v-250Z" /></svg>
+                <svg onClick={() => setShowNewChatForm(true)} id="addChatButton" xmlns="./frontend/public/add.svg" height="40px" viewBox="0 -960 960 960" width="30px" fill="blue"><path d="M450-450H200v-60h250v-250h60v250h250v60H510v250h-60v-250Z" /></svg>
             </div>
             <div id="chats">
                 {showNewChatForm && (<NewChatForm addChat={addChat} onClose={() => setShowNewChatForm(false)} />)}
@@ -108,7 +107,7 @@ export default function ChatConversations() {
                         key={index}
                         chatId={chat.id}
                         chatName={chat.chatName}
-                        message={chat.sender_id}
+                        message={chat.lastChat}
                         time={chat.time}
                         profileImage={chat.profileImage}
                         userId={chat.userId}

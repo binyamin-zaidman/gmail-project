@@ -3,8 +3,8 @@ import sendRequest from "./fetchRequest";
 export type messege = {
   chat_id: string;
   chat_name?: string;
-  message: string;
-  sender_id?: string;
+  message?: string;
+  sender_id: string;
   sender_name: string;
   is_read: boolean;
   message_time: string;
