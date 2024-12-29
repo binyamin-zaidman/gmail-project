@@ -40,6 +40,7 @@ io.on("connection", (socket) => {
     socket.broadcast.emit("newMessage", data);
     // await insertMessege(data.chat_id, data.message, false, 1);
     io.emit("newMessage", data);
+    
     socket.on("disconnect", () => {
       console.log("A user disconnected:", socket.id);
       io.emit("newMessage", data);
@@ -245,7 +246,7 @@ app.post("/chats/:userId", async (req, res) => {
   const userToChat = req.body.userToChat;
 
   const insertedChat = await insertNewChat(userToChat, user_id);
-
+  io.emit("newChat", insertedChat);
   res.json(insertedChat);
 });
 

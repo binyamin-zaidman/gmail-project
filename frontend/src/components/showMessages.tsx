@@ -118,8 +118,16 @@ export default function ShowAllMessages() {
             e.preventDefault();
             sendMessage(newMessage);
         }
-
     };
+    const getChatName = () => {
+        if (allMessages.length === 0) {
+            return allMessages[0]?.chat_name || "Unknown Chat"; // ברירת מחדל
+        }
+    
+        const otherUser = allMessages.find(msg => msg.sender_id !== userId);
+        return otherUser?.sender_name || allMessages[0]?.chat_name || "Unknown Chat"; // עדיפות לשם המשתמש השני או שם מוגדר מראש
+    };
+    
     
 
 
@@ -130,7 +138,7 @@ export default function ShowAllMessages() {
                     src="https://imgv3.fotor.com/images/blog-richtext-image/10-profile-picture-ideas-to-make-you-stand-out.jpg"
                     alt="Profile"
                 />
-                <h3>{allMessages[0]?.sender_name}</h3>
+                <h3>{getChatName()}</h3>
             </div>
             <div id="allMessages" style={{ backgroundColor }}>
                 {error && <div className="error">{error}</div>}
