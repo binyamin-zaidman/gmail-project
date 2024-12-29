@@ -9,13 +9,13 @@
     margin-top: 20px;
     position: absolute;
     top: 60px;
-    background-color: rgba(234, 234, 235, 0.829);
+    background-color: rgba(234, 234, 235, 0.995);
     border-radius: 14px;
 
 }
 #newChatForm input{
-    width: 250px;
-    height: 40px;
+    width: 24vw;
+    height: 15px;
     margin: 10px;
     border-radius: 5px;
     border: 1px solid black;
