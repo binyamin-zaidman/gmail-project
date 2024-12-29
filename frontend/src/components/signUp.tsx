@@ -104,8 +104,8 @@ export default function SignUp() {
                         placeholder="Enter your last name"
                     />
                     {errorMessage && <p className="error">{errorMessage}</p>}
+                    <button onClick={()=>navigate("/login")}>Back</button>
                     <button onClick={handleNext}>Next</button>
-                    <button onClick={()=>navigate("/")}>Back</button>
                 </>
             )}
 

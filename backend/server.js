@@ -132,6 +132,20 @@ app.post("/users/register", async (req, res) => {
   }
 });
 
+app.post("api/userexist", async (req, res) => {
+  const token = req.headers.authorization.split(" ")[1];
+  const decoded = jwt.verify(token, process.env.JWT_SECRET);
+  const phone = decoded.phone;
+  try {
+    const result = await pool.query("select * from users where phone = $1", [
+      phone
+    ]);
+    res.json(result.rows[0]);
+  } catch {
+    res.status(404).json({ error: "User not found" });
+  }
+});
+
 app.get("/users/:userId", async (req, res) => {
   const user_id = req.params.userId;
   try {
@@ -216,6 +230,7 @@ app.post("/users/getByPhone", async (req, res) => {
     res.status("404").send(error, "user not exist by phone");
   }
 });
+
 
 // app.post("/chats/:userId", async (req, res) => {
 //   const user_id = req.params.userId;
