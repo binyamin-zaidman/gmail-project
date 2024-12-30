@@ -139,6 +139,7 @@ export default function ShowAllMessages() {
                     alt="Profile"
                 />
                 <h3>{getChatName()}</h3>
+                <h3>{getChatName()}</h3>
             </div>
             <div id="allMessages" style={{ backgroundColor }}>
                 {error && <div className="error">{error}</div>}

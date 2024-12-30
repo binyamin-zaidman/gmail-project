@@ -53,6 +53,7 @@ async function deleteChat(chatId) {
       return { success: false, message: "Chat not found or already archived." };
     }
 
+    console.log("Chat archived:", result.rows[0]);
     return { success: true, chat: result.rows[0] };
   } catch (error) {
     console.error("Error archiving chat:", error);

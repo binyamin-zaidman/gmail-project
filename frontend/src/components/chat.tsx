@@ -17,7 +17,8 @@ export default function Chat({ chatId, chatName, message, time, profileImage, us
     const pathname = useLocation().pathname.split("/");
     const [userToChat, setUserToChat] = useState<string | null>(null);
     const [resolvedChatName, setResolvedChatName] = useState<string>(chatName);
-    const  myId  = useParams().userId;  
+    const myId = useParams().userId;
+    
     // const userByPhone = async () => {
     //     try {
     //         const user = await getUserByPhone(message);
@@ -26,34 +27,34 @@ export default function Chat({ chatId, chatName, message, time, profileImage, us
     //         console.error(error, "get user by phone:");
     //     }
     // }
-    
+
     useEffect(() => {
         const fetchChatName = async () => {
-          if (myId == userId) {
-              try {
-                  const user = await getUserByPhone(chatName);
+            if (myId == userId) {
+                try {
+                    const user = await getUserByPhone(chatName);
 
-                //   setResolvedChatName(user[0]);
-                  setUserToChat(user);
-            } catch (error) {
-                console.error("Error fetching user by phone:", error);
+                    //   setResolvedChatName(user[0]);
+                    setUserToChat(user);
+                } catch (error) {
+                    console.error("Error fetching user by phone:", error);
+                }
+            } else {
+                try {
+                    const user = await getUserByPhone(userId);
+                    // setResolvedChatName(user.username || chatName);
+                    setUserToChat(user);
+                } catch (error) {
+                    console.error("Error fetching user by ID:", error);
+                }
             }
-        } else {
-            try {
-                const user = await getUserByPhone(userId);
-                // setResolvedChatName(user.username || chatName);
-                setUserToChat(user);
-            } catch (error) {
-              console.error("Error fetching user by ID:", error);
-            }
-          }
         };
-    
-        fetchChatName();
-      }, [chatName, message, userId]);
-    
 
-      const RemoveItem = async () => {
+        fetchChatName();
+    }, [chatName, message, userId]);
+
+
+    const RemoveItem = async () => {
         if (confirm("Are you sure you want to remove this chat?")) {
             try {
                 const response = await RemoveChat(chatId);
@@ -67,7 +68,7 @@ export default function Chat({ chatId, chatName, message, time, profileImage, us
     // userByPhone();
     // });
 
-    
+
     return (
         <div id="chatContainer" onClick={() => { navigate(`/app/${pathname[2]}/chat/${chatId}`, { relative: "path" }) }}>
             <div id="profileImage">
