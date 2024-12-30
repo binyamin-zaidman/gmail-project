@@ -7,6 +7,7 @@
 #chatContainer {
     display: flex;
     flex-wrap: wrap;
+    justify-content: space-between;
     flex-direction: row;
     align-items: center;
     padding: 3px 10px;
@@ -17,9 +18,8 @@
 
 /* אפקט מעבר עכבר */
 #chatContainer:hover {
-    background-color: #f1f1f1;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    cursor: pointer;
+    background-color: #ccc7c7de;
+   
 }
 
 #profileImage {
@@ -33,12 +33,12 @@
 
 
 #profileImage:hover {
-    transform: scale(0.9);
+    transform: scale(1.04);
 }
 
 #showUser {
-    /* flex-grow: 1; */
-    margin-right: auto;
+    flex-grow: 1;
+    cursor: pointer;
 }
 
 #chatName {
@@ -59,9 +59,10 @@
 }
 
 #deleteChatIcon:hover {
+    background-color: #f1f1f1;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     cursor: pointer;
-    box-shadow: inset 0px 0px 5px rgba(0, 0, 0, 0.3);
-    transform: scale(0.95) translateY(-1px);
+    border-radius: 5px;
  
 }
 #deleteChatIcon{
