@@ -29,25 +29,25 @@ export default function ShowAllMessages() {
         }
 
         // מאזין להודעות חדשות מהשרת
-        socket.on("newMessage", (message) => {
-            if (message.chat_id === chatId) { // בדיקה אם ההודעה שייכת לצ'אט הנוכחי
-                // setAllMessages((prevMessages) => [...prevMessages, message]);
-            }
-        });
+        // socket.on("newMessage", (message) => {
+        //     if (message.chat_id === chatId) { // בדיקה אם ההודעה שייכת לצ'אט הנוכחי
+        //         // setAllMessages((prevMessages) => [...prevMessages, message]);
+        //     }
+        // });
 
         // הבאת כל ההודעות מהשרת
         const fetchMessages = async () => {
-            
             try {
-
                 const messages = await getAllMessages(chatId, userId);
+
                 setAllMessages((prevMessages) => {
-                    const newMessages = messages.filter(
-                        (msg) => !prevMessages.some((prevMsg) => prevMsg.message_time === msg.message_time)
+                    const uniqueMessages = [...prevMessages, ...messages].filter(
+                        (msg, index, self) =>
+                            index === self.findIndex((m) => m.message_time === msg.message_time)
                     );
-                    return newMessages;
+                    return uniqueMessages;
                 });
-                scrollToBottom();
+                // scrollToBottom();
 
             } catch (error) {
                 console.error("Error fetching messages:", error);
@@ -56,23 +56,23 @@ export default function ShowAllMessages() {
         };
 
         fetchMessages();
-        const handleNewMessage = (message: messege) => {
-            if (message.chat_id === chatId) {
-                setAllMessages((prevMessages) => {
-                    if (prevMessages.some((msg) => msg.message_time === message.message_time)) {
-                        return prevMessages;
-                    }
-                    return [...prevMessages, message];
-                });
-                scrollToBottom();
-            }
-        };
+        // const handleNewMessage = (message: messege) => {
+        //     if (message.chat_id === chatId) {
+        //         setAllMessages((prevMessages) => {
+        //             if (prevMessages.some((msg) => msg.message_time === message.message_time)) {
+        //                 return prevMessages;
+        //             }
+        //             return [...prevMessages, message];
+        //         });
+        //         scrollToBottom();
+        //     }
+        // };
 
-        socket.off("newMessage", handleNewMessage);
-        socket.on("newMessage", handleNewMessage);
-        return () => {
-            socket.off("newMessage", handleNewMessage);
-        };
+        // socket.off("newMessage", handleNewMessage);
+        // socket.on("newMessage", handleNewMessage);
+        // return () => {
+        //     socket.off("newMessage", handleNewMessage);
+        // };
 
 
     }, [chatId, userId]);
@@ -123,13 +123,14 @@ export default function ShowAllMessages() {
         if (allMessages.length === 0) {
             return allMessages[0]?.chat_name || "Unknown Chat"; // ברירת מחדל
         }
-    
+
         const otherUser = allMessages.find(msg => msg.sender_id !== userId);
         return otherUser?.sender_name || allMessages[0]?.chat_name || "Unknown Chat"; // עדיפות לשם המשתמש השני או שם מוגדר מראש
     };
-    
-    
 
+console.log({userId, chatId});
+
+console.log({allMessages});
 
     return (
         <div id="messagesContainer">

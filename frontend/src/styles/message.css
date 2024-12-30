@@ -117,15 +117,15 @@
     margin: 10px;
     object-fit: cover;
 }
-
+/* 
 #allMessages {
    
-    /* padding: 10px; */
+    /*padding: 10px; 
     transition: background-color 0.7s ease;
     flex: 1;
     width: 98%;
     overflow-y: none;
-    /* background: linear-gradient(165deg, #04213e, #99bffb); */
+    /*background: linear-gradient(165deg, #04213e, #99bffb);
 }
 
 #sendMessage {
@@ -150,4 +150,4 @@ textarea {
     width: 150px;
     font-style: italic;
     font-size: 20px;
-}
+} */

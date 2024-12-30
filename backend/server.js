@@ -275,7 +275,6 @@ app.get("/:user_id/messege/:chat_id", async (req, res) => {
   const user_id = req.params.user_id;
 
   const result = await receiveMessages(chat_id, user_id);
-
   res.json(result);
 });
 

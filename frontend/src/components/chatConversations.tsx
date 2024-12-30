@@ -120,7 +120,7 @@ export default function ChatConversations() {
                         time={chat.time}
                         profileImage={chat.profileImage}
                         userId={chat.userId ?? chat.user_id}
-                        setChats={setChats}
+                        // setChats={setChats}
                     />
                 ))}
             </div>
