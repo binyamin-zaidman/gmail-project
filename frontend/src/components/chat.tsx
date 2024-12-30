@@ -58,6 +58,7 @@ export default function Chat({ chatId, chatName, message, time, profileImage, us
         if (confirm("Are you sure you want to remove this chat?")) {
             try {
                 const response = await RemoveChat(chatId);
+                
                
             } catch (error) {
                 console.error("Error removing chat:", error);
