@@ -29,11 +29,12 @@ export default function ShowAllMessages() {
         }
 
         // מאזין להודעות חדשות מהשרת
-        // socket.on("newMessage", (message) => {
-        //     if (message.chat_id === chatId) { // בדיקה אם ההודעה שייכת לצ'אט הנוכחי
-        //         // setAllMessages((prevMessages) => [...prevMessages, message]);
-        //     }
-        // });
+        socket.on("newMessage", (message) => {
+            if (message.chat_id === chatId) { // בדיקה אם ההודעה שייכת לצ'אט הנוכחי
+                // setAllMessages((prevMessages) => [...prevMessages, message]);
+                
+            }
+        });
 
         // הבאת כל ההודעות מהשרת
         const fetchMessages = async () => {
@@ -56,23 +57,23 @@ export default function ShowAllMessages() {
         };
 
         fetchMessages();
-        // const handleNewMessage = (message: messege) => {
-        //     if (message.chat_id === chatId) {
-        //         setAllMessages((prevMessages) => {
-        //             if (prevMessages.some((msg) => msg.message_time === message.message_time)) {
-        //                 return prevMessages;
-        //             }
-        //             return [...prevMessages, message];
-        //         });
-        //         scrollToBottom();
-        //     }
-        // };
+        const handleNewMessage = (message: messege) => {
+            if (message.chat_id === chatId) {
+                setAllMessages((prevMessages) => {
+                    if (prevMessages.some((msg) => msg.message_time === message.message_time)) {
+                        return prevMessages;
+                    }
+                    return [...prevMessages, message];
+                });
+                scrollToBottom();
+            }
+        };
 
-        // socket.off("newMessage", handleNewMessage);
-        // socket.on("newMessage", handleNewMessage);
-        // return () => {
-        //     socket.off("newMessage", handleNewMessage);
-        // };
+        socket.off("newMessage", handleNewMessage);
+        socket.on("newMessage", handleNewMessage);
+        return () => {
+            socket.off("newMessage", handleNewMessage);
+        };
 
 
     }, [chatId, userId]);
@@ -104,10 +105,9 @@ export default function ShowAllMessages() {
             const { sender_name } = await sendMessege(messageObject);
             // שליחת ההודעה לכל המשתמשים המחוברים
             socket.emit("sendMessage", { ...messageObject, sender_name });
-
             // הוספת ההודעה לרשימה
             setAllMessages((prevMessages) => [...prevMessages, { ...messageObject, sender_name }]);
-
+           
             setNewMessage("");
         } catch (error) {
             console.error("Error sending message:", error);
@@ -128,9 +128,7 @@ export default function ShowAllMessages() {
         return otherUser?.sender_name || allMessages[0]?.chat_name || "Unknown Chat"; // עדיפות לשם המשתמש השני או שם מוגדר מראש
     };
 
-console.log({userId, chatId});
 
-console.log({allMessages});
 
     return (
         <div id="messagesContainer">

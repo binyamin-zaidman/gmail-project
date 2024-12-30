@@ -11,9 +11,11 @@
 }
 
 #navBar {
-    width: 5vw;
+    position: fixed;
+    left: 0;
+    width: 100%;
     height: 60px;
-    background: linear-gradient(112deg, #6fb0f1, #3982f7);
+    background: linear-gradient(180deg, #6fb0f1, #3982f7);
 
 }
 
