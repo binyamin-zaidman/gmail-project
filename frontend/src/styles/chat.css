@@ -56,8 +56,14 @@
     color: #000;
 }
 
-#removeChatIcon :hover {
-    border: 2px solid #0056b3;
+#deleteChatIcon:hover {
+    cursor: pointer;
+    box-shadow: inset 0px 0px 5px rgba(0, 0, 0, 0.3);
+    transform: scale(0.95) translateY(-1px);
+ 
+}
+#deleteChatIcon{
+    height: 35px;
 }
 .content{
     margin: 0;

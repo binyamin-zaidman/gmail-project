@@ -57,7 +57,8 @@ export default function Chat({ chatId, chatName, message, time, profileImage, us
     const RemoveItem = async () => {
         if (confirm("Are you sure you want to remove this chat?")) {
             try {
-                const response = await RemoveChat(chatId);
+                const response = await RemoveChat(chatId);                
+                
                
             } catch (error) {
                 console.error("Error removing chat:", error);
@@ -85,7 +86,7 @@ export default function Chat({ chatId, chatName, message, time, profileImage, us
                     RemoveItem();
                 }}
             >
-                <img src="/public/remove.svg" alt="Remove Chat" />
+                <img id="deleteChatIcon" src="/public/delete_10337510.png" alt="Remove Chat" />
             </div>
         </div>
     );
