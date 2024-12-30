@@ -56,23 +56,23 @@ export default function ShowAllMessages() {
         };
 
         fetchMessages();
-        // const handleNewMessage = (message: messege) => {
-        //     if (message.chat_id === chatId) {
-        //         setAllMessages((prevMessages) => {
-        //             if (prevMessages.some((msg) => msg.message_time === message.message_time)) {
-        //                 return prevMessages;
-        //             }
-        //             return [...prevMessages, message];
-        //         });
-        //         scrollToBottom();
-        //     }
-        // };
+        const handleNewMessage = (message: messege) => {
+            if (message.chat_id === chatId) {
+                setAllMessages((prevMessages) => {
+                    if (prevMessages.some((msg) => msg.message_time === message.message_time)) {
+                        return prevMessages;
+                    }
+                    return [...prevMessages, message];
+                });
+                scrollToBottom();
+            }
+        };
 
-        // socket.off("newMessage", handleNewMessage);
-        // socket.on("newMessage", handleNewMessage);
-        // return () => {
-        //     socket.off("newMessage", handleNewMessage);
-        // };
+        socket.off("newMessage", handleNewMessage);
+        socket.on("newMessage", handleNewMessage);
+        return () => {
+            socket.off("newMessage", handleNewMessage);
+        };
 
 
     }, [chatId, userId]);
