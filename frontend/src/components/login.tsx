@@ -52,9 +52,7 @@ export default function Login() {
             console.error(error);
         }
     };
-    ;
     return (
-
         <div className="LoginPageContainer">
             <h2>Login</h2>
             <div className="inputForLogin">
@@ -77,7 +75,7 @@ export default function Login() {
                         placeholder="Enter your password"
                         onChange={handleChange}
                     />
-                    <a href=" "><p>Forgot password?</p></a>
+                    <a href=""><p>Forgot password?</p></a>
                     <div className="buttonForLogin">
 
                         <button type="button" onClick={() => navigate("/signUp")}>SignUp</button>

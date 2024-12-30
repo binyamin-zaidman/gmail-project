@@ -3,8 +3,10 @@ import { useState, useEffect } from "react";
 import "../styles/chatConversation.css"
 import { createChat, getAllChats } from "../api/chats";
 // import { getChats } from "../api/chats"; 
-import { useParams } from "react-router-dom";
+import { Navigate, useParams } from "react-router-dom";
 import NewChatForm from "./NewChatForm";
+import { io } from "socket.io-client";
+const socket = io("http://localhost:3000");
 
 // type ShowChats = {
 //     chat_id:number
@@ -25,9 +27,9 @@ export default function ChatConversations() {
         const fetchChats = async () => {
 
             const response = await getAllChats(userId) as any[];
-
+            // if (response) setChats(response);
             try {
-                if(!Array.isArray(response)) {
+                if (!Array.isArray(response)) {
                     return
                 }
                 // עיבוד השיחות כדי להוסיף את השדות החסרים
@@ -39,20 +41,27 @@ export default function ChatConversations() {
                     profileImage: "https://img.freepik.com/free-icon/user_318-159711.jpg",
                     userId: chat.user_id
                 }));
-
                 setChats(processedChats);
+
             } catch (error) {
                 console.error("Error fetching chats:", error);
             }
         };
 
         fetchChats();
-    }, [userId]);
-
+        socket.on("newChat", (newChat) => {
+            if (newChat) {
+                setChats((prevChats) => [...prevChats, newChat]);
+            }
+        });
+        return () => {
+            socket.off("newChat");
+        };
+    }, [userId,chats]);
 
     // סינון שיחות לפי חיפוש
     const filteredChats = chats.filter(chat =>
-        chat.chatName.toLowerCase().includes(searchTerm.toLowerCase())
+        chat?.chatName?.toLowerCase().includes(searchTerm.toLowerCase())
     );
 
     const addChat = async (userToChat: string) => {
@@ -97,7 +106,8 @@ export default function ChatConversations() {
 
                 />
                 {/* <svg onClick={() => alert(" ")} id="addChatButton" xmlns="http://www.w3.org/2000/svg" height="10px" viewBox="0 -960 960 960" width="30px" fill="blue"><path d="M450-450H200v-60h250v-250h60v250h250v60H510v250h-60v-250Z" /></svg> */}
-                <svg onClick={() => setShowNewChatForm(true)} id="addChatButton" xmlns="./frontend/public/add.svg" height="40px" viewBox="0 -960 960 960" width="30px" fill="blue"><path d="M450-450H200v-60h250v-250h60v250h250v60H510v250h-60v-250Z" /></svg>
+                <img onClick={() => setShowNewChatForm(true)} id="addChatButton" src="/public/add_8514918.png" alt="img" />
+                {/* <svg onClick={() => setShowNewChatForm(true)} id="addChatButton" xmlns="./frontend/public/add.svg" height="40px" viewBox="0 -960 960 960" width="30px" fill="blue"><path d="M450-450H200v-60h250v-250h60v250h250v60H510v250h-60v-250Z" /></svg> */}
             </div>
             <div id="chats">
                 {showNewChatForm && (<NewChatForm addChat={addChat} onClose={() => setShowNewChatForm(false)} />)}
@@ -110,6 +120,7 @@ export default function ChatConversations() {
                         time={chat.time}
                         profileImage={chat.profileImage}
                         userId={chat.userId ?? chat.user_id}
+                        setChats={setChats}
                     />
                 ))}
             </div>

@@ -40,6 +40,7 @@ io.on("connection", (socket) => {
     socket.broadcast.emit("newMessage", data);
     // await insertMessege(data.chat_id, data.message, false, 1);
     io.emit("newMessage", data);
+    
     socket.on("disconnect", () => {
       console.log("A user disconnected:", socket.id);
       io.emit("newMessage", data);
@@ -131,6 +132,20 @@ app.post("/users/register", async (req, res) => {
   }
 });
 
+app.post("api/userexist", async (req, res) => {
+  const token = req.headers.authorization.split(" ")[1];
+  const decoded = jwt.verify(token, process.env.JWT_SECRET);
+  const phone = decoded.phone;
+  try {
+    const result = await pool.query("select * from users where phone = $1", [
+      phone
+    ]);
+    res.json(result.rows[0]);
+  } catch {
+    res.status(404).json({ error: "User not found" });
+  }
+});
+
 app.get("/users/:userId", async (req, res) => {
   const user_id = req.params.userId;
   try {
@@ -216,6 +231,7 @@ app.post("/users/getByPhone", async (req, res) => {
   }
 });
 
+
 // app.post("/chats/:userId", async (req, res) => {
 //   const user_id = req.params.userId;
 //   const name = req.body.name;
@@ -243,8 +259,8 @@ app.post("/users/getByPhone", async (req, res) => {
 app.post("/chats/:userId", async (req, res) => {
   const { userId, userToChat } = req.body;
 
-  const insertedChat = await insertNewChat(userToChat, userId);
-
+  const insertedChat = await insertNewChat(userToChat, user_id);
+  io.emit("newChat", insertedChat);
   res.json(insertedChat);
 });
 
