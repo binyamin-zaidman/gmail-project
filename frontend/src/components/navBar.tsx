@@ -57,7 +57,7 @@ export default function NavBar({user}) {
         <div id="navContainer">
             <div id="navBar"></div>
             <div id="settings" onClick={() => setShowSettings(!showSettings)}>
-                <img src="/public/settings.png" alt="settingIcon" />
+                <img src="/public/user_14251527.gif" alt="settingIcon" />
             </div>
             {showSettings && (
                 <div id="settingsMenu" ref={settingsRef}>

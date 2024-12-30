@@ -1,5 +1,5 @@
 #navContainer {
-    width: 4%;
+    width: 3.2rem;
     height: 100%;
     display: flex;
     flex-direction: column;
@@ -23,9 +23,10 @@
 }
 
 #settings img {
-    width:35px;
-    height: 35px;
+    width:53px;
+    height: 53px;
     cursor: pointer;
+    border-radius: 100px;
 }
 #settings :hover{
     transform: scale(1.1);

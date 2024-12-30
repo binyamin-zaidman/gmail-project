@@ -106,7 +106,8 @@ export default function ChatConversations() {
 
                 />
                 {/* <svg onClick={() => alert(" ")} id="addChatButton" xmlns="http://www.w3.org/2000/svg" height="10px" viewBox="0 -960 960 960" width="30px" fill="blue"><path d="M450-450H200v-60h250v-250h60v250h250v60H510v250h-60v-250Z" /></svg> */}
-                <svg onClick={() => setShowNewChatForm(true)} id="addChatButton" xmlns="./frontend/public/add.svg" height="40px" viewBox="0 -960 960 960" width="30px" fill="blue"><path d="M450-450H200v-60h250v-250h60v250h250v60H510v250h-60v-250Z" /></svg>
+                <img onClick={() => setShowNewChatForm(true)} id="addChatButton" src="/public/add_8514918.png" alt="img" />
+                {/* <svg onClick={() => setShowNewChatForm(true)} id="addChatButton" xmlns="./frontend/public/add.svg" height="40px" viewBox="0 -960 960 960" width="30px" fill="blue"><path d="M450-450H200v-60h250v-250h60v250h250v60H510v250h-60v-250Z" /></svg> */}
             </div>
             <div id="chats">
                 {showNewChatForm && (<NewChatForm addChat={addChat} onClose={() => setShowNewChatForm(false)} />)}
@@ -119,6 +120,7 @@ export default function ChatConversations() {
                         time={chat.time}
                         profileImage={chat.profileImage}
                         userId={chat.userId ?? chat.user_id}
+                        setChats={setChats}
                     />
                 ))}
             </div>
