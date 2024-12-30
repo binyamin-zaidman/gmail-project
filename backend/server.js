@@ -40,7 +40,7 @@ io.on("connection", (socket) => {
     socket.broadcast.emit("newMessage", data);
     // await insertMessege(data.chat_id, data.message, false, 1);
     io.emit("newMessage", data);
-    
+
     socket.on("disconnect", () => {
       console.log("A user disconnected:", socket.id);
       io.emit("newMessage", data);
@@ -110,11 +110,11 @@ app.post("/users/register", async (req, res) => {
   try {
     const { firstName, lastName, email, phone, password, question, answer } =
       req.body;
-      
-      const isUserExist = await pool.query(
-        "SELECT EXISTS (SELECT 1 FROM users WHERE phone = $1 AND password = $2)",
-        [phone, password]
-      );
+
+    const isUserExist = await pool.query(
+      "SELECT EXISTS (SELECT 1 FROM users WHERE phone = $1 AND password = $2)",
+      [phone, password]
+    );
     if (!isUserExist.rows[0].exists) {
       const result = await pool.query(
         "insert into users (first_name, last_name, email, password,phone, question, answer) values ($1, $2, $3, $4, $5, $6, $7) RETURNING *",
@@ -223,14 +223,13 @@ app.post("/users/getByPhone", async (req, res) => {
         "select first_name || ' ' ||last_name as userName,phone from users where id = $1",
         [user]
       );
-      
+
       res.json(queryByUserId.rows);
     }
   } catch {
     res.status("404").send(error, "user not exist by phone");
   }
 });
-
 
 // app.post("/chats/:userId", async (req, res) => {
 //   const user_id = req.params.userId;
@@ -259,7 +258,7 @@ app.post("/users/getByPhone", async (req, res) => {
 app.post("/chats/:userId", async (req, res) => {
   const { userId, userToChat } = req.body;
 
-  const insertedChat = await insertNewChat(userToChat, user_id);
+  const insertedChat = await insertNewChat(userToChat, userId);
   io.emit("newChat", insertedChat);
   res.json(insertedChat);
 });
