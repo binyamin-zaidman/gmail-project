@@ -364,3 +364,6 @@ select first_name || ' ' ||last_name  as userName from users where phone = '0583
 select phone, password from users where phone = '0586646399' and password = '1234'
 
 DELETE from chats
+select id ,password,first_name ,last_name, email,phone,question,answer  from users where phone ='0534101201'
+
+UPDATE users SET password = 1234 WHERE id ='6488f230-e1c3-45b5-9e5c-01c8253e548e'  AND answer = 'father RETURNING *'

@@ -132,6 +132,28 @@ app.post("/users/register", async (req, res) => {
   }
 });
 
+app.post("/users/restart", async (req, res) => {
+
+  try {
+    const { id, answer, password } = req.body;
+    
+    
+    const user = pool.query(
+      `UPDATE users SET password = $1 WHERE id = $2 AND answer = $3`,
+     [ password, id, answer ]
+    );
+    if (user.rowCount === 0) {
+      return res.status(404).json({ error: "User not found or incorrect answer" });
+    }
+    
+    res.status(200).json({user});
+
+  } catch (err) {
+    console.error("Error updating password:", err);
+    res.status(404).json(err, "something not right");
+  }
+});
+
 app.post("api/userexist", async (req, res) => {
   const token = req.headers.authorization.split(" ")[1];
   const decoded = jwt.verify(token, process.env.JWT_SECRET);
@@ -158,8 +180,25 @@ app.get("/users/:userId", async (req, res) => {
   }
 });
 
+app.post(`/users/passwordRecovery`, async (req, res) => {
+  const phone = req.body.phone;
+  try {
+    const result = await pool.query(
+      "select id,first_name ,last_name, email,phone,question,answer from users where phone = $1",
+      [phone.toString()]
+    );
+    res.json(result.rows[0]);
+  } catch {
+    res.status(404).json({ error: "User not found" });
+  }
+});
+
 app.get("/users/isLogged", verifyToken, async (req, res) => {
-  res.json(req.user);
+  const token = req.headers.authorization.split(" ")[1];
+  const decoded = jwt.verify(token, process.env.JWT_SECRET);
+  const phone = decoded.phone;
+
+  res.json({ phone });
 });
 
 app.use(verifyToken);

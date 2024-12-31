@@ -41,6 +41,8 @@ if (typeof props === 'string' ) {
     }
 
     try {
+    
+        
         const res = await fetch(`http://localhost:3000${url}`, options);
         
         if (!res.ok) {

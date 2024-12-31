@@ -6,6 +6,7 @@ import AppPage from './components/AppPage';
 import ShowAllMessages from './components/showMessages';
 import SettingsPage from './components/settingsPage';
 import Introduction from './components/aboutME';
+import PasswordRecovery from './components/passwordRecovery';
 // import ProtectedRoute from './components/ProtectedRoute';
 
 function App() {
@@ -14,8 +15,9 @@ function App() {
     <BrowserRouter>
       <Routes>
       {/* <Route path="/app" element={<ProtectedRoute><AppPage /></ProtectedRoute>} /> */}
-        < Route path='/' element={<Introduction />} />
+        < Route path='/' element={<Introduction/>} />
         < Route path='/login' element={<Login />} />
+        < Route path='/passwordRecovery' element={<PasswordRecovery/>} />
         < Route path='/signUp' element={<SignUp />} />
         < Route path='/app/:userId' element={<AppPage />} />
         < Route path='/app/:userId/chat/:chatId' element={<AppPage />} />
