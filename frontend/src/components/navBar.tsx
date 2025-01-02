@@ -41,9 +41,12 @@ export default function NavBar({ user }) {
     const handleChats = () => {
         if (isVisible) {
             setIsVisible(false)
+        
+
         } else {
             setIsVisible(true)
             setIsVisibleMeassage(false)
+           
         }
     }
 
@@ -82,7 +85,7 @@ export default function NavBar({ user }) {
     return (
         <div id="navContainer">
             <nav id="navBar">
-                <div id="menu" onMouseLeave={handleChats}><img src="/public/menu_27dp_0000F5_FILL0_wght400_GRAD0_opsz24.svg" alt="menue" /></div>
+                <div id="menu" onMouseLeave={handleChats}><img src="/public/menu_28dp_EFEFEF_FILL0_wght400_GRAD0_opsz24.svg" alt="menue" /></div>
                 {/* <div id="chats" className="collapsible-item hidden" onClick={handleChats} ><p>chats</p></div> */}
             </nav>
             <div id="settings" onClick={() => setShowSettings(!showSettings)}>

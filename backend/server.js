@@ -2,7 +2,7 @@ const jwt = require("jsonwebtoken");
 const crypto = require("crypto");
 
 const { insertNewChat, deleteChat } = require("./services/chatsService");
-const { receiveMessages, insertMessage } = require("./services/messegeService");
+const { receiveMessages, insertMessage, deleteMessage } = require("./services/messegeService");
 const { pool } = require("./conectDB");
 const cors = require("cors");
 const dotenv = require("dotenv");
@@ -314,6 +314,7 @@ app.get("/:user_id/messege/:chat_id", async (req, res) => {
   const user_id = req.params.user_id;
 
   const result = await receiveMessages(chat_id, user_id);
+  
   res.json(result);
 });
 
@@ -330,6 +331,14 @@ app.post("/message/:chat_id", verifyToken, async (req, res) => {
     res.status(500).json({ error: "Failed to save message" });
   }
 });
+
+app.delete("/message/:chat_id",async(req,res)=>{
+  const chat_id = Number(req.params.chat_id);
+  console.log(typeof chat_id);
+  
+  const result = await deleteMessage(chat_id);
+  res.json(result);
+})
 
 server.listen(port, () => {
   console.log(`Server is running on http://localhost: "${port}"`);

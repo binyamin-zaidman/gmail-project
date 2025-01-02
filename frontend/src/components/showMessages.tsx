@@ -32,12 +32,12 @@ export default function ShowAllMessages() {
         }
 
         // מאזין להודעות חדשות מהשרת
-        socket.on("newMessage", (message) => {
-            if (message.chat_id === chatId) { // בדיקה אם ההודעה שייכת לצ'אט הנוכחי
-                // setAllMessages((prevMessages) => [...prevMessages, message]);
+        // socket.on("newMessage", (message) => {
+        //     if (message.chat_id === chatId) { // בדיקה אם ההודעה שייכת לצ'אט הנוכחי
+        //         // setAllMessages((prevMessages) => [...prevMessages, message]);
                 
-            }
-        });
+        //     }
+        // });
 
         // הבאת כל ההודעות מהשרת
         const fetchMessages = async () => {
@@ -100,7 +100,8 @@ export default function ShowAllMessages() {
             sender_id: userId,
             message_time: new Date().toISOString(),
             is_read: false,
-            sender_name: "User" // צריך לשנות לשם משתמש שמחובר
+            sender_name: "User" , // צריך לשנות לשם משתמש שמחובר
+            is_deleted: false
         };
 
         try {
@@ -132,6 +133,8 @@ export default function ShowAllMessages() {
     };
 
 
+console.log(allMessages);
+
 
     return (
         <div id="messagesContainer" className={isVisibleMeassage ? "visibleMessagesContainer" : "hiddenMessagesContainer"}>
@@ -153,7 +156,8 @@ export default function ShowAllMessages() {
                         userName={message.sender_name || "Unknown"}
                         content={message.message || "No message"}
                         time={new Date(message.message_time).toLocaleString()}
-
+                        isDeleted={message.is_deleted}
+                        messageId={message.message_id}
                     />
                 ))}
                 <div ref={messagesEndRef} />
