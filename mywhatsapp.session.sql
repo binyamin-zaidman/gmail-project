@@ -138,6 +138,7 @@ values (
     );
 alter TABLE messages
 add column sender INT;
+
 alter TABLE chats
 add column name VARCHAR(255) DEFAULT null;
 alter TABLE chats
@@ -367,3 +368,6 @@ DELETE from chats
 select id ,password,first_name ,last_name, email,phone,question,answer  from users where phone ='0534101201'
 
 UPDATE users SET password = 1234 WHERE id ='6488f230-e1c3-45b5-9e5c-01c8253e548e'  AND answer = 'father RETURNING *'
+
+alter TABLE messages
+add column is_deleted BOOLEAN DEFAULT false;
