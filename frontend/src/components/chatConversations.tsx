@@ -6,6 +6,8 @@ import { createChat, getAllChats } from "../api/chats";
 import { Navigate, useParams } from "react-router-dom";
 import NewChatForm from "./NewChatForm";
 import { io } from "socket.io-client";
+import { useVisibility } from "./VisibilityContext";
+
 const socket = io("http://localhost:3000");
 
 // type ShowChats = {
@@ -21,7 +23,7 @@ export default function ChatConversations() {
     const [searchTerm, setSearchTerm] = useState("");
     const [showNewChatForm, setShowNewChatForm] = useState(false);
     const userId = useParams().userId!;
-
+    const { isVisible } = useVisibility();
 
     useEffect(() => {
         const fetchChats = async () => {
@@ -57,7 +59,7 @@ export default function ChatConversations() {
         return () => {
             socket.off("newChat");
         };
-    }, [userId,chats]);
+    }, [userId, setChats]);
 
     // סינון שיחות לפי חיפוש
     const filteredChats = chats.filter(chat =>
@@ -93,7 +95,7 @@ export default function ChatConversations() {
 
 
     return (
-        <div id="chatConversationsContainer">
+        <div id="chatConversationsContainer" className={isVisible ? "visibleChatContainer" : "hiddenChatContainer"}>
             <div id="headerConversations">
                 <h2 id="chatsHeader">Chats</h2>
                 <input
@@ -120,7 +122,7 @@ export default function ChatConversations() {
                         time={chat.time}
                         profileImage={chat.profileImage}
                         userId={chat.userId ?? chat.user_id}
-                        // setChats={setChats}
+                    // setChats={setChats}
                     />
                 ))}
             </div>

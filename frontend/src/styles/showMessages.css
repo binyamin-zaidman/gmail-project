@@ -7,6 +7,7 @@
     flex-wrap: wrap;
     /* position: relative; */
 }
+
 /* 
 #details {
     height: 76px;
@@ -30,7 +31,7 @@
 }
 
 #allMessages {
-    padding: 10px ;
+    padding: 10px;
     /* border-radius: 10px; */
     transition: background-color 0.3s ease;
     flex: 1;
@@ -76,9 +77,10 @@ textarea {
     resize: none;
     font-size: 1rem;
     font-family: Arial, Helvetica, sans-serif;
-    overflow-y:hidden;
+    overflow-y: hidden;
 }
-#sendContainer{
+
+#sendContainer {
     width: 8%;
     height: 40px;
     display: flex;
@@ -91,8 +93,16 @@ textarea {
     width: 30px;
     height: 20px;
 }
+
 #sendContainer:hover {
     background-color: #cccccc82;
-   
-  
+}
+
+.visibleMessagesContainer {
+    display: flex;
+
+}
+
+.hiddenMessagesContainer {
+    display: none;
 }

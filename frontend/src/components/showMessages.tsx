@@ -5,6 +5,7 @@ import MessageComponent from "./message";
 import { io } from "socket.io-client";
 import { useParams } from "react-router-dom";
 import { useBackground } from "./BackgroundContext";
+import { useVisibilityMeassage } from "./VisibilityMEssage";
 
 
 const socket = io("http://localhost:3000");
@@ -16,6 +17,8 @@ export default function ShowAllMessages() {
     const [newMessage, setNewMessage] = useState("");
     const { chatId, userId } = useParams<{ chatId: string; userId: string }>();
     const messagesEndRef = useRef<HTMLDivElement | null>(null);
+    const { isVisibleMeassage } = useVisibilityMeassage();
+
 
     const scrollToBottom = () => {
         messagesEndRef.current?.scrollIntoView({ behavior: "smooth", block: "end" });
@@ -131,7 +134,7 @@ export default function ShowAllMessages() {
 
 
     return (
-        <div id="messagesContainer">
+        <div id="messagesContainer" className={isVisibleMeassage ? "visibleMessagesContainer" : "hiddenMessagesContainer"}>
             <div id="details">
                 <img
                     src="https://imgv3.fotor.com/images/blog-richtext-image/10-profile-picture-ideas-to-make-you-stand-out.jpg"
