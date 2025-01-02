@@ -3,6 +3,8 @@ import { RemoveChat } from "../api/chats";
 import { getUserByPhone } from "../api/users";
 import "../styles/chat.css"
 import { useNavigate, useLocation, useParams } from "react-router-dom";
+import { useVisibility } from './VisibilityContext';
+
 interface ChatProps {
     chatId: string
     chatName: string;
@@ -17,15 +19,16 @@ export default function Chat({ chatId, chatName, message, time, profileImage, us
     const pathname = useLocation().pathname.split("/");
     const [userToChat, setUserToChat] = useState<string | null>(null);
     const [resolvedChatName, setResolvedChatName] = useState<string>(chatName);
+    const { setIsVisible } = useVisibility();
     const myId = useParams().userId;
     
     // const userByPhone = async () => {
-    //     try {
-    //         const user = await getUserByPhone(message);
-    //         setUserToChat(user);
-    //     } catch (error) {
-    //         console.error(error, "get user by phone:");
-    //     }
+        //     try {
+            //         const user = await getUserByPhone(message);
+            //         setUserToChat(user);
+            //     } catch (error) {
+                //         console.error(error, "get user by phone:");
+                //     }
     // }
 
     useEffect(() => {
@@ -71,7 +74,7 @@ export default function Chat({ chatId, chatName, message, time, profileImage, us
 
 
     return (
-        <div id="chatContainer" onClick={() => { navigate(`/app/${pathname[2]}/chat/${chatId}`, { relative: "path" }) }}>
+        <div id="chatContainer" onClick={() => {setIsVisible(false); navigate(`/app/${pathname[2]}/chat/${chatId}`, { relative: "path" }) }}>
             <div id="profileImage">
                 <img src={profileImage} alt="User Profile" id="profileImage" />
             </div>

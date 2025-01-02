@@ -13,6 +13,8 @@ export default function AppPage() {
     const { backgroundColor } = useBackground();
     const { userId } = useParams()
     const [user, setUser] = useState("")
+    const [display, setDisplay] = useState("")
+    
 
     useEffect(() => {
         if (userId) {

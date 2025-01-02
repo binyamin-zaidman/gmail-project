@@ -11,7 +11,7 @@
 
 #chatConversationsContainer::-webkit-scrollbar {
     display: none;
-  
+
 }
 
 #headerConversations {
@@ -42,15 +42,16 @@
 }
 
 #addChatButton {
-    width: 30px; 
+    width: 30px;
     /* border-radius: 50%;  */
     cursor: pointer;
-    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+
 }
 
-/* #addChatButton:hover {
-    background-color: #ddd; 
-} */
+#addChatButton:hover {
+    transform: scale(0.9);
+}
 
 
 
@@ -62,4 +63,23 @@
     font-size: 1rem;
     color: hsl(0, 0%, 95%);
     text-shadow: 1px 2px 2px #000000a5;
+}
+
+.visibleChatContainer {
+    display: flex;
+    flex-direction: column;
+    position: absolute;
+    width: 100%;
+    left: 50px;
+}
+
+.hiddenChatContainer {
+    display: none;
+}
+
+@media screen and (min-width: 767px) {
+    #chatConversationsContainer {
+        display: block;
+    }
+
 }

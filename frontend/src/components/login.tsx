@@ -2,8 +2,6 @@ import { useState, useEffect, useContext } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import '../styles/login.css'
 import { getUserExist, userExist, UserLogged } from "../api/users";
-// import { PasswordRounded } from "@mui/icons-material";
-import { useUser  } from '../components/UserContext.tsx'; 
 
 
 export default function Login() {
@@ -11,7 +9,7 @@ export default function Login() {
     const [password, setPassword] = useState("")
     const [errorMessage, setErrorMessage] = useState("");
     const navigate = useNavigate();
-    const { user, setUser } = useUser(); 
+
 
     // useEffect(() => {
     //     const checkUserLoggedIn = async () => {
@@ -52,6 +50,10 @@ export default function Login() {
             console.error(error);
         }
     };
+    const handlePasswordRecovery = () => {
+        navigate("/passwordRecovery", { state: { phone } }); // מעבר לדף שחזור סיסמה עם המספר
+    };
+
     return (
         <div className="LoginPageContainer">
             <h2>Login</h2>
@@ -75,7 +77,8 @@ export default function Login() {
                         placeholder="Enter your password"
                         onChange={handleChange}
                     />
-                    <a href=""><p>Forgot password?</p></a>
+                    <div onClick={handlePasswordRecovery}  id="forgotPassword"><p>Forgot password?</p> </div>
+                   
                     <div className="buttonForLogin">
 
                         <button type="button" onClick={() => navigate("/signUp")}>SignUp</button>

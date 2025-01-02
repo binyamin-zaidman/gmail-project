@@ -19,7 +19,7 @@
     }
 }
 
-#messageContainer {
+.messageContainer {
     max-height: 500px;
     overflow-y: none;
     display: flex;

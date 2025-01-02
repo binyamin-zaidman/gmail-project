@@ -2,12 +2,16 @@ import { useEffect, useRef, useState } from "react";
 import "../styles/navBar.css";
 import { useNavigate, useParams } from "react-router-dom";
 import { useBackground } from "./BackgroundContext";
-import { useUser  } from '../components/UserContext.tsx'; 
-
-export default function NavBar({user}) {
+import { useVisibility } from './VisibilityContext';
+import { useVisibilityMeassage } from './VisibilityMEssage';
+export default function NavBar({ user }) {
+    const { setIsVisible } = useVisibility();
+    const { isVisible } = useVisibility();
+    const { setIsVisibleMeassage } = useVisibilityMeassage();
+    const { isVisibleMeassage } = useVisibilityMeassage();
     // if(user){
     //     const userDatiles = user[0].username;
-                
+
     // }
     // const { userId } = useParams<{ userId: string }>();
     const navigate = useNavigate();
@@ -15,11 +19,33 @@ export default function NavBar({user}) {
     const { backgroundColor, setBackgroundColor } = useBackground();
     // const { userDetails, setUserDetails } = useUserDetails();
     const settingsRef = useRef<HTMLDivElement>(null);
-
+    const [menu, setMenu] = useState(false);
     const handleLogout = () => {
         localStorage.removeItem("user");
         navigate("/");
     };
+    const handleMenu = () => {
+        const chats = document.getElementById("chats");
+
+        if (!menu && chats) {
+            chats.classList.remove("hidden");
+            chats.classList.add("block");
+            setMenu(true);
+        } else if (menu && chats) {
+            chats.classList.remove("block");
+            chats.classList.add("hidden");
+            setMenu(false);
+        }
+    }
+
+    const handleChats = () => {
+        if (isVisible) {
+            setIsVisible(false)
+        } else {
+            setIsVisible(true)
+            setIsVisibleMeassage(false)
+        }
+    }
 
     useEffect(() => {
         const handleClickOutside = (event: MouseEvent) => {
@@ -50,12 +76,15 @@ export default function NavBar({user}) {
         "#FF748B",
         "#6A669D",
     ];
-    
+
 
 
     return (
         <div id="navContainer">
-            <div id="navBar"></div>
+            <nav id="navBar">
+                <div id="menu" onMouseLeave={handleChats}><img src="/public/menu_27dp_0000F5_FILL0_wght400_GRAD0_opsz24.svg" alt="menue" /></div>
+                {/* <div id="chats" className="collapsible-item hidden" onClick={handleChats} ><p>chats</p></div> */}
+            </nav>
             <div id="settings" onClick={() => setShowSettings(!showSettings)}>
                 <img src="/public/user_14251527.gif" alt="settingIcon" />
             </div>
@@ -73,6 +102,7 @@ export default function NavBar({user}) {
                                 <div
                                     key={color}
                                     onClick={() => setBackgroundColor(color)}
+
                                     style={{
                                         width: "30px",
                                         height: "30px",

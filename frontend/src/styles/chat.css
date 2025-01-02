@@ -18,8 +18,8 @@
 
 /* אפקט מעבר עכבר */
 #chatContainer:hover {
-    background-color: #ccc7c7de;
-   
+    background-color: #e9e7e7ee;
+
 }
 
 #profileImage {
@@ -28,12 +28,13 @@
     border-radius: 50%;
     object-fit: cover;
     margin-right: 1rem;
-    transition: transform 0.3s ease;
+    /* transition: transform 0.3s ease; */
 }
 
 
 #profileImage:hover {
-    transform: scale(1.04);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+
 }
 
 #showUser {
@@ -59,15 +60,16 @@
 }
 
 #deleteChatIcon:hover {
-    background-color: #f1f1f1;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    transform: scale(0.9);
     cursor: pointer;
     border-radius: 5px;
- 
+
 }
-#deleteChatIcon{
+
+#deleteChatIcon {
     height: 35px;
 }
-.content{
+
+.content {
     margin: 0;
 }
