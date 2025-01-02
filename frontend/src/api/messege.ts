@@ -8,7 +8,8 @@ export type messege = {
   sender_name: string;
   is_read: boolean;
   message_time: string;
-  message_id?: string;
+  message_id?: string
+  is_deleted: boolean
 };
 
 type getMessege = {
@@ -33,3 +34,11 @@ export async function sendMessege(message: messege) {
     body: message
   });
 }
+
+export async function removeMessege(message_id: string) {
+   return await sendRequest<string>({
+    url: `/message/${message_id}`,
+    method: "DELETE",
+  })
+}
+

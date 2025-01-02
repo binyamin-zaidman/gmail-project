@@ -4,6 +4,7 @@ import { getUserByPhone } from "../api/users";
 import "../styles/chat.css"
 import { useNavigate, useLocation, useParams } from "react-router-dom";
 import { useVisibility } from './VisibilityContext';
+import { useVisibilityMeassage } from "./VisibilityMEssage";
 
 interface ChatProps {
     chatId: string
@@ -20,6 +21,7 @@ export default function Chat({ chatId, chatName, message, time, profileImage, us
     const [userToChat, setUserToChat] = useState<string | null>(null);
     const [resolvedChatName, setResolvedChatName] = useState<string>(chatName);
     const { setIsVisible } = useVisibility();
+    const {setIsVisibleMeassage} = useVisibilityMeassage();
     const myId = useParams().userId;
     
     // const userByPhone = async () => {
@@ -74,7 +76,7 @@ export default function Chat({ chatId, chatName, message, time, profileImage, us
 
 
     return (
-        <div id="chatContainer" onClick={() => {setIsVisible(false); navigate(`/app/${pathname[2]}/chat/${chatId}`, { relative: "path" }) }}>
+        <div id="chatContainer" onClick={() => {setIsVisible(false); setIsVisibleMeassage(true);  navigate(`/app/${pathname[2]}/chat/${chatId}`, { relative: "path" }) }}>
             <div id="profileImage">
                 <img src={profileImage} alt="User Profile" id="profileImage" />
             </div>
@@ -89,7 +91,7 @@ export default function Chat({ chatId, chatName, message, time, profileImage, us
                     RemoveItem();
                 }}
             >
-                <img id="deleteChatIcon" src="/public/delete_10337510.png" alt="Remove Chat" />
+                <img id="deleteChatIcon" src="/public/delete_forever_30dp_589DF4_FILL0_wght400_GRAD0_opsz24.svg" alt="Remove Chat" />
             </div>
         </div>
     );

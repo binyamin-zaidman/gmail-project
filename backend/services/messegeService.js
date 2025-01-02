@@ -12,7 +12,10 @@ async function receiveMessages(chat_id, user_id) {
     messages.read AS is_read,
     users.first_name || ' ' || users.last_name AS sender_name,
     chats.name AS chat_name,
-    messages.sender AS sender_id
+    messages.sender AS sender_id,
+    messages.is_deleted,
+    messages.id as message_id
+   
 FROM 
     messages
 JOIN 
@@ -55,5 +58,12 @@ const sender_name = senderResult.rows[0]?.sender_name || "Unknown";
 return { ...savedMessage, sender_name };
 }
 
+async function deleteMessage(message_id) {
+  const result = await pool.query(  
+    `update messages set is_deleted = true where id = $1 RETURNING *`,
+    [message_id]
+  );
+  return result.rows[0];
+}
 
-module.exports = { receiveMessages, insertMessage };
+module.exports = { receiveMessages, insertMessage,deleteMessage };

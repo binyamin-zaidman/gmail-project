@@ -42,15 +42,17 @@
 }
 
 #addChatButton {
-    width: 30px;
-    /* border-radius: 50%;  */
+    border: 1px solid rgba(255, 255, 255, 0.797);
+    width: 33px;
+    border-radius: 10px 5px 15% 0; 
     cursor: pointer;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 
 }
 
-#addChatButton:hover {
+#addChatButton:active {
     transform: scale(0.9);
+    border:1px solid #d6eff7d2;
 }
 
 
@@ -68,9 +70,9 @@
 .visibleChatContainer {
     display: flex;
     flex-direction: column;
-    position: absolute;
-    width: 100%;
-    left: 50px;
+    position: relative;
+    max-width: 100% !important;
+   
 }
 
 .hiddenChatContainer {

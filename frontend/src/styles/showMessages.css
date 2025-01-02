@@ -99,10 +99,10 @@ textarea {
 }
 
 .visibleMessagesContainer {
-    display: flex;
+    display: flex !important;
 
 }
 
 .hiddenMessagesContainer {
-    display: none;
+    display: none !important;
 }

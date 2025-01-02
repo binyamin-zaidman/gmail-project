@@ -17,7 +17,7 @@
 }
 
 /* אפקט מעבר עכבר */
-#chatContainer:hover {
+#chatContainer:active {
     background-color: #e9e7e7ee;
 
 }
@@ -32,7 +32,7 @@
 }
 
 
-#profileImage:hover {
+#profileImage:active {
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 
 }
@@ -59,8 +59,9 @@
     color: #000;
 }
 
-#deleteChatIcon:hover {
+#deleteChatIcon:active {
     transform: scale(0.9);
+    border:1px solid #c6ebf7;
     cursor: pointer;
     border-radius: 5px;
 
