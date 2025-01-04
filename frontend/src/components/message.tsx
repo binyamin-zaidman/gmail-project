@@ -16,14 +16,14 @@ export default function MessageComponent({ isCurrentUser, userName, content, tim
     }
     return (
         <div id="messageContainer" >
-            <div className="message"  onMouseEnter={HandleOptions} id={`${isCurrentUser ? "currentUserMessage" : "otherUserMessage"}`}>
+            <div className="message"  onMouseLeave={HandleOptions} id={`${isCurrentUser ? "currentUserMessage" : "otherUserMessage"}`}>
             <img onClick={HandleDelete} className={isOpen ? "shownOptions" : "hiddenOptions"} id="DeleteItem" src="/public/chat_14359821.png" alt="deleteItem" />
                 <div id="myProfile">
                     <img src="/public/simpleProfile.jpg" alt="profile" />
                     <h3>{isCurrentUser ? "You" : userName}</h3>
                 </div>
                 <div id="messageBody">
-                    <h4 className="content">{isDeleted ? "This message has been missed" : content}</h4>
+                    <div className="content">{isDeleted ? "This message has been missed" : content}</div>
                     <p className="time">{time}</p>
                 </div>
             </div>

@@ -20,7 +20,7 @@ export default function Chat({ chatId, chatName, message, time, profileImage, us
     const pathname = useLocation().pathname.split("/");
     const [userToChat, setUserToChat] = useState<string | null>(null);
     const [resolvedChatName, setResolvedChatName] = useState<string>(chatName);
-    const { setIsVisible } = useVisibility();
+    const {setIsVisible } = useVisibility();
     const {setIsVisibleMeassage} = useVisibilityMeassage();
     const myId = useParams().userId;
     
@@ -38,6 +38,7 @@ export default function Chat({ chatId, chatName, message, time, profileImage, us
             if (myId == userId) {
                 try {
                     const user = await getUserByPhone(chatName);
+                  
 
                     //   setResolvedChatName(user[0]);
                     setUserToChat(user);
@@ -56,8 +57,7 @@ export default function Chat({ chatId, chatName, message, time, profileImage, us
         };
 
         fetchChatName();
-    }, [chatName, message, userId]);
-
+    }, [chatId, message, userId]);
 
     const RemoveItem = async () => {
         if (confirm("Are you sure you want to remove this chat?")) {
@@ -74,7 +74,7 @@ export default function Chat({ chatId, chatName, message, time, profileImage, us
     // userByPhone();
     // });
 
-
+    
     return (
         <div id="chatContainer" onClick={() => {setIsVisible(false); setIsVisibleMeassage(true);  navigate(`/app/${pathname[2]}/chat/${chatId}`, { relative: "path" }) }}>
             <div id="profileImage">

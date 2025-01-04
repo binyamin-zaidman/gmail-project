@@ -1,4 +1,3 @@
-
 /* אנימציית כניסה */
 @keyframes slideIn {
     from {
@@ -51,8 +50,9 @@
     width: 30px;
     position: relative;
     left: 10px;
-    animation: doorCloseFromLeft 1.5s ;
+    animation: doorCloseFromLeft 1.5s;
 }
+
 #DeleteItem:hover {
     background-color: #ccc;
 }
@@ -162,6 +162,13 @@ textarea {
 
 .content {
     font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+    margin: 0;
+}
+.content img {
+    font-size: 30px;
+  }
+.content img-increase{
+    font-size: 30px;
 }
 
 .time {
@@ -178,15 +185,18 @@ textarea {
     display: flex;
     flex-direction: column;
     margin: auto;
-    
+
 }
+
 @keyframes doorCloseFromLeft {
     from {
         transform: perspective(400px) rotateY(90deg);
         transform-origin: left;
         opacity: 0;
     }
-    50%, to {
+
+    50%,
+    to {
         transform: perspective(400px) rotateY(0deg);
         transform-origin: left;
         opacity: 1;

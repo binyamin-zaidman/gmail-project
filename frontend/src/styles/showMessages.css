@@ -80,6 +80,18 @@ textarea {
     overflow-y: hidden;
 }
 
+#emojiButton {
+    width: 40px;
+    height: 40px;
+    font-size:20px;
+    padding: 5px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-left: 5px;
+    background-color: azure;
+}
+
 #sendContainer {
     width: 8%;
     height: 40px;
