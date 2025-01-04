@@ -55,7 +55,7 @@
     transition: color 0.3s ease;
 }
 
-#chatContainer:hover .message {
+#chatContainer:hover #message {
     color: #000;
 }
 
@@ -71,6 +71,3 @@
     height: 35px;
 }
 
-.content {
-    margin: 0;
-}

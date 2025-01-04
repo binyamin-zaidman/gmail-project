@@ -6,7 +6,7 @@ import { io } from "socket.io-client";
 import { useParams } from "react-router-dom";
 import { useBackground } from "./BackgroundContext";
 import { useVisibilityMeassage } from "./VisibilityMEssage";
-
+import EmojiPicker from "emoji-picker-react";
 
 const socket = io("http://localhost:3000");
 
@@ -14,52 +14,60 @@ export default function ShowAllMessages() {
     const { backgroundColor } = useBackground();
     const [allMessages, setAllMessages] = useState<messege[]>([]);
     const [error, setError] = useState<string | null>(null);
-    const [newMessage, setNewMessage] = useState("");
+    const [text, setText] = useState("");
+    const [showEmojiPicker, setShowEmojiPicker] = useState(false);
     const { chatId, userId } = useParams<{ chatId: string; userId: string }>();
     const messagesEndRef = useRef<HTMLDivElement | null>(null);
     const { isVisibleMeassage } = useVisibilityMeassage();
-
+    const textAreaRef = useRef<HTMLTextAreaElement>(null);
 
     const scrollToBottom = () => {
-        messagesEndRef.current?.scrollIntoView({ behavior: "smooth", block: "end" });
+        messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
+    };
+
+    const addEmoji = (emoji: any) => {
+        if (textAreaRef.current && emoji) {  // Ensure emoji is defined
+            const textArea = textAreaRef.current;
+            const startPos = textArea.selectionStart;
+            // const endPos = textArea.selectionEnd;
+
+            // הוספת האימוג'י למיקום הסמן
+            const updatedText =
+                text.substring(0, startPos) +
+                emoji.emoji
+
+            setText(updatedText);
+            // העברת הסמן למיקום הנכון לאחר האימוג'י
+            setTimeout(() => {
+                textArea.setSelectionRange(
+                    startPos + emoji.emoji.length,
+                    startPos + emoji.emoji.length
+                );
+                textArea.focus();
+            }, 0);
+        }
     };
 
 
     useEffect(() => {
-        if (!chatId || !userId) {
-            // setError("Missing chatId or userId");
-            return;
-        }
+        if (!chatId || !userId) return;
 
-        // מאזין להודעות חדשות מהשרת
-        // socket.on("newMessage", (message) => {
-        //     if (message.chat_id === chatId) { // בדיקה אם ההודעה שייכת לצ'אט הנוכחי
-        //         // setAllMessages((prevMessages) => [...prevMessages, message]);
-                
-        //     }
-        // });
-
-        // הבאת כל ההודעות מהשרת
         const fetchMessages = async () => {
             try {
                 const messages = await getAllMessages(chatId, userId);
 
                 setAllMessages((prevMessages) => {
-                    const uniqueMessages = [...prevMessages, ...messages].filter(
-                        (msg, index, self) =>
-                            index === self.findIndex((m) => m.message_time === msg.message_time)
+                    const newMessages = messages.filter(
+                        (msg) => !prevMessages.some((prevMsg) => prevMsg.message_time === msg.message_time)
                     );
-                    return uniqueMessages;
+                    return newMessages;
                 });
-                // scrollToBottom();
-
             } catch (error) {
                 console.error("Error fetching messages:", error);
                 setError("Failed to fetch messages.");
             }
         };
 
-        fetchMessages();
         const handleNewMessage = (message: messege) => {
             if (message.chat_id === chatId) {
                 setAllMessages((prevMessages) => {
@@ -72,22 +80,20 @@ export default function ShowAllMessages() {
             }
         };
 
-        socket.off("newMessage", handleNewMessage);
+        fetchMessages();
         socket.on("newMessage", handleNewMessage);
+
         return () => {
             socket.off("newMessage", handleNewMessage);
         };
-
-
     }, [chatId, userId]);
 
     useEffect(() => {
         scrollToBottom();
     }, [allMessages]);
 
-    // שליחת הודעה חדשה
-    const sendMessage = async (messageContent: string) => {
-        if (!messageContent.trim()) return;
+    const sendMessage = async () => {
+        if (!text.trim()) return;
 
         if (!chatId || !userId) {
             setError("Missing chatId or userId in send message");
@@ -96,45 +102,39 @@ export default function ShowAllMessages() {
 
         const messageObject: messege = {
             chat_id: chatId,
-            message: messageContent,
+            message: text,
             sender_id: userId,
             message_time: new Date().toISOString(),
             is_read: false,
-            sender_name: "User" , // צריך לשנות לשם משתמש שמחובר
-            is_deleted: false
+            sender_name: "User",
+            is_deleted: false,
         };
 
         try {
-            // שליחת ההודעה לשרת לשמירה ב-DB
             const { sender_name } = await sendMessege(messageObject);
-            // שליחת ההודעה לכל המשתמשים המחוברים
             socket.emit("sendMessage", { ...messageObject, sender_name });
-            // הוספת ההודעה לרשימה
             setAllMessages((prevMessages) => [...prevMessages, { ...messageObject, sender_name }]);
-           
-            setNewMessage("");
+            setText("");
         } catch (error) {
             console.error("Error sending message:", error);
         }
     };
+
     const handleKeyDown = (e: React.KeyboardEvent) => {
         if (e.key === "Enter" && !e.shiftKey) {
             e.preventDefault();
-            sendMessage(newMessage);
+            sendMessage();
         }
     };
+
     const getChatName = () => {
-        if (allMessages.length === 0) {
-            return allMessages[0]?.chat_name || "Unknown Chat"; // ברירת מחדל
-        }
-
-        const otherUser = allMessages.find(msg => msg.sender_id !== userId);
-        return otherUser?.sender_name || allMessages[0]?.chat_name || "Unknown Chat"; // עדיפות לשם המשתמש השני או שם מוגדר מראש
+        const otherUser = allMessages.find((msg) => msg.sender_id !== userId);
+        return otherUser?.sender_name || allMessages[0]?.chat_name || "Unknown Chat";
     };
 
 
-console.log(allMessages);
 
+    console.log(allMessages);
 
     return (
         <div id="messagesContainer" className={isVisibleMeassage ? "visibleMessagesContainer" : "hiddenMessagesContainer"}>
@@ -147,9 +147,7 @@ console.log(allMessages);
             </div>
             <div id="allMessages" style={{ backgroundColor }}>
                 {error && <div className="error">{error}</div>}
-
                 {allMessages.map((message, index) => (
-                    // index === allMessages.length - 1 && console.log(message),
                     <MessageComponent
                         key={index}
                         isCurrentUser={message.sender_id == userId}
@@ -166,20 +164,25 @@ console.log(allMessages);
                 <div id="inputContainer">
                     <textarea
                         placeholder="Write a message..."
-                        // type="textarea"
-                        name="sendMessage"
-                        value={newMessage}
-                        onChange={(e) => setNewMessage(e.target.value)}
-                        onKeyDown={handleKeyDown} //? לעדכן משתמשים שיוזר מקליד
+                        value={text}
+                        onChange={(e) => setText(e.target.value)}
+                        onKeyDown={handleKeyDown}
                         rows={1}
+                        ref={textAreaRef}
                     />
+                    <button id="emojiButton" onClick={() => setShowEmojiPicker((prev) => !prev)}>😊</button>
+                    {showEmojiPicker && (
+                        <div style={{ position: "absolute", bottom: "60px", right: "15px" }}>
+                            <EmojiPicker onEmojiClick={addEmoji} />
+                        </div>
+                    )}
                 </div>
                 <div id="sendContainer">
                     <img
                         id="sendIcon"
                         src="/public/send-message.png"
                         alt="send"
-                        onClick={() => sendMessage(newMessage)}
+                        onClick={sendMessage}
                     />
                 </div>
             </div>

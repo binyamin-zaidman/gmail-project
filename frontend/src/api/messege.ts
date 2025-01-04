@@ -17,8 +17,8 @@ type getMessege = {
 };
 
 export async function getAllMessages(chat_id: string, user_id: string) {
-  const userId = user_id;
   const chatId = chat_id;
+  const userId = user_id;
   return await sendRequest<messege>({
     url: `/${userId}/messege/${chatId}`,
     method: "GET"
