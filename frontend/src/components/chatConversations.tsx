@@ -56,7 +56,6 @@ export default function ChatConversations() {
 
         fetchChats();
         socket.on("newChat", (newChat) => {
-
             if (newChat) {
                 setChats((prevChats) => [...prevChats, newChat]);
             }
@@ -67,8 +66,8 @@ export default function ChatConversations() {
     }, [userId]);
     
     useEffect(() => {
-        socket.on("chatDeleted", (chatId) => {
-            setChats((prevChats) => prevChats.filter(chat => chat.id === chatId));
+        socket.on("chatDeleted", (chatId) => {       
+            setChats((prevChats) => prevChats.filter(chat => chat.id !== chatId));
             navigate(`/app/${pathname[2]}`, { replace: true });
         });
     

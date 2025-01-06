@@ -38,4 +38,4 @@ CREATE TABLE chat_users (
     user_id UUID REFERENCES users(id) ON DELETE CASCADE
 );
 
-SELECT * FROM users
+DELETE from chats where id = '6a36b6ec-c12d-4a1e-aa0c-154aaff3fe75'

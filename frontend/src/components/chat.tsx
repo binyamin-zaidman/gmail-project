@@ -64,8 +64,7 @@ export default function Chat({ chatId, chatName, message, time, profileImage, us
     const RemoveItem = async () => {
         if (confirm("Are you sure you want to remove this chat?")) {
             try {
-                const response = await RemoveChat(chatId);                
-                socket.emit("deleteMessage", response);
+                const response = await RemoveChat(chatId);
                 navigate(`/app/${pathname[2]}`, { replace: true });
             } catch (error) {
                 console.error("Error removing chat:", error);
@@ -75,8 +74,6 @@ export default function Chat({ chatId, chatName, message, time, profileImage, us
     // useEffect(() => {
     // userByPhone();
     // });
-console.log(userToChat);
-
     
     return (
         <div id="chatContainer" onClick={() => {setIsVisible(false); setIsVisibleMeassage(true);  navigate(`/app/${pathname[2]}/chat/${chatId}`, { relative: "path" }) }}>
