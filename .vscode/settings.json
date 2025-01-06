@@ -9,6 +9,16 @@
             "database": "postgres",
             "username": "mywhatsapp1234",
             "password": "mywhatsapp1234"
+        },
+        {
+            "previewLimit": 50,
+            "server": "localhost",
+            "port": 5432,
+            "driver": "PostgreSQL",
+            "name": "gmail-project",
+            "database": "postgres",
+            "username": "mywhatsapp1234",
+            "password": "mywhatsapp1234"
         }
     ]
 }

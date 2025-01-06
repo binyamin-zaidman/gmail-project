@@ -321,21 +321,23 @@ CREATE TABLE chats (
     timestamp TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     name VARCHAR(255) DEFAULT null,
     description VARCHAR(255) DEFAULT null
+    is_deleted BOOLEAN DEFAULT false
 );
 
 -- יצירת טבלת messages
 CREATE TABLE messages (
-    id SERIAL PRIMARY KEY,
+    id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
     chat_id UUID REFERENCES chats(id) ON DELETE CASCADE,
     message TEXT NOT NULL,
     timestamp TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     read BOOLEAN DEFAULT FALSE,
-    sender UUID REFERENCES users(id) ON DELETE CASCADE
+    sender UUID REFERENCES users(id) ON DELETE CASCADE,
+    is_deleted BOOLEAN DEFAULT false
 );
 
 -- יצירת טבלת chat_users
 CREATE TABLE chat_users (
-    id SERIAL PRIMARY KEY,
+    id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
     chat_id UUID REFERENCES chats(id) ON DELETE CASCADE,
     user_id UUID REFERENCES users(id) ON DELETE CASCADE
 );
