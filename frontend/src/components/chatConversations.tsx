@@ -69,7 +69,6 @@ export default function ChatConversations() {
 
     const addChat = async (userToChat: string) => {
 
-
         // בדיקה האם כבר יש צ'אט עם המשתמש הזה
         const existingChat = chats.some(chat => chat.chatName === userToChat); // שיפור הבדיקה
 
@@ -86,6 +85,7 @@ export default function ChatConversations() {
                     setChats((prevChats) => [...prevChats, { ...response, chatName: response.name, profileImage: 'https://img.freepik.com/free-icon/user_318-159711.jpg' }]);
                 } else {
                     alert("User does not exist");
+                
                 }
             } catch (error) {
                 console.error("Error creating chat:", error);
@@ -108,9 +108,7 @@ export default function ChatConversations() {
 
 
                 />
-                {/* <svg onClick={() => alert(" ")} id="addChatButton" xmlns="http://www.w3.org/2000/svg" height="10px" viewBox="0 -960 960 960" width="30px" fill="blue"><path d="M450-450H200v-60h250v-250h60v250h250v60H510v250h-60v-250Z" /></svg> */}
                 <img onClick={() => setShowNewChatForm(true)} id="addChatButton" src="/public/chat_add_on_35dp_FFFFFF_FILL0_wght400_GRAD0_opsz40.svg" alt="img" />
-                {/* <svg onClick={() => setShowNewChatForm(true)} id="addChatButton" xmlns="./frontend/public/add.svg" height="40px" viewBox="0 -960 960 960" width="30px" fill="blue"><path d="M450-450H200v-60h250v-250h60v250h250v60H510v250h-60v-250Z" /></svg> */}
             </div>
             <div id="chats">
                 {showNewChatForm && (<NewChatForm addChat={addChat} onClose={() => setShowNewChatForm(false)} />)}

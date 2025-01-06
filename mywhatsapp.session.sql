@@ -376,3 +376,5 @@ add column is_deleted BOOLEAN DEFAULT false;
 
 DELETE from users where id = '78118e76-21cd-4b85-b5dc-01646efb9473'
 select * from users
+
+DROP TABLE IF EXISTS table_name CASCADE;
