@@ -73,6 +73,7 @@ export default function Chat({ chatId, chatName, message, time, profileImage, us
     // useEffect(() => {
     // userByPhone();
     // });
+console.log(userToChat);
 
     
     return (
@@ -81,8 +82,8 @@ export default function Chat({ chatId, chatName, message, time, profileImage, us
                 <img src={profileImage} alt="User Profile" id="profileImage" />
             </div>
             <div id="showUser">
-                <p id="chatName">{userToChat && userToChat[0].username}</p>
-                <p id="message">{userToChat && userToChat[0].phone}</p>
+                <p id="chatName">{userToChat && userToChat[0]?.username}</p>
+                <p id="message">{userToChat && userToChat[0]?.phone}</p>
             </div>
             <div
                 id="removeChatIcon"

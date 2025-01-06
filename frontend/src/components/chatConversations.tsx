@@ -52,6 +52,7 @@ export default function ChatConversations() {
 
         fetchChats();
         socket.on("newChat", (newChat) => {
+        
             if (newChat) {
                 setChats((prevChats) => [...prevChats, newChat]);
             }
@@ -59,7 +60,7 @@ export default function ChatConversations() {
         return () => {
             socket.off("newChat");
         };
-    }, [userId, setChats]);
+    }, [userId]);
 
     // סינון שיחות לפי חיפוש
     const filteredChats = chats.filter(chat =>
