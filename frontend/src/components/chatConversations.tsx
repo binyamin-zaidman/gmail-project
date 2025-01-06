@@ -3,10 +3,11 @@ import { useState, useEffect } from "react";
 import "../styles/chatConversation.css"
 import { createChat, getAllChats } from "../api/chats";
 // import { getChats } from "../api/chats"; 
-import { Navigate, useParams } from "react-router-dom";
+import { Navigate, useLocation, useNavigate, useParams } from "react-router-dom";
 import NewChatForm from "./NewChatForm";
 import { io } from "socket.io-client";
 import { useVisibility } from "./VisibilityContext";
+
 
 const socket = io("http://localhost:3000");
 
@@ -24,6 +25,9 @@ export default function ChatConversations() {
     const [showNewChatForm, setShowNewChatForm] = useState(false);
     const userId = useParams().userId!;
     const { isVisible } = useVisibility();
+    const navigate = useNavigate();
+    const pathname = useLocation().pathname.split("/");
+
 
     useEffect(() => {
         const fetchChats = async () => {
@@ -52,7 +56,7 @@ export default function ChatConversations() {
 
         fetchChats();
         socket.on("newChat", (newChat) => {
-        
+
             if (newChat) {
                 setChats((prevChats) => [...prevChats, newChat]);
             }
@@ -61,6 +65,19 @@ export default function ChatConversations() {
             socket.off("newChat");
         };
     }, [userId]);
+    
+    useEffect(() => {
+        socket.on("chatDeleted", (chatId) => {
+            setChats((prevChats) => prevChats.filter(chat => chat.id === chatId));
+            navigate(`/app/${pathname[2]}`, { replace: true });
+        });
+    
+        return () => {
+            socket.off("chatDeleted");
+        };
+    }, []);
+    
+
 
     // סינון שיחות לפי חיפוש
     const filteredChats = chats.filter(chat =>
@@ -85,7 +102,7 @@ export default function ChatConversations() {
                     setChats((prevChats) => [...prevChats, { ...response, chatName: response.name, profileImage: 'https://img.freepik.com/free-icon/user_318-159711.jpg' }]);
                 } else {
                     alert("User does not exist");
-                
+
                 }
             } catch (error) {
                 console.error("Error creating chat:", error);
@@ -121,6 +138,7 @@ export default function ChatConversations() {
                         time={chat.time}
                         profileImage={chat.profileImage}
                         userId={chat.userId ?? chat.user_id}
+                        isDeleted={chat.is_deleted}
                     // setChats={setChats}
                     />
                 ))}

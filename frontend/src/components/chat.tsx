@@ -5,6 +5,8 @@ import "../styles/chat.css"
 import { useNavigate, useLocation, useParams } from "react-router-dom";
 import { useVisibility } from './VisibilityContext';
 import { useVisibilityMeassage } from "./VisibilityMEssage";
+import { io } from "socket.io-client";
+const socket = io("http://localhost:3000");
 
 interface ChatProps {
     chatId: string
@@ -13,9 +15,10 @@ interface ChatProps {
     time: string;
     profileImage: string;
     userId: string;
+    isDeleted: boolean;
 }
 
-export default function Chat({ chatId, chatName, message, time, profileImage, userId }: ChatProps) {
+export default function Chat({ chatId, chatName, message, time, profileImage, userId ,isDeleted}: ChatProps) {
     const navigate = useNavigate();
     const pathname = useLocation().pathname.split("/");
     const [userToChat, setUserToChat] = useState<string | null>(null);
@@ -38,7 +41,6 @@ export default function Chat({ chatId, chatName, message, time, profileImage, us
             if (myId == userId) {
                 try {
                     const user = await getUserByPhone(chatName);
-                  
 
                     //   setResolvedChatName(user[0]);
                     setUserToChat(user);
@@ -63,8 +65,8 @@ export default function Chat({ chatId, chatName, message, time, profileImage, us
         if (confirm("Are you sure you want to remove this chat?")) {
             try {
                 const response = await RemoveChat(chatId);                
-                
-               
+                socket.emit("deleteMessage", response);
+                navigate(`/app/${pathname[2]}`, { replace: true });
             } catch (error) {
                 console.error("Error removing chat:", error);
             }
