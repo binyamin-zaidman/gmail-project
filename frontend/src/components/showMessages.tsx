@@ -102,6 +102,7 @@ export default function ShowAllMessages() {
 
         const messageObject: messege = {
             chat_id: chatId,
+            chat_name: "",
             message: text,
             sender_id: userId,
             message_time: new Date().toISOString(),
@@ -111,7 +112,7 @@ export default function ShowAllMessages() {
         };
 
         try {
-            const { sender_name } = await sendMessege(messageObject);
+            const {sender_name} = await sendMessege(messageObject);
             socket.emit("sendMessage", { ...messageObject, sender_name });
             setAllMessages((prevMessages) => [...prevMessages, { ...messageObject, sender_name }]);
             setText("");
@@ -134,7 +135,8 @@ export default function ShowAllMessages() {
 
 
 
-    console.log(allMessages);
+
+    
 
     return (
         <div id="messagesContainer" className={isVisibleMeassage ? "visibleMessagesContainer" : "hiddenMessagesContainer"}>
@@ -155,7 +157,7 @@ export default function ShowAllMessages() {
                         content={message.message || "No message"}
                         time={new Date(message.message_time).toLocaleString()}
                         isDeleted={message.is_deleted}
-                        messageId={message.message_id}
+                        messageId={String(message.message_id)}
                     />
                 ))}
                 <div ref={messagesEndRef} />

@@ -14,7 +14,7 @@
     display: flex;
     position: fixed;
     left: 0;
-    width: 100%;
+    width: 99%;
     height: 60px;
     background: linear-gradient(180deg, #6fb0f1, #3982f7);
 
@@ -42,8 +42,8 @@
     position: absolute;
     left: 10px;
     bottom: 50px;
-    background-color: white;
-    border: 1px solid #ccc;
+    background: linear-gradient(150deg,#4f8ff6, #82b9f1, white);
+    border: 1px solid #230fda;
     padding: 10px;
     z-index: 1000;
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
@@ -51,6 +51,9 @@
     display: flex;
     flex-direction: column;
     gap: 8px;
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 20px;
+    
 }
 
 #settingsMenu div {
@@ -58,8 +61,8 @@
     cursor: pointer;
     text-align: left;
     font-size: 16px;
-    color: #333;
-    border-bottom: 1px solid #f0f0f0;
+    color: #ffffff;
+    border-bottom: 1px solid #093258;
 }
 
 
@@ -69,6 +72,7 @@
 
 #settingsMenu div:hover {
     background-color: #f8f8f8;
+    color: #093258;
 }
 
 #colorPicker {
@@ -110,6 +114,12 @@
 }
 #menu{
     display: none;
+}
+#logout{
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    color: #093258;
 }
 
 @media screen and (max-width: 768px) {

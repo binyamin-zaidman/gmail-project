@@ -72,12 +72,13 @@ export default function NavBar({ user }) {
     const predefinedColors = [
         "#ffffff",
         "#FFF0DC",
-        "#ff0000",
-        "#85A98F",
+        "#F95454",
+        "#D9DFC6",
         "#81BFDA",
-        "#FFB200",
-        "#FF748B",
-        "#6A669D",
+        "#FBB4A5",
+        "#FFD2A0",
+        "#EBEAFF",
+        "#3C3D37",
     ];
 
 
@@ -85,7 +86,7 @@ export default function NavBar({ user }) {
     return (
         <div id="navContainer">
             <nav id="navBar">
-                <div id="menu" onMouseLeave={handleChats}><img src="/public/menu_28dp_EFEFEF_FILL0_wght400_GRAD0_opsz24.svg" alt="menue" /></div>
+                <div id="menu" onClick={handleChats}><img src="/public/menu_28dp_EFEFEF_FILL0_wght400_GRAD0_opsz24.svg" alt="menue" /></div>
                 {/* <div id="chats" className="collapsible-item hidden" onClick={handleChats} ><p>chats</p></div> */}
             </nav>
             <div id="settings" onClick={() => setShowSettings(!showSettings)}>
@@ -95,7 +96,7 @@ export default function NavBar({ user }) {
                 <div id="settingsMenu" ref={settingsRef}>
                     <div onClick={() => { alert(`Viewing profile for user ${user[0].username}`) }}>
                         <div>
-                            <p>your profile is: '{user[0].username}'</p>
+                            <p >your profile is: '{user[0].username}'</p>
                         </div>
                     </div>
                     <div>
@@ -120,7 +121,7 @@ export default function NavBar({ user }) {
                             ))}
                         </div>
                     </div>
-                    <div onClick={handleLogout}>Logout</div>
+                    <div onClick={handleLogout} id="logout"><img src="/public/logout_24dp_FFFFFF_FILL0_wght400_GRAD0_opsz24.png" alt="logout" style={{width: "30px", height: "30px"}}/>logout</div>
                 </div>
             )}
         </div>

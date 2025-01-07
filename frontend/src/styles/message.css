@@ -87,6 +87,7 @@
     color: white;
     text-align: left;
     padding: 10px;
+    margin: 10px;
     border-radius: 12px 12px 0 12px;
     animation: fadeIn 0.9s ease;
     box-shadow: 0px 2px 8px rgba(0, 0, 0, 0.2);
@@ -100,6 +101,7 @@
     color: #333;
     text-align: left;
     padding-right: 10px;
+    margin: 10px;
     border-radius: 12px 12px 12px 0;
     animation: fadeIn 0.3s ease;
     box-shadow: 0px 2px 8px rgba(0, 0, 0, 0.2);
@@ -136,10 +138,10 @@
 
 #allMessages {
 
-    padding: 10px;
+    padding: 10px 0 ;
     transition: background-color 0.7s ease;
     flex: 1;
-    width: 98%;
+    width: 99%;
     overflow-y: none;
     /* background: linear-gradient(165deg, #04213e, #99bffb); */
 }
