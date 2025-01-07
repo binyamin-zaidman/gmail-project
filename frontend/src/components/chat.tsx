@@ -65,7 +65,9 @@ export default function Chat({ chatId, chatName, message, time, profileImage, us
         if (confirm("Are you sure you want to remove this chat?")) {
             try {
                 const response = await RemoveChat(chatId);
-                socket.emit("chatDeleted", { chatId });
+                console.log("return from server",response);
+                
+                socket.emit("chatDeleted", chatId);
                 navigate(`/app/${pathname[2]}`, { replace: true });
             } catch (error) {
                 console.error("Error removing chat:", error);
