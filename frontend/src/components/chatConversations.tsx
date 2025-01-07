@@ -56,14 +56,14 @@ export default function ChatConversations() {
 
         fetchChats();
         socket.on("newChat", (newChat) => {
-            if (newChat) {
+            if (newChat) { 
                 setChats((prevChats) => [...prevChats, newChat]);
             }
         });
         return () => {
             socket.off("newChat");
         };
-    }, [userId]);
+    }, [chats]);
     
     useEffect(() => {
         socket.on("chatDeleted", (chatId) => {       
@@ -129,7 +129,7 @@ export default function ChatConversations() {
             <div id="chats">
                 {showNewChatForm && (<NewChatForm addChat={addChat} onClose={() => setShowNewChatForm(false)} />)}
                 {filteredChats.map((chat, index) => (
-                    <Chat
+                    <Chat      
                         key={index}
                         chatId={chat.id}
                         chatName={chat.chatName}
