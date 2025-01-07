@@ -3,7 +3,9 @@ import "../styles/message.css"
 import { removeMessege } from "../api/messege";
 
 
+
 export default function MessageComponent({ isCurrentUser, userName, content, time, isDeleted, messageId }: { isCurrentUser: boolean, userName: string, content: string, time: string, isDeleted: boolean, messageId: string }) {
+ 
     const [isOpen, setIsOpen] = useState(false);
     const HandleOptions = () => {
         if (isOpen) { setIsOpen(false) }
@@ -11,9 +13,14 @@ export default function MessageComponent({ isCurrentUser, userName, content, tim
     };
 
     const HandleDelete = async () => {
-        if (isDeleted) { setIsOpen(true) }
-        else {await removeMessege(String(messageId)); setIsOpen(false) }
+        try { await removeMessege(messageId);
+            setIsOpen(false);          
+        }
+        catch (error) {
+            console.error("Failed to delete message:", error);
+        }
     }
+    
     return (
         <div id="messageContainer" >
             <div className="message"  onMouseLeave={HandleOptions} id={`${isCurrentUser ? "currentUserMessage" : "otherUserMessage"}`}>

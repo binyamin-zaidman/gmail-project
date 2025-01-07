@@ -2,13 +2,13 @@ import sendRequest from "./fetchRequest";
 
 export type messege = {
   chat_id: string;
-  chat_name?: string;
+  chat_name: string;
   message?: string;
   sender_id: string;
   sender_name: string;
   is_read: boolean;
   message_time: string;
-  message_id?: string
+  message_id?: number;
   is_deleted: boolean
 };
 
@@ -36,6 +36,7 @@ export async function sendMessege(message: messege) {
 }
 
 export async function removeMessege(message_id: string) {
+  
    return await sendRequest<string>({
     url: `/message/${message_id}`,
     method: "DELETE",
