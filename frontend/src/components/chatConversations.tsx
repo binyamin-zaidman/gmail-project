@@ -74,7 +74,7 @@ export default function ChatConversations() {
         return () => {
             socket.off("chatDeleted");
         };
-    }, []);
+    }, [chats,pathname]);
     
 
 
